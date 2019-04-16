@@ -1,81 +1,103 @@
-# call-app@0.0.1
+# callApp
 
-> [git库地址](http://gitlab.zhuanspirit.com/call-app)
+> webpage call APP
 
-文档线上地址：《[文档](https://fe.zhuanspirit.com/call-app/)》
+# install
+``` bash
+npm set registry http://zzfe.cnpm.58corp.com
+npm install @zz-vc/callApp --save-dev
 
-转转FE打包模版
+或在webpack配置文件中设置后安装
+``` 
+# usage
 
-## 命令
+## 默认在window下创建callApp实例，可以直接使用该实例调起
 
-```bash
-# 本地测试模式，外链形式
-$ npm run dev
-# 编译es5，es6代码，例如lib，es文件夹
-$ npm run compile
-# 编译代码，外链形式
-$ npm run dist
-# 打包编译，集成compile 和 dist
-$ npm run build
-# 发布npm包，同时gitlab标签
-$ npm run pub
-# 发布npm的beta包，同时gitlab标签
-$ npm run pub-beta
-# 删除gitlab及npm包对应版本代码
-$ npm run unpub
-# 打开开发文档在浏览器中运行
-$ npm run doc
-# 编译开发文档
-$ npm run build-doc
-# 上传文档到ftp
-$ npm run doc-upload
+## 或实例化一个对象：var callAPP = new CallApp(config);
+> config：appd调起的各项参数（转转默认不用传）
+
+## [可选]微信下定义方法，可检测到是否安装app
+``` bash
+    document.addEventListener("wechatCheckInstallState",function(){
+        if(callApp.hasApp == 1){
+          //todo sth
+        }
+    }, false)
+``` 
+
+## 调起方法
+``` bash
+      //例子1
+      callApp.start({
+        channelId: 555,
+        urlSearch: {
+          openType:"home"
+        }
+      });
+      //例子2
+       callApp.start({
+              urlSearch:{
+                groupId:786100099271884800
+              },
+              path:'jump/group/manage/jump',
+              callback:function(){
+                  var lego = new Image();
+                  lego.src = 'http://lego.58.com/page/mark?callapp';
+              },
+              success:function(){
+                var lego = new Image();
+                lego.src = 'http://lego.58.com/page/mark?success';
+              },
+              fail:function(){
+                var lego = new Image();
+                lego.src = 'http://lego.58.com/page/mark?fail';
+              }，
+              middleWareUrl:"https://zhuan.58.com/zz/redirect/download?channelId="+this.download_id
+            });
+      
+``` 
+## 调起参数
+``` bash
+   /**
+      * 端外主动调起app方法
+      * tip1：通过一个对象传入
+      * tip2：下面任意参数都非必填，默认调起首页（转转）
+      * @param urlSearch：
+      *        |- 参数openType：home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面
+      *        |- 参数id：存放id或者url
+      *        |- 其他任意参数均可（兼容新版调起协议）
+      * @param channelId：渠道号
+      * @param path:路径(兼容新版调起协议)
+      * @param middleWareUrl：中转url，如空则直接跳转下载安装包或appstore
+      * @param callback：发起调起请求时的回调
+      * @param success：调起成功的回调
+      * @param fail：调起失败的回调
+      */
+``` 
+
+# Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test
 ```
-
-## publish
-
-此`npm`包针对 `npm publish` 命令进行了单独封装，可实现`publish`的同时，生成`gitlab`版本标签，命令如下：
-
-```bash
-$ npm run pub
+# 默认外链地址
 ```
-
-## 按需加载
-
-```bash
-$ npm i babel-plugin-import -D
+https://s1.zhuanstatic.com/common/zzapp/static/js/CallApp.js
 ```
-
-此npm包实现了按需加载，使用时，需要设置babel配置，如下：
-
-```javascript
-"plugins": [
-  ["import", {
-    "libraryName": "call-app"}]
-]
-```
-
-## 使用
-
-### npm
-
-```javascritp
-$ npm i call-app -S
-```
-
-### CDN
-
-```javascript
-<script src="https://m.zhuanzhuan.com/common/call-app/static/js/index.js?v=2.1.0"></script>
-<script src="https://m.zhuanzhuan.com/common/call-app/static/js/index.min.js?v=2.1.0"></script>
-```
-
-### 文档
-结合jsdoc写文档,语法可查看：《[jsdoc使用](https://www.css88.com/doc/jsdoc/tags-example.html)》
-
-新增及修改函数，按照jsdoc语法规则来写注释
-
-其中 call-app 为你自己的npm包名
-
-目前第一版还不支持css的解析，如果有需要可告知后升级
-
-可参考：[@zz/lego](http://gitlab.zhuanspirit.com/zz-fe/common-zz-lego)
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

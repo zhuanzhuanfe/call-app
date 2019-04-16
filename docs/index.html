@@ -47,41 +47,77 @@
 
 
     <section class="readme">
-        <article><h1><a href="mailto:call-app@0.0.1">call-app@0.0.1</a></h1><blockquote>
-<p><a href="http://gitlab.zhuanspirit.com/call-app">git库地址</a></p>
+        <article><h1>callApp</h1><blockquote>
+<p>webpage call APP</p>
 </blockquote>
-<p>文档线上地址：《<a href="https://fe.zhuanspirit.com/call-app/">文档</a>》</p>
-<p>转转FE打包模版</p>
-<h2>命令</h2><pre class="prettyprint source lang-bash"><code># 本地测试模式，外链形式
-$ npm run dev
-# 编译es5，es6代码，例如lib，es文件夹
-$ npm run compile
-# 编译代码，外链形式
-$ npm run dist
-# 打包编译，集成compile 和 dist
-$ npm run build
-# 发布npm包，同时gitlab标签
-$ npm run pub
-# 发布npm的beta包，同时gitlab标签
-$ npm run pub-beta
-# 删除gitlab及npm包对应版本代码
-$ npm run unpub
-# 打开开发文档在浏览器中运行
-$ npm run doc
-# 编译开发文档
-$ npm run build-doc
-# 上传文档到ftp
-$ npm run doc-upload</code></pre><h2>publish</h2><p>此<code>npm</code>包针对 <code>npm publish</code> 命令进行了单独封装，可实现<code>publish</code>的同时，生成<code>gitlab</code>版本标签，命令如下：</p>
-<pre class="prettyprint source lang-bash"><code>$ npm run pub</code></pre><h2>按需加载</h2><pre class="prettyprint source lang-bash"><code>$ npm i babel-plugin-import -D</code></pre><p>此npm包实现了按需加载，使用时，需要设置babel配置，如下：</p>
-<pre class="prettyprint source lang-javascript"><code>&quot;plugins&quot;: [
-  [&quot;import&quot;, {
-    &quot;libraryName&quot;: &quot;call-app&quot;}]
-]</code></pre><h2>使用</h2><h3>npm</h3><pre class="prettyprint source lang-javascritp"><code>$ npm i call-app -S</code></pre><h3>CDN</h3><pre class="prettyprint source lang-javascript"><code>&lt;script src=&quot;https://m.zhuanzhuan.com/common/call-app/static/js/index.js?v=2.1.0&quot;>&lt;/script>
-&lt;script src=&quot;https://m.zhuanzhuan.com/common/call-app/static/js/index.min.js?v=2.1.0&quot;>&lt;/script></code></pre><h3>文档</h3><p>结合jsdoc写文档,语法可查看：《<a href="https://www.css88.com/doc/jsdoc/tags-example.html">jsdoc使用</a>》</p>
-<p>新增及修改函数，按照jsdoc语法规则来写注释</p>
-<p>其中 call-app 为你自己的npm包名</p>
-<p>目前第一版还不支持css的解析，如果有需要可告知后升级</p>
-<p>可参考：<a href="http://gitlab.zhuanspirit.com/zz-fe/common-zz-lego">@zz/lego</a></p></article>
+<h1>install</h1><pre class="prettyprint source lang-bash"><code>npm set registry http://zzfe.cnpm.58corp.com
+npm install @zz-vc/callApp --save-dev
+
+或在webpack配置文件中设置后安装</code></pre><h1>usage</h1><h2>默认在window下创建callApp实例，可以直接使用该实例调起</h2><h2>或实例化一个对象：var callAPP = new CallApp(config);</h2><blockquote>
+<p>config：appd调起的各项参数（转转默认不用传）</p>
+</blockquote>
+<h2>[可选]微信下定义方法，可检测到是否安装app</h2><pre class="prettyprint source lang-bash"><code>    document.addEventListener(&quot;wechatCheckInstallState&quot;,function(){
+        if(callApp.hasApp == 1){
+          //todo sth
+        }
+    }, false)</code></pre><h2>调起方法</h2><pre class="prettyprint source lang-bash"><code>      //例子1
+      callApp.start({
+        channelId: 555,
+        urlSearch: {
+          openType:&quot;home&quot;
+        }
+      });
+      //例子2
+       callApp.start({
+              urlSearch:{
+                groupId:786100099271884800
+              },
+              path:'jump/group/manage/jump',
+              callback:function(){
+                  var lego = new Image();
+                  lego.src = 'http://lego.58.com/page/mark?callapp';
+              },
+              success:function(){
+                var lego = new Image();
+                lego.src = 'http://lego.58.com/page/mark?success';
+              },
+              fail:function(){
+                var lego = new Image();
+                lego.src = 'http://lego.58.com/page/mark?fail';
+              }，
+              middleWareUrl:&quot;https://zhuan.58.com/zz/redirect/download?channelId=&quot;+this.download_id
+            });
+</code></pre><h2>调起参数</h2><pre class="prettyprint source lang-bash"><code>   /**
+      * 端外主动调起app方法
+      * tip1：通过一个对象传入
+      * tip2：下面任意参数都非必填，默认调起首页（转转）
+      * @param urlSearch：
+      *        |- 参数openType：home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面
+      *        |- 参数id：存放id或者url
+      *        |- 其他任意参数均可（兼容新版调起协议）
+      * @param channelId：渠道号
+      * @param path:路径(兼容新版调起协议)
+      * @param middleWareUrl：中转url，如空则直接跳转下载安装包或appstore
+      * @param callback：发起调起请求时的回调
+      * @param success：调起成功的回调
+      * @param fail：调起失败的回调
+      */</code></pre><h1>Build Setup</h1><pre class="prettyprint source lang-bash"><code># install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# run unit tests
+npm run unit
+
+# run e2e tests
+npm run e2e
+
+# run all tests
+npm test</code></pre><h1>默认外链地址</h1><pre class="prettyprint source"><code>https://s1.zhuanstatic.com/common/zzapp/static/js/CallApp.js</code></pre><p>For detailed explanation on how things work, checkout the <a href="http://vuejs-templates.github.io/webpack/">guide</a> and <a href="http://vuejs.github.io/vue-loader">docs for vue-loader</a>.</p></article>
     </section>
 
 
@@ -94,7 +130,7 @@ $ npm run doc-upload</code></pre><h2>publish</h2><p>此<code>npm</code>包针�
 <br class="clear">
 
 <footer>
-    Documentation generated at Tue Apr 16 2019 19:20:54 GMT+0800 (中国标准时间)
+    Documentation generated at Tue Apr 16 2019 19:26:35 GMT+0800 (中国标准时间)
 </footer>
 
 <script>prettyPrint();</script>
