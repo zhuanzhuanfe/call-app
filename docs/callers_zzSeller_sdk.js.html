@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>callers/zzSeller/sdk.js - Postman Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li><li><a href="WBAPP.html">WBAPP</a><ul class='methods'><li data-type='method'><a href="WBAPP.html#compareVersion">compareVersion</a></li><li data-type='method'><a href="WBAPP.html#getVersion">getVersion</a></li><li data-type='method'><a href="WBAPP.html#isInstallApp">isInstallApp</a></li><li data-type='method'><a href="WBAPP.html#openApp">openApp</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#__createIframe">__createIframe</a></li><li><a href="global.html#__removeIframe">__removeIframe</a></li><li><a href="global.html#AppInfomation">AppInfomation</a></li><li><a href="global.html#dependencies">dependencies</a></li><li><a href="global.html#device">device</a></li><li><a href="global.html#domain">domain</a></li><li><a href="global.html#downloadUrl">downloadUrl</a></li><li><a href="global.html#Event">Event</a></li><li><a href="global.html#getInstallState">getInstallState</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#launchApplication">launchApplication</a></li><li><a href="global.html#loadJS">loadJS</a></li><li><a href="global.html#onReady">onReady</a></li><li><a href="global.html#openApp">openApp</a></li><li><a href="global.html#platformTypes">platformTypes</a></li><li><a href="global.html#regTest">regTest</a></li><li><a href="global.html#SchemaMap">SchemaMap</a></li><li><a href="global.html#wechatInfomation">wechatInfomation</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">callers/zzSeller/sdk.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by luyunhai on 2018/12/3.
+ * zzsdk方法集合, 版本:
+ * 外链文件地址: https://s1.zhuanstatic.com/common/zzapp/static/js/zzseller-jssdk.min.js
+ */
+
+export default class ZZSellerApp {
+    constructor (app) {
+        this.App = app;
+    }
+
+    /**
+     *  @description 打开调起第三方App (目前转转主App内，只允许打开商家App，zzv >= 5.10)
+     *  @param {Object} options -必填项，以json形式传参
+     *  @param {String} options.unifiedUrl - 必填项，商家版统跳协议
+     *  @param {String} options.needClose - 选填项，是否关闭当前页 ( 1: 关闭当前页面 , 0 不关闭)
+     *  @return {Promise}
+     * */
+    openApp (options) {
+        console.log('SDK openApp', options);
+        return this.App.enterUnifiedUrl(options);
+    }
+
+    /**
+     *  @description 获取58app当前版本
+     *  @return {String}
+     * */
+    getVersion () {
+        return this.App.version;
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at Tue Apr 16 2019 19:20:54 GMT+0800 (中国标准时间)
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

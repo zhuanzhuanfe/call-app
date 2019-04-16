@@ -1,0 +1,32 @@
+{
+  "name": "@zz-base/call-app",
+  "version": "2.1.0",
+  "description": "转转FE打包模版",
+  "scripts": {
+    "dist": "commander-tools run dist",
+    "compile": "commander-tools run compile",
+    "dev": "commander-tools run dev",
+    "build": "commander-tools run compile && commander-tools run dist && commander-tools run build-doc",
+    "pub": "commander-tools run pub",
+    "pub-beta": "commander-tools run pub-beta",
+    "unpub": "commander-tools run unpub",
+    "doc": "commander-tools run doc",
+    "doc-upload": "commander-tools run doc-upload",
+    "build-doc": "commander-tools run build-doc"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "keywords": [
+    "vue",
+    "react",
+    "npm",
+    "import"
+  ],
+  "author": "luoxue <luoxue@zhuanzhuan.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@zz-base/commander-tools": "^1.0.3"
+  },
+  "peerDependencies": {},
+  "dependencies": {}
+}

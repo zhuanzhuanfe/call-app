@@ -1,0 +1,12 @@
+.git/
+.gitignore
+npm-debug.log
+test/
+build/
+.npmignore
+v2/
+.babelrc.js
+config/
+src/
+tools/
+package-lock.json

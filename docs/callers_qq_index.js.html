@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>callers/qq/index.js - Postman Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports.html">exports</a></li><li><a href="WBAPP.html">WBAPP</a><ul class='methods'><li data-type='method'><a href="WBAPP.html#compareVersion">compareVersion</a></li><li data-type='method'><a href="WBAPP.html#getVersion">getVersion</a></li><li data-type='method'><a href="WBAPP.html#isInstallApp">isInstallApp</a></li><li data-type='method'><a href="WBAPP.html#openApp">openApp</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#__createIframe">__createIframe</a></li><li><a href="global.html#__removeIframe">__removeIframe</a></li><li><a href="global.html#AppInfomation">AppInfomation</a></li><li><a href="global.html#dependencies">dependencies</a></li><li><a href="global.html#device">device</a></li><li><a href="global.html#domain">domain</a></li><li><a href="global.html#downloadUrl">downloadUrl</a></li><li><a href="global.html#Event">Event</a></li><li><a href="global.html#getInstallState">getInstallState</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#launchApplication">launchApplication</a></li><li><a href="global.html#loadJS">loadJS</a></li><li><a href="global.html#onReady">onReady</a></li><li><a href="global.html#openApp">openApp</a></li><li><a href="global.html#platformTypes">platformTypes</a></li><li><a href="global.html#regTest">regTest</a></li><li><a href="global.html#SchemaMap">SchemaMap</a></li><li><a href="global.html#wechatInfomation">wechatInfomation</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">callers/qq/index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by luyunhai on 2018/11/8.
+ */
+import BaseCaller from '../../core/base';
+
+export default class QQCaller extends BaseCaller {
+    constructor () {
+        super();
+        console.log('init qq');
+    }
+    init () {
+        console.log('qq start caller!');
+    }
+
+    /**
+     * 创建iframe方法
+     * @param scheme
+     * @returns {Element}
+     */
+    __createIframe(scheme){
+        let ifr = document.createElement('iframe');
+        ifr.setAttribute('src', scheme);
+        ifr.style.display = 'none';
+        document.body.appendChild(ifr);
+        return ifr;
+    }
+
+    /**
+     * 移除iframe方法
+     * @param ifr
+     */
+    __removeIframe(ifr){
+        if(ifr)document.body.removeChild(ifr);
+    }
+
+    __openApp (options) {
+        if (this.config.device.isIOS) {
+            const a = document.createElement('a');
+            a.setAttribute('href', options.__SCHEMA_PATH);
+            return a.click();
+        }
+        location.href = options.__SCHEMA_PATH;
+    }
+
+    __tryLaunch (options) {
+        this.__openApp(options);
+        let startTime = Date.now();
+        let downloadTimer = setTimeout(() => {
+            this.__download(options);
+        }, options.delay);
+        if (this.config.device.isAndroid) {
+            setTimeout(()=>{
+                let endTime = Date.now();
+                var timeLimit = this.config.device.isAndroid ? 800 : 610;
+                if (startTime &amp;&amp; endTime - startTime > timeLimit){
+                    clearTimeout(downloadTimer);
+                }
+            }, 600);
+        }
+    }
+
+    launch (opts) {
+        console.log('qq launch: ', opts, this);
+        const options = super.adaptOptions(opts);
+        this.__tryLaunch(options)
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at Tue Apr 16 2019 19:20:54 GMT+0800 (中国标准时间)
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
