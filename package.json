@@ -1,5 +1,5 @@
 {
-  "name": "@zz-base/call-app",
+  "name": "@zz-common/call-app",
   "version": "2.1.0",
   "description": "转转FE打包模版",
   "scripts": {
