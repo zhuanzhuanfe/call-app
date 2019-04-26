@@ -9,3 +9,7 @@
 ## 2.1.1 (2019-01-18 15:23) [@luoxue <luoxue@zhuanzhuan.com>]()
 
 * 更换包名
+
+## 2.1.2 (2019-04-25 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* 微信 jssdk conf添加默认

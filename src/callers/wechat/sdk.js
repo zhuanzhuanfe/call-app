@@ -11,7 +11,7 @@ export default class WechatApp {
     }
 
     __init () {
-        const conf = this.jsTicket;
+        const conf = this.jsTicket || {};
         const wxconfig = {
             debug: false,
             appId: conf.appId,
