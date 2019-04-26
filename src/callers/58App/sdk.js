@@ -41,7 +41,6 @@ export class WBAPP {
      *  @return {Promise}
      * */
     openApp (options) {
-        console.log('SDK openApp',options);
         return this.App.action && this.App.action.openApp(options);
     }
 

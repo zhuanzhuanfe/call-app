@@ -28,7 +28,6 @@ var WechatApp = function () {
                 beta: true,
                 jsApiList: ['launchApplication', 'getInstallState']
             };
-            console.log(wxconfig);
             window.wx && window.wx.config(wxconfig) || (window.wxconfig = wxconfig);
         }
     }, {
@@ -38,7 +37,6 @@ var WechatApp = function () {
 
             return new _Promise(function (resolve, reject) {
                 _this.App.invoke(name, options, function (data) {
-                    console.log('wechat ' + name + ': ', data);
                     var err_msg = data.err_msg;
 
                     regTest({

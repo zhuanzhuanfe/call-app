@@ -5,11 +5,9 @@ import BaseCaller from '../../core/base';
 
 export default class BrowserCaller extends BaseCaller {
     constructor () {
-        console.log('init browser');
         super();
     }
     init () {
-        console.log('browser start caller!');
     }
     __openApp (options) {
         location.href = options.__SCHEMA_PATH;
@@ -21,7 +19,6 @@ export default class BrowserCaller extends BaseCaller {
         }, options.delay);
     }
     launch (opts) {
-        console.log('browser launch: ', opts, this);
         const options = super.adaptOptions(opts);
         this.__tryLaunch(options)
     }

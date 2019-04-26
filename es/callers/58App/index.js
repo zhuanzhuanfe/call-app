@@ -19,18 +19,15 @@ var WBAppCaller = function (_BaseCaller) {
 
         _classCallCheck(this, WBAppCaller);
 
-        console.log('init 58App');
         return _this = _possibleConstructorReturn(this, (WBAppCaller.__proto__ || _Object$getPrototypeOf(WBAppCaller)).call(this, dependencies.WB_SDK, function () {
             _this.WBAPP = window.WBAPP;
             _this.App = new WBAPP(_this.WBAPP);
-            console.log('WBAPP is loaded!');
         }));
     }
 
     _createClass(WBAppCaller, [{
         key: '__isInstallApp',
         value: function __isInstallApp() {
-            console.log('isInstallApp is init !');
             return this.App.isInstallApp({
                 'urlschema': this.config.AppInfomation.SCHEMA,
                 'package': this.config.AppInfomation.ANDROID_PACKAGE_NAME
@@ -69,15 +66,12 @@ var WBAppCaller = function (_BaseCaller) {
         }
     }, {
         key: 'init',
-        value: function init() {
-            console.log('58App caller is inited!');
-        }
+        value: function init() {}
     }, {
         key: 'launch',
         value: function launch(opts) {
             var _this2 = this;
 
-            console.log('58app launch: ', opts, this);
             this.__isInstallApp().then(function (_ref2) {
                 var data = _ref2.data,
                     code = _ref2.code;

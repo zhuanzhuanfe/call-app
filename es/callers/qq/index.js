@@ -15,17 +15,12 @@ var QQCaller = function (_BaseCaller) {
     function QQCaller() {
         _classCallCheck(this, QQCaller);
 
-        var _this = _possibleConstructorReturn(this, (QQCaller.__proto__ || _Object$getPrototypeOf(QQCaller)).call(this));
-
-        console.log('init qq');
-        return _this;
+        return _possibleConstructorReturn(this, (QQCaller.__proto__ || _Object$getPrototypeOf(QQCaller)).call(this));
     }
 
     _createClass(QQCaller, [{
         key: 'init',
-        value: function init() {
-            console.log('qq start caller!');
-        }
+        value: function init() {}
 
         /**
          * 创建iframe方法
@@ -86,7 +81,6 @@ var QQCaller = function (_BaseCaller) {
     }, {
         key: 'launch',
         value: function launch(opts) {
-            console.log('qq launch: ', opts, this);
             var options = _get(QQCaller.prototype.__proto__ || _Object$getPrototypeOf(QQCaller.prototype), 'adaptOptions', this).call(this, opts);
             this.__tryLaunch(options);
         }

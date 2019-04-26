@@ -17,14 +17,12 @@ class Core {
     }
 
     loader () {
-        console.log('---------', this.plat);
         const ZZCaller = require('../callers/' + this.plat).default;
         this.caller = new ZZCaller();
         this.caller.init();
     }
 
     init () {
-        console.log('Core is inited!!!');
         this.loader();
     }
 
@@ -44,7 +42,6 @@ class Core {
      * @param fail：调起失败的回调
      */
     start (opts) {
-        console.log(opts, this.caller, this);
         this.caller.wrap(this.caller.launch.bind(this.caller), Object.assign({}, {
             // iosScheme:'zhuanzhuan://',   //协议头
             // androidScheme:'zhuanzhuan://',     //协议头

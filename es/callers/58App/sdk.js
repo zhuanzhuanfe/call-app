@@ -1,6 +1,6 @@
-import _Promise from 'babel-runtime/core-js/promise';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
+import _Promise from "babel-runtime/core-js/promise";
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
+import _createClass from "babel-runtime/helpers/createClass";
 /**
  * Created by luyunhai on 2018/11/9.
  * 58sdk方法集合, 版本: 30805
@@ -26,7 +26,7 @@ export var WBAPP = function () {
 
 
     _createClass(WBAPP, [{
-        key: 'isInstallApp',
+        key: "isInstallApp",
         value: function isInstallApp(options) {
             var _this = this;
 
@@ -53,9 +53,8 @@ export var WBAPP = function () {
          * */
 
     }, {
-        key: 'openApp',
+        key: "openApp",
         value: function openApp(options) {
-            console.log('SDK openApp', options);
             return this.App.action && this.App.action.openApp(options);
         }
 
@@ -65,7 +64,7 @@ export var WBAPP = function () {
          * */
 
     }, {
-        key: 'getVersion',
+        key: "getVersion",
         value: function getVersion() {
             return this.App.common.appVersion;
         }
@@ -78,7 +77,7 @@ export var WBAPP = function () {
          * */
 
     }, {
-        key: 'compareVersion',
+        key: "compareVersion",
         value: function compareVersion(version1, version2) {
             return this.App.util.compareVersion(version1, version2);
         }

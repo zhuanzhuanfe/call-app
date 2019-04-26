@@ -33,7 +33,7 @@ export default class PatternsAdapter {
     }
     wrap () {
         const path = this.opts.path || this.__getSchema(this.opts.urlSearch || {});
-        this.opts.__SCHEMA_PATH = regTest({ reg: /^((zhuanzhuan\:\/\/)|(zhuanzhuanseller\:\/\/))/g, str: path }) && path || `zhuanzhuan://${path}`;
+        this.opts.__SCHEMA_PATH = regTest({ reg: /^((zzcheck\:\/\/)|(zhuanzhuan\:\/\/)|(zhuanzhuanseller\:\/\/))/g, str: path }) && path || `zhuanzhuan://${path}`;
         return this.opts;
     }
 }

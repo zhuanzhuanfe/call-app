@@ -21,7 +21,6 @@ var WeChatCaller = function (_BaseCaller) {
 
         _classCallCheck(this, WeChatCaller);
 
-        console.log('init wechat');
         // jsonp拉取微信信息接口回调函数
         window.__json_jsticket = function (resp) {
             _this.WX_JSTICKET = resp.respCode == 0 && resp.respData || {};
@@ -42,9 +41,7 @@ var WeChatCaller = function (_BaseCaller) {
 
     _createClass(WeChatCaller, [{
         key: 'init',
-        value: function init() {
-            console.log('wechat start caller!');
-        }
+        value: function init() {}
     }, {
         key: '__onReady',
         value: function __onReady() {
@@ -71,16 +68,13 @@ var WeChatCaller = function (_BaseCaller) {
             var parameter = options.__SCHEMA_PATH;
             var extInfo = options.__SCHEMA_PATH;
             if (this.config.domain.is58Domain) {
-                console.log('this.config.domain.is58Domain: ', this.config.domain.is58Domain, options);
                 location.href = options.__SCHEMA_PATH;
                 setTimeout(function () {
                     _this2.__download(options);
                 }, 800);
                 return;
             }
-            return this.App.launchApplication({ appID: appID, parameter: parameter, extInfo: extInfo }).then(function (data) {
-                console.log('launchApplication: ', data);
-            }).catch(function (data) {
+            return this.App.launchApplication({ appID: appID, parameter: parameter, extInfo: extInfo }).then(function (data) {}).catch(function (data) {
                 return _this2.__download(options);
             });
         }

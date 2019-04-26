@@ -1,5 +1,5 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
+import _createClass from "babel-runtime/helpers/createClass";
 
 /**
  * Created by luyunhai on 2018/12/3.
@@ -24,9 +24,8 @@ var ZZAPP = function () {
 
 
     _createClass(ZZAPP, [{
-        key: 'openApp',
+        key: "openApp",
         value: function openApp(options) {
-            console.log('SDK openApp', options);
             return this.App.enterUnifiedUrl(options);
         }
 
@@ -36,7 +35,7 @@ var ZZAPP = function () {
          * */
 
     }, {
-        key: 'getVersion',
+        key: "getVersion",
         value: function getVersion() {
             return this.App.version;
         }

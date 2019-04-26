@@ -24,7 +24,6 @@ var Core = function () {
     _createClass(Core, [{
         key: 'loader',
         value: function loader() {
-            console.log('---------', this.plat);
             var ZZCaller = require('../callers/' + this.plat).default;
             this.caller = new ZZCaller();
             this.caller.init();
@@ -32,7 +31,6 @@ var Core = function () {
     }, {
         key: 'init',
         value: function init() {
-            console.log('Core is inited!!!');
             this.loader();
         }
 
@@ -55,7 +53,6 @@ var Core = function () {
     }, {
         key: 'start',
         value: function start(opts) {
-            console.log(opts, this.caller, this);
             this.caller.wrap(this.caller.launch.bind(this.caller), _extends({}, {
                 // iosScheme:'zhuanzhuan://',   //协议头
                 // androidScheme:'zhuanzhuan://',     //协议头
