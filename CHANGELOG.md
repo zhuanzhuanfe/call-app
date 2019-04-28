@@ -13,3 +13,7 @@
 ## 2.1.2 (2019-04-25 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
 
 * 微信 jssdk conf添加默认
+
+## 2.1.3 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* checkapp 调用bug
