@@ -18,7 +18,7 @@ var WechatApp = function () {
     _createClass(WechatApp, [{
         key: '__init',
         value: function __init() {
-            var conf = this.jsTicket;
+            var conf = this.jsTicket || {};
             var wxconfig = {
                 debug: false,
                 appId: conf.appId,
