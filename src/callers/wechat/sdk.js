@@ -21,14 +21,12 @@ export default class WechatApp {
             beta: true,
             jsApiList: ['launchApplication', 'getInstallState']
         }
-        console.log(wxconfig);
         window.wx && window.wx.config(wxconfig) || (window.wxconfig = wxconfig);
     }
 
     __invoke (name, options) {
         return new Promise((resolve, reject) => {
             this.App.invoke(name, options, data => {
-                console.log('wechat ' + name + ': ' , data);
                 const { err_msg } = data;
                 regTest({
                     reg: /(\:ok)|(\:yes)/g,

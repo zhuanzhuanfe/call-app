@@ -7,11 +7,9 @@ import ZZSellerAPP from './sdk';
 
 export default class ZZAppCaller extends BaseCaller {
     constructor () {
-        console.log('init zzSellerApp');
         super(dependencies.ZZ_SELLER_SDK, () => {
             this.ZZSellerAPP = window.ZZSELLER;
             this.App = new ZZSellerAPP(this.ZZSellerAPP);
-            console.log('ZZSellerApp is loaded!');
         });
     }
     __isInstallApp () {
@@ -19,11 +17,9 @@ export default class ZZAppCaller extends BaseCaller {
     }
     __openApp (opts) {
         const options = super.adaptOptions(opts);
-        console.log('__openApp: ', options);
         const url = encodeURIComponent(options.__SCHEMA_PATH);
         const schema = 'zhuanzhuanseller://jump/core/openZhuanZhuan/jump';
         const unifiedUrl = `${schema}?url=${url}`;
-        console.log('unifiedUrl', unifiedUrl);
         this.App.openApp({ unifiedUrl });
     }
     __download ({ channelId }) {
@@ -36,7 +32,6 @@ export default class ZZAppCaller extends BaseCaller {
         console.log('zzSellerApp caller is inited!');
     }
     launch (opts) {
-        console.log('zzSellerApp launch: ', opts, this);
         this.__openApp(opts);
     }
 }

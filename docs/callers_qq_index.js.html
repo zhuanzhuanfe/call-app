@@ -46,7 +46,6 @@ import BaseCaller from '../../core/base';
 export default class QQCaller extends BaseCaller {
     constructor () {
         super();
-        console.log('init qq');
     }
     init () {
         console.log('qq start caller!');
@@ -100,7 +99,6 @@ export default class QQCaller extends BaseCaller {
     }
 
     launch (opts) {
-        console.log('qq launch: ', opts, this);
         const options = super.adaptOptions(opts);
         this.__tryLaunch(options)
     }
@@ -117,7 +115,7 @@ export default class QQCaller extends BaseCaller {
 <br class="clear">
 
 <footer>
-    Documentation generated at Sun May 05 2019 15:13:59 GMT+0800 (中国标准时间)
+    Documentation generated at Sun May 05 2019 16:30:42 GMT+0800 (中国标准时间)
 </footer>
 
 <script>prettyPrint();</script>

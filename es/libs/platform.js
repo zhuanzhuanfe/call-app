@@ -24,9 +24,6 @@ export var Platform = function () {
             var plat = _extends({}, defaultType, platformTypes.find(function (plat) {
                 return plat.reg.test(ua);
             }));
-            console.log(platformTypes.find(function (plat) {
-                return plat.reg.test(ua);
-            }));
             return plat.name;
         }
     }]);

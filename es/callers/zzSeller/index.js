@@ -19,11 +19,9 @@ var ZZAppCaller = function (_BaseCaller) {
 
         _classCallCheck(this, ZZAppCaller);
 
-        console.log('init zzSellerApp');
         return _this = _possibleConstructorReturn(this, (ZZAppCaller.__proto__ || _Object$getPrototypeOf(ZZAppCaller)).call(this, dependencies.ZZ_SELLER_SDK, function () {
             _this.ZZSellerAPP = window.ZZSELLER;
             _this.App = new ZZSellerAPP(_this.ZZSellerAPP);
-            console.log('ZZSellerApp is loaded!');
         }));
     }
 
@@ -36,11 +34,9 @@ var ZZAppCaller = function (_BaseCaller) {
         key: '__openApp',
         value: function __openApp(opts) {
             var options = _get(ZZAppCaller.prototype.__proto__ || _Object$getPrototypeOf(ZZAppCaller.prototype), 'adaptOptions', this).call(this, opts);
-            console.log('__openApp: ', options);
             var url = encodeURIComponent(options.__SCHEMA_PATH);
             var schema = 'zhuanzhuanseller://jump/core/openZhuanZhuan/jump';
             var unifiedUrl = schema + '?url=' + url;
-            console.log('unifiedUrl', unifiedUrl);
             this.App.openApp({ unifiedUrl: unifiedUrl });
         }
     }, {
@@ -63,7 +59,6 @@ var ZZAppCaller = function (_BaseCaller) {
     }, {
         key: 'launch',
         value: function launch(opts) {
-            console.log('zzSellerApp launch: ', opts, this);
             this.__openApp(opts);
         }
     }]);

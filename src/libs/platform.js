@@ -12,7 +12,6 @@ export class Platform {
         const ua = this.ua.toLowerCase();
         const defaultType = { name: 'browser' };
         const plat = Object.assign({}, defaultType, platformTypes.find(plat => plat.reg.test(ua)));
-        console.log(platformTypes.find(plat => plat.reg.test(ua)));
         return plat.name;
     }
 }

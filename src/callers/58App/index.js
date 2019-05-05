@@ -7,15 +7,12 @@ import { WBAPP } from './sdk';
 
 export default class WBAppCaller extends BaseCaller {
     constructor () {
-        console.log('init 58App');
         super(dependencies.WB_SDK, () => {
             this.WBAPP = window.WBAPP;
             this.App = new WBAPP(this.WBAPP);
-            console.log('WBAPP is loaded!');
         });
     }
     __isInstallApp () {
-        console.log('isInstallApp is init !');
         return this.App.isInstallApp({
             'urlschema': this.config.AppInfomation.SCHEMA,
             'package': this.config.AppInfomation.ANDROID_PACKAGE_NAME
@@ -48,7 +45,6 @@ export default class WBAppCaller extends BaseCaller {
         console.log('58App caller is inited!');
     }
     launch (opts) {
-        console.log('58app launch: ', opts, this);
         this.__isInstallApp().then(({ data, code }) => {
             // status: "0" 是已安装, “1”是未安装
             if (code != 0) return;

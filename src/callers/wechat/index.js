@@ -8,7 +8,6 @@ import WechatApp from './sdk';
 
 export default class WeChatCaller extends BaseCaller {
     constructor () {
-        console.log('init wechat');
         // jsonp拉取微信信息接口回调函数
         window.__json_jsticket = (resp) => {
             this.WX_JSTICKET = (resp.respCode == 0) && resp.respData || {};
@@ -55,7 +54,6 @@ export default class WeChatCaller extends BaseCaller {
         const parameter = options.__SCHEMA_PATH;
         const extInfo = options.__SCHEMA_PATH;
         if (this.config.domain.is58Domain) {
-            console.log('this.config.domain.is58Domain: ', this.config.domain.is58Domain, options);
             location.href = options.__SCHEMA_PATH;
             setTimeout(() => {
                 this.__download(options);
@@ -63,7 +61,6 @@ export default class WeChatCaller extends BaseCaller {
             return;
         }
         return this.App.launchApplication({ appID, parameter, extInfo }).then(data => {
-            console.log('launchApplication: ', data);
         }).catch(data => this.__download(options));
     }
     __isInstallApp (options) {

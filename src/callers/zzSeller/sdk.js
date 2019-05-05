@@ -17,7 +17,6 @@ export default class ZZSellerApp {
      *  @return {Promise}
      * */
     openApp (options) {
-        console.log('SDK openApp', options);
         return this.App.enterUnifiedUrl(options);
     }
 

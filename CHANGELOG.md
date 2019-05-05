@@ -20,4 +20,12 @@
 
 ## 2.1.4 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
 
-* 增加index
+* 修改编译
+
+## 2.1.5 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* 去掉无用打印
+
+## 2.1.6 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* 编译
