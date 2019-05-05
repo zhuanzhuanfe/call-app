@@ -1,6 +1,6 @@
 {
   "name": "@zz-common/call-app",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "转转FE打包模版",
   "scripts": {
     "dist": "commander-tools run dist",
@@ -24,7 +24,7 @@
   "author": "luoxue <luoxue@zhuanzhuan.com>",
   "license": "ISC",
   "devDependencies": {
-    "@zz-common/commander-tools": "^1.0.5"
+    "@zz-common/commander-tools": "^1.0.6"
   },
   "peerDependencies": {},
   "dependencies": {}

@@ -17,3 +17,7 @@
 ## 2.1.3 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
 
 * checkapp 调用bug
+
+## 2.1.4 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* 增加index
