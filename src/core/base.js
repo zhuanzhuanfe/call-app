@@ -30,15 +30,16 @@ export default class BaseCaller {
     }
 
     __download ({ channelId, middleWareUrl }) {
-        // Android版微信5.0之前  可以跳转到浏览器下载页面 默认不添加
-        var wechat = '';
+        const { channelId, middleWareUrl,path } = options;
+        let wechat = '';
         const plat = new Platform({});
         const platName = plat.getCurrentPlatform();
         if ( platName === 'wechat') {
             wechat = '#mp.weixin.qq.com'
         }
-        location.href = middleWareUrl || this.config.downloadUrl.browser + '?channelId=' + channelId + wechat;
-        // location.href = 'market://search?q=pname:com.wuba.zhuanzhuan';
+        const isCheck = /^(zzcheck)/.test(path);
+        const downloadCofig = isCheck ? this.config.checkDownloadUrl : this.config.downloadUrl
+        location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + wechat;
     }
 
     wrap (fn, args) {

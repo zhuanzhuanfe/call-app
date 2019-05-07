@@ -82,6 +82,12 @@ export const downloadUrl = {
     browser: 'https://app.zhuanzhuan.com/zz/redirect/download'
 };
 
+export const checkDownloadUrl = {
+    ios: 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8',   
+    android: 'market://search?q=pname:com.zhuanzhuan.check',
+    browser: 'https://app.zhuanzhuan.com/zzopen/zzgbaselogic/download'
+};
+
 /**
  * 跳转协议映射, 老的openType对应统跳的映射表
  * */
