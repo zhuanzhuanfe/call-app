@@ -29,7 +29,7 @@ export default class BaseCaller {
         this.callbackList.push({ cb, args });
     }
 
-    __download ({ channelId, middleWareUrl }) {
+    __download (options) {
         const { channelId, middleWareUrl,path } = options;
         let wechat = '';
         const plat = new Platform({});

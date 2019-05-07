@@ -49,19 +49,20 @@ var BaseCaller = function () {
         }
     }, {
         key: '__download',
-        value: function __download(_ref2) {
-            var channelId = _ref2.channelId,
-                middleWareUrl = _ref2.middleWareUrl;
+        value: function __download(options) {
+            var channelId = options.channelId,
+                middleWareUrl = options.middleWareUrl,
+                path = options.path;
 
-            // Android版微信5.0之前  可以跳转到浏览器下载页面 默认不添加
             var wechat = '';
             var plat = new Platform({});
             var platName = plat.getCurrentPlatform();
             if (platName === 'wechat') {
                 wechat = '#mp.weixin.qq.com';
             }
-            location.href = middleWareUrl || this.config.downloadUrl.browser + '?channelId=' + channelId + wechat;
-            // location.href = 'market://search?q=pname:com.wuba.zhuanzhuan';
+            var isCheck = /^(zzcheck)/.test(path);
+            var downloadCofig = isCheck ? this.config.checkDownloadUrl : this.config.downloadUrl;
+            location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + wechat;
         }
     }, {
         key: 'wrap',
