@@ -76,17 +76,20 @@ export const wechatInfomation = {
  * */
 export const downloadUrl = {
     ios: 'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
-    // android: 'market://detail?id=com.wuba.zhuanzhuan',
     android: 'market://search?q=pname:com.wuba.zhuanzhuan',
     wechat_android: 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
     browser: 'https://app.zhuanzhuan.com/zz/redirect/download'
 };
 
-export const checkDownloadUrl = {
-    ios: 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8',   
-    android: 'market://search?q=pname:com.zhuanzhuan.check',
-    browser: 'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
-};
+export const checkDownloadUrl = (function() {
+  const u = navigator.userAgent
+  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+  const iosUrl = 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8'
+  const androidUrl = 'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
+  return {
+    browser: isAndroid ? androidUrl : iosUrl
+  };
+})()
 
 /**
  * 跳转协议映射, 老的openType对应统跳的映射表
