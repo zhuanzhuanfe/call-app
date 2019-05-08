@@ -85,7 +85,7 @@ export const downloadUrl = {
 export const checkDownloadUrl = {
     ios: 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8',   
     android: 'market://search?q=pname:com.zhuanzhuan.check',
-    browser: 'https://app.zhuanzhuan.com/zzopen/zzgbaselogic/download'
+    browser: 'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
 };
 
 /**
