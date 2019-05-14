@@ -29,3 +29,7 @@
 ## 2.1.6 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
 
 * 编译
+
+## 2.2.0 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
+* merge check app

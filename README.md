@@ -2,12 +2,6 @@
 
 > webpage call APP
 
-# install
-``` bash
-npm set registry http://zzfe.cnpm.58corp.com
-npm install @zz-vc/callApp --save-dev
-
-或在webpack配置文件中设置后安装
 ``` 
 # usage
 
@@ -74,30 +68,3 @@ npm install @zz-vc/callApp --save-dev
       * @param fail：调起失败的回调
       */
 ``` 
-
-# Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-# 默认外链地址
-```
-https://s1.zhuanstatic.com/common/zzapp/static/js/CallApp.js
-```
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

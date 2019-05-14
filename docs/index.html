@@ -50,13 +50,16 @@
         <article><h1>callApp</h1><blockquote>
 <p>webpage call APP</p>
 </blockquote>
-<h1>install</h1><pre class="prettyprint source lang-bash"><code>npm set registry http://zzfe.cnpm.58corp.com
-npm install @zz-vc/callApp --save-dev
+<pre class="prettyprint source"><code># usage
 
-或在webpack配置文件中设置后安装</code></pre><h1>usage</h1><h2>默认在window下创建callApp实例，可以直接使用该实例调起</h2><h2>或实例化一个对象：var callAPP = new CallApp(config);</h2><blockquote>
-<p>config：appd调起的各项参数（转转默认不用传）</p>
-</blockquote>
-<h2>[可选]微信下定义方法，可检测到是否安装app</h2><pre class="prettyprint source lang-bash"><code>    document.addEventListener(&quot;wechatCheckInstallState&quot;,function(){
+## 默认在window下创建callApp实例，可以直接使用该实例调起
+
+## 或实例化一个对象：var callAPP = new CallApp(config);
+> config：appd调起的各项参数（转转默认不用传）
+
+## [可选]微信下定义方法，可检测到是否安装app
+``` bash
+    document.addEventListener(&quot;wechatCheckInstallState&quot;,function(){
         if(callApp.hasApp == 1){
           //todo sth
         }
@@ -101,23 +104,7 @@ npm install @zz-vc/callApp --save-dev
       * @param callback：发起调起请求时的回调
       * @param success：调起成功的回调
       * @param fail：调起失败的回调
-      */</code></pre><h1>Build Setup</h1><pre class="prettyprint source lang-bash"><code># install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test</code></pre><h1>默认外链地址</h1><pre class="prettyprint source"><code>https://s1.zhuanstatic.com/common/zzapp/static/js/CallApp.js</code></pre><p>For detailed explanation on how things work, checkout the <a href="http://vuejs-templates.github.io/webpack/">guide</a> and <a href="http://vuejs.github.io/vue-loader">docs for vue-loader</a>.</p></article>
+      */</code></pre></article>
     </section>
 
 
@@ -130,7 +117,7 @@ npm test</code></pre><h1>默认外链地址</h1><pre class="prettyprint source">
 <br class="clear">
 
 <footer>
-    Documentation generated at Sun May 05 2019 19:23:49 GMT+0800 (中国标准时间)
+    Documentation generated at Tue May 14 2019 10:49:56 GMT+0800 (中国标准时间)
 </footer>
 
 <script>prettyPrint();</script>
