@@ -21,10 +21,11 @@ export var Platform = function () {
         value: function getCurrentPlatform() {
             var ua = this.ua.toLowerCase();
             var defaultType = { name: 'browser' };
+            var isWechat = /micromessenger/g.test(ua) && 'wechat';
             var plat = _extends({}, defaultType, platformTypes.filter(function (plat) {
                 return plat.reg.test(ua);
             })[0]);
-            return plat.name;
+            return isWechat || plat.name;
         }
     }]);
 

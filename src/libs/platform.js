@@ -11,7 +11,8 @@ export class Platform {
     getCurrentPlatform () {
         const ua = this.ua.toLowerCase();
         const defaultType = { name: 'browser' };
+        const isWechat = /micromessenger/g.test(ua) && 'wechat'
         const plat = Object.assign({}, defaultType, platformTypes.filter(plat => plat.reg.test(ua))[0]);
-        return plat.name;
+        return isWechat || plat.name;
     }
 }
