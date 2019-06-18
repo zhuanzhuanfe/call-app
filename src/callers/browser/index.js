@@ -2,7 +2,7 @@
  * Created by luyunhai on 2018/11/8.
  */
 import BaseCaller from '../../core/base';
-
+import { IOSVersion, compareVersion } from '../../libs/utils'
 export default class BrowserCaller extends BaseCaller {
     constructor () {
         super();
