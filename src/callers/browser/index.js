@@ -14,7 +14,7 @@ export default class BrowserCaller extends BaseCaller {
     }
     __tryLaunch (options) {
         const iosVer = IOSVersion()
-        if (compareVersion(iosVer,'12.3.0')) options.delay = 2000
+        if (compareVersion(iosVer,'12.3.0')) options.delay = 2500
 
         this.__openApp(options);
         const timer = setTimeout(() => {

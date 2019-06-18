@@ -8,6 +8,7 @@ import _inherits from 'babel-runtime/helpers/inherits';
  * Created by luyunhai on 2018/11/8.
  */
 import BaseCaller from '../../core/base';
+import { IOSVersion, compareVersion } from '../../libs/utils';
 
 var BrowserCaller = function (_BaseCaller) {
     _inherits(BrowserCaller, _BaseCaller);
@@ -31,10 +32,23 @@ var BrowserCaller = function (_BaseCaller) {
         value: function __tryLaunch(options) {
             var _this2 = this;
 
+            var iosVer = IOSVersion();
+            if (compareVersion(iosVer, '12.3.0')) options.delay = 2500;
+
             this.__openApp(options);
-            setTimeout(function () {
+            var timer = setTimeout(function () {
                 _this2.__download(options);
             }, options.delay);
+
+            var visibilitychange = function visibilitychange() {
+                var tag = document.hidden || document.webkitHidden;
+                tag && clearTimeout(timer);
+            };
+            document.addEventListener('visibilitychange', visibilitychange, false);
+            document.addEventListener('webkitvisibilitychange', visibilitychange, false);
+            window.addEventListener('pagehide', function () {
+                clearTimeout(timer);
+            }, false);
         }
     }, {
         key: 'launch',
