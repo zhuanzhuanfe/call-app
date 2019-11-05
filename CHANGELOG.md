@@ -36,5 +36,7 @@
 
 ## 2.2.1 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
 
+## 2.2.3 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
+
 * 解决微信端判断不准确问题
 
