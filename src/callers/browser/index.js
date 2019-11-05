@@ -17,9 +17,13 @@ export default class BrowserCaller extends BaseCaller {
         if (compareVersion(iosVer,'12.3.0')) options.delay = 2500
 
         this.__openApp(options);
-        const timer = setTimeout(() => {
-            this.__download(options);
-        }, options.delay);
+        const ua = navigator.userAgent
+        let timer = 0
+        if (!ua.match(/WeiBo/i)) {
+            timer = setTimeout(() => {
+                this.__download(options);
+            }, options.delay);
+        }
 
         const visibilitychange = function () {
             const tag = document.hidden || document.webkitHidden;

@@ -36,9 +36,13 @@ var BrowserCaller = function (_BaseCaller) {
             if (compareVersion(iosVer, '12.3.0')) options.delay = 2500;
 
             this.__openApp(options);
-            var timer = setTimeout(function () {
-                _this2.__download(options);
-            }, options.delay);
+            var ua = navigator.userAgent;
+            var timer = 0;
+            if (!ua.match(/WeiBo/i)) {
+                timer = setTimeout(function () {
+                    _this2.__download(options);
+                }, options.delay);
+            }
 
             var visibilitychange = function visibilitychange() {
                 var tag = document.hidden || document.webkitHidden;
