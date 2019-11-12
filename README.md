@@ -4,6 +4,10 @@
 
 https://m.zhuanzhuan.com/common/pro_together_run_cli/index.html#/callApp
 
+## 文档地址
+
+https://fe.zhuanspirit.com/zz-common/@zz-common/call-app/
+
 ## 用法
 
 ```js

@@ -9,60 +9,73 @@ import _inherits from 'babel-runtime/helpers/inherits';
  */
 import BaseCaller from '../../core/base';
 import { IOSVersion, compareVersion } from '../../libs/utils';
+import universal from './universal';
+
+var iosVer = IOSVersion();
 
 var BrowserCaller = function (_BaseCaller) {
-    _inherits(BrowserCaller, _BaseCaller);
+  _inherits(BrowserCaller, _BaseCaller);
 
-    function BrowserCaller() {
-        _classCallCheck(this, BrowserCaller);
+  function BrowserCaller() {
+    _classCallCheck(this, BrowserCaller);
 
-        return _possibleConstructorReturn(this, (BrowserCaller.__proto__ || _Object$getPrototypeOf(BrowserCaller)).call(this));
+    return _possibleConstructorReturn(this, (BrowserCaller.__proto__ || _Object$getPrototypeOf(BrowserCaller)).call(this));
+  }
+
+  _createClass(BrowserCaller, [{
+    key: 'init',
+    value: function init() {}
+  }, {
+    key: '__openApp',
+    value: function __openApp(options) {
+      location.href = options.__SCHEMA_PATH;
     }
+  }, {
+    key: '__canUniversal',
+    value: function __canUniversal() {
+      var ua = navigator.userAgent;
 
-    _createClass(BrowserCaller, [{
-        key: 'init',
-        value: function init() {}
-    }, {
-        key: '__openApp',
-        value: function __openApp(options) {
-            location.href = options.__SCHEMA_PATH;
-        }
-    }, {
-        key: '__tryLaunch',
-        value: function __tryLaunch(options) {
-            var _this2 = this;
+      if (!/(iphone)|(ipad)|(ipod)/gi.test(ua)) return false;
+      if (/(baiduboxapp)/gi.test(ua) || /(Safari)/gi.test(ua)) return true;
+      return false;
+    }
+  }, {
+    key: '__tryLaunch',
+    value: function __tryLaunch(options) {
+      var _this2 = this;
 
-            var iosVer = IOSVersion();
-            if (compareVersion(iosVer, '12.3.0')) options.delay = 2500;
+      console.log(this.__canUniversal(), options.universal);
+      if (options.universal && this.__canUniversal()) return universal.call(this, options);
+      if (compareVersion(iosVer, '12.3.0')) options.delay = 2500;
 
-            this.__openApp(options);
-            var ua = navigator.userAgent;
-            var timer = 0;
-            if (!ua.match(/WeiBo/i)) {
-                timer = setTimeout(function () {
-                    _this2.__download(options);
-                }, options.delay);
-            }
+      this.__openApp(options);
+      var ua = navigator.userAgent;
+      var timer = 0;
+      if (!ua.match(/WeiBo/i)) {
+        timer = setTimeout(function () {
+          _this2.__download(options);
+        }, options.delay);
+      }
 
-            var visibilitychange = function visibilitychange() {
-                var tag = document.hidden || document.webkitHidden;
-                tag && clearTimeout(timer);
-            };
-            document.addEventListener('visibilitychange', visibilitychange, false);
-            document.addEventListener('webkitvisibilitychange', visibilitychange, false);
-            window.addEventListener('pagehide', function () {
-                clearTimeout(timer);
-            }, false);
-        }
-    }, {
-        key: 'launch',
-        value: function launch(opts) {
-            var options = _get(BrowserCaller.prototype.__proto__ || _Object$getPrototypeOf(BrowserCaller.prototype), 'adaptOptions', this).call(this, opts);
-            this.__tryLaunch(options);
-        }
-    }]);
+      var visibilitychange = function visibilitychange() {
+        var tag = document.hidden || document.webkitHidden;
+        tag && clearTimeout(timer);
+      };
+      document.addEventListener('visibilitychange', visibilitychange, false);
+      document.addEventListener('webkitvisibilitychange', visibilitychange, false);
+      window.addEventListener('pagehide', function () {
+        clearTimeout(timer);
+      }, false);
+    }
+  }, {
+    key: 'launch',
+    value: function launch(opts) {
+      var options = _get(BrowserCaller.prototype.__proto__ || _Object$getPrototypeOf(BrowserCaller.prototype), 'adaptOptions', this).call(this, opts);
+      this.__tryLaunch(options);
+    }
+  }]);
 
-    return BrowserCaller;
+  return BrowserCaller;
 }(BaseCaller);
 
 export default BrowserCaller;
