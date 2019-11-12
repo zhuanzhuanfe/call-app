@@ -1,6 +1,6 @@
 {
   "name": "@zz-common/call-app",
-  "version": "2.2.3",
+  "version": "3.0.0",
   "description": "转转FE打包模版",
   "scripts": {
     "dist": "commander-tools run dist",

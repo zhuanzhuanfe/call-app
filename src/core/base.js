@@ -8,7 +8,7 @@ import * as config from '../libs/config';
 import { Platform } from '../libs/platform';
 
 export default class BaseCaller {
-    constructor (dependencies, callback = () => {}) {
+    constructor(dependencies, callback = () => { }) {
         this.__mounted = false;
         this.callbackList = [];
         this.config = config;
@@ -18,23 +18,23 @@ export default class BaseCaller {
         loadJSArr(dependencies, () => this.__init(callback));
     }
 
-    __init (callback) {
+    __init(callback) {
         this.__mounted = true;
         callback();
-        this.callbackList.forEach(({cb, args}) => cb.call(this, args));
+        this.callbackList.forEach(({ cb, args }) => cb.call(this, args));
         Event.emit('mounted');
     }
 
-    __appendCallback (cb, args) {
+    __appendCallback(cb, args) {
         this.callbackList.push({ cb, args });
     }
 
-    __download (options) {
-        const { channelId, middleWareUrl,path } = options;
+    __download(options) {
+        const { channelId, middleWareUrl, path } = options;
         let wechat = '';
         const plat = new Platform({});
         const platName = plat.getCurrentPlatform();
-        if ( platName === 'wechat') {
+        if (platName === 'wechat') {
             wechat = '#mp.weixin.qq.com'
         }
         const isCheck = /^(zzcheck)/.test(path);
@@ -42,14 +42,14 @@ export default class BaseCaller {
         location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + wechat;
     }
 
-    wrap (fn, args) {
+    wrap(fn, args) {
         if (this.__mounted) {
             return fn && fn(args);
         }
         this.__appendCallback(fn, args);
     }
 
-    adaptOptions (options) {
+    adaptOptions(options) {
         const patternsAdapter = new PatternsAdapter(options);
         return patternsAdapter.wrap();
     }
