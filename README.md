@@ -17,7 +17,7 @@ npm i @zz-common/call-app -S
 ```js
 import CallApp from '@zz-common/call-app';
 ```
-如果是通过外链引入，那么可以使用 `window["@zz-common/call-app"]`得到`CallApp`类
+如果是通过外链引入，那么可以使用 `window.CallApp`得到`CallApp`类
 
 ### Step3：使用
 实例化`CallApp`后，使用start方法即可
