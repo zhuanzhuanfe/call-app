@@ -1,46 +1,6 @@
 # 更新日志
 
-## 2.1.0 (2019-01-10 15:23) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 采用新的脚手架
-* 式例：`Money`
-  * `toFen`, `toYuan` 方法返回值转换成数字类型
-
-## 2.1.1 (2019-01-18 15:23) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 更换包名
-
-## 2.1.2 (2019-04-25 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 微信 jssdk conf添加默认
-
-## 2.1.3 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* checkapp 调用bug
-
-## 2.1.4 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 修改编译
-
-## 2.1.5 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 去掉无用打印
-
-## 2.1.6 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 编译
-
-## 2.2.0 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* merge check app
-
-## 2.2.1 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-## 2.2.3 (2019-04-28 14:34) [@luoxue <luoxue@zhuanzhuan.com>]()
-
-* 解决微信端判断不准确问题
-
-## 3.0.0 2019-11-12 16:08:52
-
-- 增加通用链接 `universal link` 方式
-- 增加静态方法 `download`
+| 版本 | 主要更新功能 | 时间 | 作者 |
+|:----:|:-----------|:----:|:---:|
+| ## 3.1.2 | 增加通用链接方式，修改引用的第三方资源地址 | 2020.1.8 | huangjiaxing |
+| ## 3.1.0 | 更新文档 | 2020.1.8 | huangjiaxing |

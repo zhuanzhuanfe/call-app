@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import BaseCaller from './base';
 import { Platform } from '../libs/platform';
 
@@ -14,7 +11,7 @@ class Core {
     this.caller = null;
     this.init();
   }
-  
+
   static download({channelId = 923, middleWareUrl, path}) {
     base.__download({channelId, middleWareUrl, path})
   }
@@ -62,5 +59,4 @@ class Core {
 }
 
 window.CallApp = Core;
-// window.callApp = new Core();
 export default Core;

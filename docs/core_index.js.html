@@ -38,10 +38,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Created by luyunhai on 2018/11/8.
- */
-import BaseCaller from './base';
+            <pre class="prettyprint source linenums"><code>import BaseCaller from './base';
 import { Platform } from '../libs/platform';
 
 const base = new BaseCaller()
@@ -54,7 +51,7 @@ class Core {
     this.caller = null;
     this.init();
   }
-  
+
   static download({channelId = 923, middleWareUrl, path}) {
     base.__download({channelId, middleWareUrl, path})
   }
@@ -102,7 +99,6 @@ class Core {
 }
 
 window.CallApp = Core;
-// window.callApp = new Core();
 export default Core;
 </code></pre>
         </article>
@@ -116,7 +112,7 @@ export default Core;
 <br class="clear">
 
 <footer>
-    Documentation generated at Tue Nov 12 2019 16:16:22 GMT+0800 (中国标准时间)
+    Documentation generated at Wed Jan 08 2020 20:30:28 GMT+0800 (CST)
 </footer>
 
 <script>prettyPrint();</script>

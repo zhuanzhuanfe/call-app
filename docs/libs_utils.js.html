@@ -49,8 +49,8 @@ export const regTest = ({reg, str}) => {
 };
 
 export const IOSVersion = () => {
-  let str = navigator.userAgent.toLowerCase(); 
-  let ver = str.match(/cpu iphone os (.*?) like mac os/); 
+  let str = navigator.userAgent.toLowerCase();
+  let ver = str.match(/cpu iphone os (.*?) like mac os/);
   try {
       if(ver) ver = ver[1].replace(/_/g,".")
   } catch (error) {
@@ -74,7 +74,8 @@ export const compareVersion = (curV,reqV) => {
   }else{
      return false;
   }
-}</code></pre>
+}
+</code></pre>
         </article>
     </section>
 
@@ -86,7 +87,7 @@ export const compareVersion = (curV,reqV) => {
 <br class="clear">
 
 <footer>
-    Documentation generated at Tue Nov 12 2019 16:16:22 GMT+0800 (中国标准时间)
+    Documentation generated at Wed Jan 08 2020 20:30:28 GMT+0800 (CST)
 </footer>
 
 <script>prettyPrint();</script>

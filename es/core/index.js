@@ -1,9 +1,6 @@
 import _extends from 'babel-runtime/helpers/extends';
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _createClass from 'babel-runtime/helpers/createClass';
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import BaseCaller from './base';
 import { Platform } from '../libs/platform';
 
@@ -81,5 +78,4 @@ var Core = function () {
 }();
 
 window.CallApp = Core;
-// window.callApp = new Core();
 export default Core;

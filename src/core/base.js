@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import { loadJSArr } from './widgets/loader';
 import { Event } from './widgets/Event';
 import PatternsAdapter from './widgets/PatternsAdapter';

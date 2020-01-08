@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/7.
- */
 import { platformTypes } from './config';
 
 export class Platform {

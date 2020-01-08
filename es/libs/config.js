@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/7.
- */
 import { regTest } from './utils';
 
 /**
@@ -47,10 +44,10 @@ export var domain = {
  * 第三方依赖, 外链js
  * */
 export var dependencies = {
-    ZZ_SELLER_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/zzseller-jssdk.min.js',
-    ZZ_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/zzapp.min.js',
-    WB_SDK: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js',
-    WX_JWEIXIN: 'https://res.wx.qq.com/open/js/jweixin-1.3.2.js',
+    ZZ_SELLER_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
+    ZZ_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
+    WB_SDK: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',
+    WX_JWEIXIN: 'https://s1.zhuanstatic.com/common/jweixin-1.5.0.js',
     WX_WIKI: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
     WX_JSTICKET: 'https://app.zhuanzhuan.com/zz/transfer/jsticket?callback=__json_jsticket&url=' + encodeURIComponent(location.href)
 };

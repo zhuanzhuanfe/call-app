@@ -9,8 +9,8 @@ export const regTest = ({reg, str}) => {
 };
 
 export const IOSVersion = () => {
-  let str = navigator.userAgent.toLowerCase(); 
-  let ver = str.match(/cpu iphone os (.*?) like mac os/); 
+  let str = navigator.userAgent.toLowerCase();
+  let ver = str.match(/cpu iphone os (.*?) like mac os/);
   try {
       if(ver) ver = ver[1].replace(/_/g,".")
   } catch (error) {

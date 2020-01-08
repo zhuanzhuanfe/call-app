@@ -1,7 +1,7 @@
 {
   "name": "@zz-common/call-app",
-  "version": "3.0.0",
-  "description": "转转FE打包模版",
+  "version": "3.1.2",
+  "description": "通用的唤起app的库",
   "scripts": {
     "dist": "commander-tools run dist",
     "compile": "commander-tools run compile",
@@ -21,10 +21,10 @@
     "npm",
     "import"
   ],
-  "author": "luoxue <luoxue@zhuanzhuan.com>",
+  "author": "huangjiaxing <huangjiaxing@zhuanzhuan.com>",
   "license": "ISC",
   "devDependencies": {
-    "@zz-common/commander-tools": "^1.0.6"
+    "@zz-common/commander-tools": "^1.1.10"
   },
   "peerDependencies": {},
   "dependencies": {}

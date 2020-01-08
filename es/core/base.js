@@ -1,8 +1,5 @@
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _createClass from 'babel-runtime/helpers/createClass';
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import { loadJSArr } from './widgets/loader';
 import { Event } from './widgets/Event';
 import PatternsAdapter from './widgets/PatternsAdapter';
