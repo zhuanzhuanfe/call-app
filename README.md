@@ -47,6 +47,7 @@ https://fe.zhuanspirit.com/common/@zz-common/call-app/
 
 ## API
 - **download** `Function` 独立的下载功能
+
 ```js
 // 方法挂在CallApp类上，而非实例上
 // opts配置同上
