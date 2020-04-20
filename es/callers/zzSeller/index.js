@@ -1,9 +1,17 @@
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _get from 'babel-runtime/helpers/get';
-import _inherits from 'babel-runtime/helpers/inherits';
+import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
+import "core-js/modules/es.regexp.to-string";
+import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
+import _createClass from "@babel/runtime/helpers/esm/createClass";
+import _get from "@babel/runtime/helpers/esm/get";
+import _inherits from "@babel/runtime/helpers/esm/inherits";
+import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
+import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Created by luyunhai on 2018/12/3.
  */
@@ -11,53 +19,58 @@ import BaseCaller from '../../core/base';
 import { dependencies } from '../../libs/config';
 import ZZSellerAPP from './sdk';
 
-var ZZAppCaller = function (_BaseCaller) {
-    _inherits(ZZAppCaller, _BaseCaller);
+var ZZAppCaller = /*#__PURE__*/function (_BaseCaller) {
+  _inherits(ZZAppCaller, _BaseCaller);
 
-    function ZZAppCaller() {
-        var _this;
+  var _super = _createSuper(ZZAppCaller);
 
-        _classCallCheck(this, ZZAppCaller);
+  function ZZAppCaller() {
+    var _this;
 
-        return _this = _possibleConstructorReturn(this, (ZZAppCaller.__proto__ || _Object$getPrototypeOf(ZZAppCaller)).call(this, dependencies.ZZ_SELLER_SDK, function () {
-            _this.ZZSellerAPP = window.ZZSELLER;
-            _this.App = new ZZSellerAPP(_this.ZZSellerAPP);
-        }));
+    _classCallCheck(this, ZZAppCaller);
+
+    return _this = _super.call(this, dependencies.ZZ_SELLER_SDK, function () {
+      _this.ZZSellerAPP = window.ZZSELLER;
+      _this.App = new ZZSellerAPP(_this.ZZSellerAPP);
+    });
+  }
+
+  _createClass(ZZAppCaller, [{
+    key: "__isInstallApp",
+    value: function __isInstallApp() {}
+  }, {
+    key: "__openApp",
+    value: function __openApp(opts) {
+      var options = _get(_getPrototypeOf(ZZAppCaller.prototype), "adaptOptions", this).call(this, opts);
+
+      var url = encodeURIComponent(options.__SCHEMA_PATH);
+      var schema = 'zhuanzhuanseller://jump/core/openZhuanZhuan/jump';
+      var unifiedUrl = "".concat(schema, "?url=").concat(url);
+      this.App.openApp({
+        unifiedUrl: unifiedUrl
+      });
     }
+  }, {
+    key: "__download",
+    value: function __download(_ref) {
+      var channelId = _ref.channelId;
+    }
+  }, {
+    key: "__tryLaunch",
+    value: function __tryLaunch(opts) {
+      this.__openApp(opts);
+    }
+  }, {
+    key: "init",
+    value: function init() {}
+  }, {
+    key: "launch",
+    value: function launch(opts) {
+      this.__openApp(opts);
+    }
+  }]);
 
-    _createClass(ZZAppCaller, [{
-        key: '__isInstallApp',
-        value: function __isInstallApp() {}
-    }, {
-        key: '__openApp',
-        value: function __openApp(opts) {
-            var options = _get(ZZAppCaller.prototype.__proto__ || _Object$getPrototypeOf(ZZAppCaller.prototype), 'adaptOptions', this).call(this, opts);
-            var url = encodeURIComponent(options.__SCHEMA_PATH);
-            var schema = 'zhuanzhuanseller://jump/core/openZhuanZhuan/jump';
-            var unifiedUrl = schema + '?url=' + url;
-            this.App.openApp({ unifiedUrl: unifiedUrl });
-        }
-    }, {
-        key: '__download',
-        value: function __download(_ref) {
-            var channelId = _ref.channelId;
-        }
-    }, {
-        key: '__tryLaunch',
-        value: function __tryLaunch(opts) {
-            this.__openApp(opts);
-        }
-    }, {
-        key: 'init',
-        value: function init() {}
-    }, {
-        key: 'launch',
-        value: function launch(opts) {
-            this.__openApp(opts);
-        }
-    }]);
-
-    return ZZAppCaller;
+  return ZZAppCaller;
 }(BaseCaller);
 
-export default ZZAppCaller;
+export { ZZAppCaller as default };

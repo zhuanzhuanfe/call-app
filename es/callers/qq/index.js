@@ -1,50 +1,64 @@
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _get from 'babel-runtime/helpers/get';
-import _inherits from 'babel-runtime/helpers/inherits';
+import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
+import "core-js/modules/es.regexp.to-string";
+import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
+import _createClass from "@babel/runtime/helpers/esm/createClass";
+import _get from "@babel/runtime/helpers/esm/get";
+import _inherits from "@babel/runtime/helpers/esm/inherits";
+import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
+import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Created by luyunhai on 2018/11/8.
  */
 import BaseCaller from '../../core/base';
 
-var QQCaller = function (_BaseCaller) {
+var QQCaller = /*#__PURE__*/function (_BaseCaller) {
   _inherits(QQCaller, _BaseCaller);
+
+  var _super = _createSuper(QQCaller);
 
   function QQCaller() {
     _classCallCheck(this, QQCaller);
 
-    return _possibleConstructorReturn(this, (QQCaller.__proto__ || _Object$getPrototypeOf(QQCaller)).apply(this, arguments));
+    return _super.apply(this, arguments);
   }
 
   _createClass(QQCaller, [{
-    key: 'init',
+    key: "init",
     value: function init() {}
   }, {
-    key: '__openApp',
+    key: "__openApp",
     value: function __openApp(options) {
       if (this.config.device.isIOS) {
         var a = document.createElement('a');
         a.setAttribute('href', options.__SCHEMA_PATH);
         return a.click();
       }
+
       location.href = options.__SCHEMA_PATH;
     }
   }, {
-    key: '__tryLaunch',
+    key: "__tryLaunch",
     value: function __tryLaunch(options) {
-      var _this2 = this;
+      var _this = this;
 
       this.__openApp(options);
+
       var startTime = Date.now();
       var downloadTimer = setTimeout(function () {
-        _this2.__download(options);
+        _this.__download(options);
       }, options.delay);
+
       if (this.config.device.isAndroid) {
         setTimeout(function () {
           var endTime = Date.now();
-          var timeLimit = _this2.config.device.isAndroid ? 800 : 610;
+          var timeLimit = _this.config.device.isAndroid ? 800 : 610;
+
           if (startTime && endTime - startTime > timeLimit) {
             clearTimeout(downloadTimer);
           }
@@ -52,9 +66,10 @@ var QQCaller = function (_BaseCaller) {
       }
     }
   }, {
-    key: 'launch',
+    key: "launch",
     value: function launch(opts) {
-      var options = _get(QQCaller.prototype.__proto__ || _Object$getPrototypeOf(QQCaller.prototype), 'adaptOptions', this).call(this, opts);
+      var options = _get(_getPrototypeOf(QQCaller.prototype), "adaptOptions", this).call(this, opts);
+
       this.__tryLaunch(options);
     }
   }]);
@@ -62,4 +77,4 @@ var QQCaller = function (_BaseCaller) {
   return QQCaller;
 }(BaseCaller);
 
-export default QQCaller;
+export { QQCaller as default };

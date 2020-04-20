@@ -1,59 +1,71 @@
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _get from 'babel-runtime/helpers/get';
-import _inherits from 'babel-runtime/helpers/inherits';
+import "core-js/modules/es.object.to-string";
+import "core-js/modules/es.reflect.construct";
+import "core-js/modules/es.regexp.exec";
+import "core-js/modules/es.regexp.to-string";
+import "core-js/modules/es.string.match";
+import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
+import _createClass from "@babel/runtime/helpers/esm/createClass";
+import _get from "@babel/runtime/helpers/esm/get";
+import _inherits from "@babel/runtime/helpers/esm/inherits";
+import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
+import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
+
+function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Created by luyunhai on 2018/11/8.
  */
 import BaseCaller from '../../core/base';
 import { IOSVersion, compareVersion } from '../../libs/utils';
 import universal from './universal';
-
 var iosVer = IOSVersion();
 
-var BrowserCaller = function (_BaseCaller) {
+var BrowserCaller = /*#__PURE__*/function (_BaseCaller) {
   _inherits(BrowserCaller, _BaseCaller);
+
+  var _super = _createSuper(BrowserCaller);
 
   function BrowserCaller() {
     _classCallCheck(this, BrowserCaller);
 
-    return _possibleConstructorReturn(this, (BrowserCaller.__proto__ || _Object$getPrototypeOf(BrowserCaller)).call(this));
+    return _super.call(this);
   }
 
   _createClass(BrowserCaller, [{
-    key: 'init',
+    key: "init",
     value: function init() {}
   }, {
-    key: '__openApp',
+    key: "__openApp",
     value: function __openApp(options) {
       location.href = options.__SCHEMA_PATH;
     }
   }, {
-    key: '__canUniversal',
+    key: "__canUniversal",
     value: function __canUniversal() {
       var ua = navigator.userAgent;
-
-      if (!/(iphone)|(ipad)|(ipod)/gi.test(ua)) return false;
-      if (/(baiduboxapp)/gi.test(ua) || /(Safari)/gi.test(ua)) return true;
+      if (!/(iphone)|(ipad)|(ipod)/ig.test(ua)) return false;
+      if (/(baiduboxapp)/ig.test(ua) || /(Safari)/ig.test(ua)) return true;
       return false;
     }
   }, {
-    key: '__tryLaunch',
+    key: "__tryLaunch",
     value: function __tryLaunch(options) {
-      var _this2 = this;
+      var _this = this;
 
       console.log(this.__canUniversal(), options.universal);
       if (options.universal && this.__canUniversal()) return universal.call(this, options);
       if (compareVersion(iosVer, '12.3.0')) options.delay = 2500;
 
       this.__openApp(options);
+
       var ua = navigator.userAgent;
       var timer = 0;
+
       if (!ua.match(/WeiBo/i)) {
         timer = setTimeout(function () {
-          _this2.__download(options);
+          _this.__download(options);
         }, options.delay);
       }
 
@@ -61,6 +73,7 @@ var BrowserCaller = function (_BaseCaller) {
         var tag = document.hidden || document.webkitHidden;
         tag && clearTimeout(timer);
       };
+
       document.addEventListener('visibilitychange', visibilitychange, false);
       document.addEventListener('webkitvisibilitychange', visibilitychange, false);
       window.addEventListener('pagehide', function () {
@@ -68,9 +81,10 @@ var BrowserCaller = function (_BaseCaller) {
       }, false);
     }
   }, {
-    key: 'launch',
+    key: "launch",
     value: function launch(opts) {
-      var options = _get(BrowserCaller.prototype.__proto__ || _Object$getPrototypeOf(BrowserCaller.prototype), 'adaptOptions', this).call(this, opts);
+      var options = _get(_getPrototypeOf(BrowserCaller.prototype), "adaptOptions", this).call(this, opts);
+
       this.__tryLaunch(options);
     }
   }]);
@@ -78,4 +92,4 @@ var BrowserCaller = function (_BaseCaller) {
   return BrowserCaller;
 }(BaseCaller);
 
-export default BrowserCaller;
+export { BrowserCaller as default };

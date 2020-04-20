@@ -17,7 +17,7 @@ export default class BrowserCaller extends BaseCaller {
   }
   __canUniversal() {
     const ua = navigator.userAgent
-    
+
     if (!/(iphone)|(ipad)|(ipod)/ig.test(ua)) return false;
     if (/(baiduboxapp)/ig.test(ua) || /(Safari)/ig.test(ua)) return true;
     return false

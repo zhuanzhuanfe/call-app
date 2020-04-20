@@ -1,5 +1,7 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
+import "core-js/modules/es.array.concat";
+import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
+import _createClass from "@babel/runtime/helpers/esm/createClass";
+
 /**
  * Created by luyunhai on 2018/11/9.
  * 适配传统的吊起方式, 客户端后期将不会兼容openType的方式, 统一通过'zhuanzhuan://'的统跳形式拉起
@@ -22,37 +24,45 @@ import _createClass from 'babel-runtime/helpers/createClass';
 import { SchemaMap } from '../../libs/config';
 import { regTest } from '../../libs/utils';
 
-var PatternsAdapter = function () {
-    function PatternsAdapter(opts) {
-        _classCallCheck(this, PatternsAdapter);
+var PatternsAdapter = /*#__PURE__*/function () {
+  function PatternsAdapter(opts) {
+    _classCallCheck(this, PatternsAdapter);
 
-        this.opts = opts;
+    this.opts = opts;
+  }
+
+  _createClass(PatternsAdapter, [{
+    key: "__getSchema",
+    value: function __getSchema(_ref) {
+      var _ref$openType = _ref.openType,
+          openType = _ref$openType === void 0 ? '' : _ref$openType,
+          _ref$id = _ref.id,
+          id = _ref$id === void 0 ? '' : _ref$id;
+
+      if (!openType) {
+        return SchemaMap.home.path;
+      }
+
+      var queryStr = id && (!regTest({
+        str: SchemaMap[openType].path,
+        reg: /\?/g
+      }) && '?') + "".concat(SchemaMap[openType].params.id, "=").concat(encodeURIComponent(id)) || '';
+      return "".concat(SchemaMap[openType].path).concat(queryStr);
     }
+  }, {
+    key: "wrap",
+    value: function wrap() {
+      var path = this.opts.path || this.__getSchema(this.opts.urlSearch || {});
 
-    _createClass(PatternsAdapter, [{
-        key: '__getSchema',
-        value: function __getSchema(_ref) {
-            var _ref$openType = _ref.openType,
-                openType = _ref$openType === undefined ? '' : _ref$openType,
-                _ref$id = _ref.id,
-                id = _ref$id === undefined ? '' : _ref$id;
+      this.opts.__SCHEMA_PATH = regTest({
+        reg: /^((zzcheck\:\/\/)|(zhuanzhuan\:\/\/)|(zhuanzhuanseller\:\/\/))/g,
+        str: path
+      }) && path || "zhuanzhuan://".concat(path);
+      return this.opts;
+    }
+  }]);
 
-            if (!openType) {
-                return SchemaMap.home.path;
-            }
-            var queryStr = id && (!regTest({ str: SchemaMap[openType].path, reg: /\?/g }) && '?') + (SchemaMap[openType].params.id + '=' + encodeURIComponent(id)) || '';
-            return '' + SchemaMap[openType].path + queryStr;
-        }
-    }, {
-        key: 'wrap',
-        value: function wrap() {
-            var path = this.opts.path || this.__getSchema(this.opts.urlSearch || {});
-            this.opts.__SCHEMA_PATH = regTest({ reg: /^((zzcheck\:\/\/)|(zhuanzhuan\:\/\/)|(zhuanzhuanseller\:\/\/))/g, str: path }) && path || 'zhuanzhuan://' + path;
-            return this.opts;
-        }
-    }]);
-
-    return PatternsAdapter;
+  return PatternsAdapter;
 }();
 
-export default PatternsAdapter;
+export { PatternsAdapter as default };
