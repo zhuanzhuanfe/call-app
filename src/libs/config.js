@@ -1,4 +1,13 @@
-import { regTest } from './utils';
+import { regTest, getUrlParams, getCookie } from './utils';
+
+/**
+ * 授权的公众号id
+ * */
+const getWxPublicId = () => {
+  const query = getUrlParams();
+  const config = Object.assign({}, window.nativeAdapterConfig)
+  return (query.wxPublicId || config.wxPublicId || query.__t || getCookie('zz_t') || getCookie('t') || '24')
+}
 
 /**
  * 所适配的各种终端 (name 要与 '/src/callers/**' 保持一致)
@@ -49,7 +58,7 @@ export const dependencies = {
     WB_SDK: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',
     WX_JWEIXIN: 'https://s1.zhuanstatic.com/common/jweixin-1.5.0.js',
     WX_WIKI: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
-    WX_JSTICKET: 'https://app.zhuanzhuan.com/zz/transfer/jsticket?callback=__json_jsticket&url=' + encodeURIComponent(location.href)
+    WX_JSTICKET: `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${ getWxPublicId() }&url=`+encodeURIComponent(window.location.href.split("#")[0])+'&callback=__json_jsticket'
 };
 
 /**
@@ -67,6 +76,8 @@ export const AppInfomation = {
 export const wechatInfomation = {
     appID: 'wx6f1a8464fa672b11', //转转app在微信绑定的appid
 };
+
+
 
 /**
  * 各端下载地址

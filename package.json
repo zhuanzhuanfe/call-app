@@ -23,9 +23,9 @@
   ],
   "author": "huangjiaxing <huangjiaxing@zhuanzhuan.com>",
   "license": "ISC",
-  "devDependencies": {
-    "@zz-common/commander-tools": "^1.1.10"
-  },
+  "devDependencies": {},
   "peerDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "@zz-common/commander-tools": "^2.1.4"
+  }
 }

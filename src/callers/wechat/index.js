@@ -81,12 +81,16 @@ export default class WeChatCaller extends BaseCaller {
         || this.__tryLaunch(options);
     }
     launch (opts) {
-        const options = super.adaptOptions(opts);
-        this.Wechat
-        && this.__start(options)
-        || this.__invoke({
-            cb: this.__start,
-            args: [options]
-        })
+        if(window.wx) {
+          wx.ready(() => {
+            const options = super.adaptOptions(opts);
+            this.Wechat
+            && this.__start(options)
+            || this.__invoke({
+                cb: this.__start,
+                args: [options]
+            })
+          })
+        }
     }
 }

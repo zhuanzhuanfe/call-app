@@ -35,3 +35,22 @@ export const compareVersion = (curV,reqV) => {
      return false;
   }
 }
+
+export const getUrlParams = (url) => {
+  url = url || window.location.href
+  if (url.indexOf('?') < 0) return {}
+
+  return url.replace(/^.+?\?/, '').replace(/#.+/, '').split('&')
+    .filter(param => param)
+    .map(decodeURIComponent)
+    .reduce((obj, param) => {
+      const i = param.indexOf('=')
+      const t = [param.slice(0, i), param.slice(i + 1)]
+      obj[t[0]] = t[1]
+      return obj
+    }, {})
+}
+
+export const getCookie = (name) => (document.cookie.split('; ')
+    .filter(cookie => +cookie.indexOf(name + '=') === 0)
+    .pop() || '').replace(/[^=]+=/, '')

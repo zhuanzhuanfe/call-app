@@ -1,4 +1,5 @@
-const CallApp = window.default;
+import CallApp from '../src';
+
 const btn = document.getElementById('btn');
 btn.addEventListener('click', function() {
   const callApp = new CallApp();
