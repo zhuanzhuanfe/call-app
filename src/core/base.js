@@ -27,7 +27,8 @@ export default class BaseCaller {
     }
 
     __download(options) {
-        const { channelId, middleWareUrl, path } = options;
+        const { channelId, middleWareUrl, path, download } = options;
+        if (!download) return;
         let wechat = '';
         const plat = new Platform({});
         const platName = plat.getCurrentPlatform();

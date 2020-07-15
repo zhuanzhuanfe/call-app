@@ -53,7 +53,8 @@ class Core {
       delay: 800,                         //触发下载的延时时间，低于16000可能会出现调起的同时触发下载
       middleWareUrl: '',                 //下载中转页,如不设置，将直接下载安装包或跳appstore
       wechatCheckInstallState: () => { },     //微信端初始化检测安装后的回调函数
-      universal: false
+      universal: false,
+      download: true, // 默认吊起失败后，转入下载逻辑
     }, opts));
   }
 }

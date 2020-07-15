@@ -69,7 +69,9 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
   }, {
     key: "__download",
     value: function __download(_ref) {
-      var channelId = _ref.channelId;
+      var channelId = _ref.channelId,
+          download = _ref.download;
+      if (!download) return;
       var downloadURL = regTest({
         reg: /58\.com/g,
         str: location.hostname

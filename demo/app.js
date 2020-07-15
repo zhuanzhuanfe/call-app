@@ -6,6 +6,7 @@ btn.addEventListener('click', function() {
   callApp.start({
     path:'jump/group/manage/jump', // 兼容app所有统跳地址
     channelId: '777',
-    universal: true,
+    download: false,
+    // universal: true,
   });
 });

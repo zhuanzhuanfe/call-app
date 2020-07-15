@@ -37,6 +37,7 @@ https://fe.zhuanspirit.com/common/@zz-common/call-app/
 - **path** `String` 调起app时，默认打开的页面，类型为app的统跳地址（选填）
 - **channelId** `String` 渠道号，当用户没有安装app时，默认下载的渠道号，安卓支持，iOS不支持（选填）
 - **universal** `Boolean` 是否开启通用链接调起模式
+- **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
 - **urlSearch** `Object` 快捷指定调起页面方式，不推荐，建议统一使用path来跳转
   - **openType** `String` 页面类型，可选值为 `home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面`
   - **id** `String` 存放id或者url，配合`openType` 的值来用

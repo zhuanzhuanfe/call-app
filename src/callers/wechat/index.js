@@ -38,7 +38,8 @@ export default class WeChatCaller extends BaseCaller {
             }, false);
         });
     }
-    __download ({ channelId }) {
+    __download ({ channelId, download }) {
+        if (!download) return;
         const downloadURL = regTest({ reg: /58\.com/g, str: location.hostname })
             && (this.config.downloadUrl.browser + '?channelId=' + channelId)
             || (

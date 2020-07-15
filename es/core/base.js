@@ -56,7 +56,9 @@ var BaseCaller = /*#__PURE__*/function () {
     value: function __download(options) {
       var channelId = options.channelId,
           middleWareUrl = options.middleWareUrl,
-          path = options.path;
+          path = options.path,
+          download = options.download;
+      if (!download) return;
       var wechat = '';
       var plat = new Platform({});
       var platName = plat.getCurrentPlatform();
