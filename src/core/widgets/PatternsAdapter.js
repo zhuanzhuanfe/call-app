@@ -17,23 +17,33 @@
  *      小区页: { openType: 'village', id: 'villageId' }
  *      M页: { openType: 'web', id: 'url' }
  */
-import { SchemaMap } from '../../libs/config';
-import { regTest } from '../../libs/utils';
+import { SchemaMap } from '../../libs/config'
+import { regTest } from '../../libs/utils'
 
 export default class PatternsAdapter {
-    constructor (opts) {
-        this.opts = opts;
+  constructor(opts) {
+    this.opts = opts
+  }
+  __getSchema({ openType = '', id = '' }) {
+    if (!openType) {
+      return SchemaMap.home.path
     }
-    __getSchema ({ openType = '', id = '' }) {
-        if (!openType) {
-            return SchemaMap.home.path;
-        }
-        const queryStr = id && (!regTest({ str: SchemaMap[openType].path, reg: /\?/g }) && '?') + `${SchemaMap[openType].params.id}=${encodeURIComponent(id)}` || '';
-        return `${SchemaMap[openType].path}${queryStr}`;
-    }
-    wrap () {
-        const path = this.opts.path || this.__getSchema(this.opts.urlSearch || {});
-        this.opts.__SCHEMA_PATH = regTest({ reg: /^((zzcheck\:\/\/)|(zhuanzhuan\:\/\/)|(zhuanzhuanseller\:\/\/))/g, str: path }) && path || `zhuanzhuan://${path}`;
-        return this.opts;
-    }
+    const queryStr =
+      (id &&
+        (!regTest({ str: SchemaMap[openType].path, reg: /\?/g }) && '?') +
+          `${SchemaMap[openType].params.id}=${encodeURIComponent(id)}`) ||
+      ''
+    return `${SchemaMap[openType].path}${queryStr}`
+  }
+  wrap() {
+    const path = this.opts.path || this.__getSchema(this.opts.urlSearch || {})
+    this.opts.__SCHEMA_PATH =
+      (regTest({
+        reg: /^((zzcheck:\/\/)|(zhuanzhuan:\/\/)|(zhuanzhuanseller:\/\/))/g,
+        str: path,
+      }) &&
+        path) ||
+      `zhuanzhuan://${path}`
+    return this.opts
+  }
 }

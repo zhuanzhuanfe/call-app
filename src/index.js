@@ -1,3 +1,3 @@
-import Core from './core';
+import Core from './core'
 
-export default Core;
+export default Core

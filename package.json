@@ -1,18 +1,25 @@
 {
   "name": "@zz-common/call-app",
-  "version": "3.2.1-beta.1",
+  "version": "3.2.2-beta.1",
   "description": "通用的唤起app的库",
   "scripts": {
-    "dist": "commander-tools run dist",
+    "cz": "git cz -a",
+    "test": "jest --coverage",
+    "lint": "commander-tools run lint",
+    "fix": "commander-tools run lint --fix",
+    "staged": "commander-tools run lint --staged",
+    "staged-fix": "commander-tools run lint --staged --fix",
     "dev": "commander-tools run dev",
-    "compile": "commander-tools run compile-es && commander-tools run compile-lib",
-    "build": "npm run compile && commander-tools run dist && commander-tools run build-doc",
+    "compile": "commander-tools run compile",
+    "dist": "commander-tools run dist",
+    "analyz": "commander-tools run dist --analyz",
+    "build": "commander-tools run build",
     "pub": "commander-tools run pub",
     "pub-beta": "commander-tools run pub-beta",
     "unpub": "commander-tools run unpub",
     "doc": "commander-tools run doc",
-    "doc-upload": "commander-tools run doc-upload",
-    "build-doc": "commander-tools run build-doc"
+    "build-doc": "commander-tools run build-doc",
+    "doc-upload": "commander-tools run doc-upload"
   },
   "main": "index.js",
   "keywords": [
@@ -23,9 +30,28 @@
   ],
   "author": "huangjiaxing <huangjiaxing@zhuanzhuan.com>",
   "license": "ISC",
-  "devDependencies": {},
+  "config": {
+    "commitizen": {
+      "path": "@zz-common/commander-tools/lib/config/commitizen.config"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "commander-tools run lint --staged",
+      "commit-msg": "commander-tools run commitlint"
+    }
+  },
+  "devDependencies": {
+    "@zz-common/commander-tools": "^3.0.5",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.5.0",
+    "eslint-plugin-html": "^6.0.2",
+    "husky": "^4.2.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5"
+  },
   "peerDependencies": {},
   "dependencies": {
-    "@zz-common/commander-tools": "^2.1.4"
+    "core-js": "^3.6.5"
   }
 }

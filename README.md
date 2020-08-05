@@ -57,17 +57,17 @@ CallApp.download(opts)
 
 ## 兼容性
 
-| 场景          | ios | 安卓
-| ------------- | --- | ----
-| 微信          | ✔️  | ✔️
-| qq            | ✔️  | ✔️
-| chrome        | ✔️  | ✔️
-| 小米 browser  | ✔️  | ✔️
-| uc            | ✔️  | ✔️
-| qq browser    | ✔️  | ✔️
-| 360 browser   | ✔️  | ✔️
-| 猎豹          | ✔️  | ✔️
-| sogou         | ✔️  | ✔️
-| baidu browser | ✔️  | ✔️
-| safari        | ✔️  | ✔️
-| 微博          | X   | X
+| 场景          | ios | 安卓 |
+| ------------- | --- | ---- |
+| 微信          | ✔️   | ✔️    |
+| qq            | ✔️   | ✔️    |
+| chrome        | ✔️   | ✔️    |
+| 小米 browser  | ✔️   | ✔️    |
+| uc            | ✔️   | ✔️    |
+| qq browser    | ✔️   | ✔️    |
+| 360 browser   | ✔️   | ✔️    |
+| 猎豹          | ✔️   | ✔️    |
+| sogou         | ✔️   | ✔️    |
+| baidu browser | ✔️   | ✔️    |
+| safari        | ✔️   | ✔️    |
+| 微博          | X   | X    |

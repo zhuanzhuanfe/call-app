@@ -1,5 +1,3 @@
-'use strict';
-var packageObj = require('./package.json');
+'use strict'
 
-var version = packageObj.version;
-module.exports = require('./dist/static/js/'+ version +'/index.min.js');
+module.exports = require('./lib/index.js')

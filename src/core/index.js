@@ -1,29 +1,28 @@
-import BaseCaller from './base';
-import { Platform } from '../libs/platform';
+import BaseCaller from './base'
+import { Platform } from '../libs/platform'
 
 const base = new BaseCaller()
 
 class Core {
   constructor() {
-    const plat = new Platform({
-    });
-    this.plat = plat.getCurrentPlatform();
-    this.caller = null;
-    this.init();
+    const plat = new Platform({})
+    this.plat = plat.getCurrentPlatform()
+    this.caller = null
+    this.init()
   }
 
-  static download({channelId = 923, middleWareUrl, path}) {
-    base.__download({channelId, middleWareUrl, path})
+  static download({ channelId = 923, middleWareUrl, path }) {
+    base.__download({ channelId, middleWareUrl, path })
   }
 
   loader() {
-    const ZZCaller = require('../callers/' + this.plat).default;
-    this.caller = new ZZCaller();
-    this.caller.init();
+    const ZZCaller = require('../callers/' + this.plat).default
+    this.caller = new ZZCaller()
+    this.caller.init()
   }
 
   init() {
-    this.loader();
+    this.loader()
   }
 
   /**
@@ -42,22 +41,29 @@ class Core {
    * @param fail：调起失败的回调
    */
   start(opts) {
-    this.caller.wrap(this.caller.launch.bind(this.caller), Object.assign({}, {
-      // iosScheme:'zhuanzhuan://',   //协议头
-      // androidScheme:'zhuanzhuan://',     //协议头
-      // appStore:'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
-      // androidApk: 'https://app.zhuanzhuan.com/zz/redirect/download',
-      // androidApk_deeplink:'https://app.zhuanzhuan.com/activity/deeplink/download/',
-      targetApp: 'zz',                    // 目标App（zz: 主App, seller: 商家App）
-      channelId: 923,                     //渠道号
-      delay: 800,                         //触发下载的延时时间，低于16000可能会出现调起的同时触发下载
-      middleWareUrl: '',                 //下载中转页,如不设置，将直接下载安装包或跳appstore
-      wechatCheckInstallState: () => { },     //微信端初始化检测安装后的回调函数
-      universal: false,
-      download: true, // 默认吊起失败后，转入下载逻辑
-    }, opts));
+    this.caller.wrap(
+      this.caller.launch.bind(this.caller),
+      Object.assign(
+        {},
+        {
+          // iosScheme:'zhuanzhuan://',   //协议头
+          // androidScheme:'zhuanzhuan://',     //协议头
+          // appStore:'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
+          // androidApk: 'https://app.zhuanzhuan.com/zz/redirect/download',
+          // androidApk_deeplink:'https://app.zhuanzhuan.com/activity/deeplink/download/',
+          targetApp: 'zz', // 目标App（zz: 主App, seller: 商家App）
+          channelId: 923, //渠道号
+          delay: 800, //触发下载的延时时间，低于16000可能会出现调起的同时触发下载
+          middleWareUrl: '', //下载中转页,如不设置，将直接下载安装包或跳appstore
+          wechatCheckInstallState: () => {}, //微信端初始化检测安装后的回调函数
+          universal: false,
+          download: true, // 默认吊起失败后，转入下载逻辑
+        },
+        opts
+      )
+    )
   }
 }
 
-window.CallApp = Core;
-export default Core;
+window.CallApp = Core
+export default Core

@@ -1,30 +1,27 @@
-module.exports = (api) => {
-  const { BABEL_MODULE, RUN_ENV } = process.env;
-  const useESModules = BABEL_MODULE !== 'commonjs' && RUN_ENV !== 'PRODUCTION';
+module.exports = api => {
+  const { BABEL_MODULE, RUN_ENV, NODE_ENV } = process.env
+  const useESModules =
+    BABEL_MODULE !== 'commonjs' &&
+    RUN_ENV !== 'PRODUCTION' &&
+    NODE_ENV !== 'test'
 
-  api.cache(false);
+  api.cache(false)
 
   return {
     presets: [
-      ['@babel/preset-env', {
-        modules: useESModules ? false : 'commonjs',
-        targets: {
-          browsers: [
-            'last 2 versions',
-            'Firefox ESR',
-            '> 1%',
-            'iOS >= 8',
-            'Android >= 4',
-          ],
+      [
+        '@babel/preset-env',
+        {
+          modules: useESModules ? false : 'commonjs',
+          useBuiltIns: 'usage',
+          corejs: 3,
         },
-        useBuiltIns: 'usage',
-        corejs: 3
-      }]
+      ],
     ],
     plugins: [
       ['@babel/plugin-transform-runtime', { useESModules }],
-      ['@babel/plugin-proposal-decorators', { "legacy": true }],
-      ['@babel/plugin-proposal-class-properties', { "loose": true }]
-    ]
+      ['@babel/plugin-proposal-decorators', { legacy: true }],
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ],
   }
 }
