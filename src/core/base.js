@@ -1,5 +1,4 @@
 import { loadJSArr } from './widgets/loader'
-import { Event } from './widgets/Event'
 import PatternsAdapter from './widgets/PatternsAdapter'
 import * as config from '../libs/config'
 import { Platform } from '../libs/platform'
@@ -19,7 +18,6 @@ export default class BaseCaller {
     this.__mounted = true
     callback()
     this.callbackList.forEach(({ cb, args }) => cb.call(this, args))
-    Event.emit('mounted')
   }
 
   __appendCallback(cb, args) {
@@ -29,12 +27,12 @@ export default class BaseCaller {
   __download(options) {
     const { channelId, middleWareUrl, path, download } = options
     if (!download) return
-    let wechat = ''
     const plat = new Platform({})
     const platName = plat.getCurrentPlatform()
-    if (platName === 'wechat') {
-      wechat = '#mp.weixin.qq.com'
-    }
+    let wechat = platName === 'wechat' ? '#mp.weixin.qq.com' : ''
+
+    // 不同平台的下载逻辑
+    // TODO：补充一格App
     const isCheck = /^(zzcheck)/.test(path)
     const downloadCofig = isCheck
       ? this.config.checkDownloadUrl

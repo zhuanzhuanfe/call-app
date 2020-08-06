@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/8.
- */
 export const loadJS = (url, cb) => {
   let head = window.document.getElementsByTagName('head')[0]
   let js = window.document.createElement('script')

@@ -1,23 +1,8 @@
 import { regTest, getUrlParams, getCookie } from './utils'
 
 /**
- * 授权的公众号id
- * */
-const getWxPublicId = () => {
-  const query = getUrlParams()
-  const config = Object.assign({}, window.nativeAdapterConfig)
-  return (
-    query.wxPublicId ||
-    config.wxPublicId ||
-    query.__t ||
-    getCookie('zz_t') ||
-    getCookie('t') ||
-    '24'
-  )
-}
-
-/**
  * 所适配的各种终端 (name 要与 '/src/callers/**' 保持一致)
+ * 该终端指的是调起时候的执行环境，而不是需要调起的app
  * 其余终端统一当做browser处理
  * */
 export const platformTypes = [
@@ -42,6 +27,36 @@ export const platformTypes = [
     name: 'qq',
   },
 ]
+
+// 目标app名称对应的协议名称
+export const targetToSchema = {
+  zz: 'zhuanzhuan:',
+  zzseller: 'zhuanzhuanseller:',
+  check: 'zzcheck:',
+  yige: 'zzyige:',
+}
+
+// 转转各版本下载地址
+export const downloadUrl = {
+  ios:
+    'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
+  android: 'market://search?q=pname:com.wuba.zhuanzhuan',
+  wechat_android:
+    'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
+  browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
+}
+
+// 切克各版本下载地址
+export const checkDownloadUrl = (function () {
+  const u = navigator.userAgent
+  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+  const iosUrl = 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8'
+  const androidUrl =
+    'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
+  return {
+    browser: isAndroid ? androidUrl : iosUrl,
+  }
+})()
 
 /**
  * 设备平台
@@ -69,6 +84,22 @@ export const domain = {
     reg: /\.zhuanzhuan\.com/g,
     str: location.origin.toLowerCase(),
   }),
+}
+
+/**
+ * 授权的公众号id
+ * */
+const getWxPublicId = () => {
+  const query = getUrlParams()
+  const config = Object.assign({}, window.nativeAdapterConfig)
+  return (
+    query.wxPublicId ||
+    config.wxPublicId ||
+    query.__t ||
+    getCookie('zz_t') ||
+    getCookie('t') ||
+    '24'
+  )
 }
 
 /**
@@ -104,29 +135,6 @@ export const AppInfomation = {
 export const wechatInfomation = {
   appID: 'wx6f1a8464fa672b11', //转转app在微信绑定的appid
 }
-
-/**
- * 各端下载地址
- * */
-export const downloadUrl = {
-  ios:
-    'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
-  android: 'market://search?q=pname:com.wuba.zhuanzhuan',
-  wechat_android:
-    'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
-  browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
-}
-
-export const checkDownloadUrl = (function () {
-  const u = navigator.userAgent
-  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
-  const iosUrl = 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8'
-  const androidUrl =
-    'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
-  return {
-    browser: isAndroid ? androidUrl : iosUrl,
-  }
-})()
 
 /**
  * 跳转协议映射, 老的openType对应统跳的映射表
