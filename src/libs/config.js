@@ -1,5 +1,8 @@
 import { regTest, getUrlParams, getCookie } from './utils'
 
+const u = navigator.userAgent
+const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+
 /**
  * 所适配的各种终端 (name 要与 '/src/callers/**' 保持一致)
  * 该终端指的是调起时候的执行环境，而不是需要调起的app
@@ -37,24 +40,42 @@ export const targetToSchema = {
 }
 
 // 转转各版本下载地址
-export const downloadUrl = {
-  ios:
-    'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8',
-  android: 'market://search?q=pname:com.wuba.zhuanzhuan',
-  wechat_android:
-    'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
-  browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
-}
+export const downloadUrl = (function () {
+  const iosUrl =
+    'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8'
+  const androidUrl = 'market://search?q=pname:com.wuba.zhuanzhuan'
+  const wechatAndroid =
+    'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan'
+  return {
+    ios: iosUrl,
+    android: androidUrl,
+    wechat_android: wechatAndroid,
+    browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
+  }
+})()
 
 // 切克各版本下载地址
 export const checkDownloadUrl = (function () {
-  const u = navigator.userAgent
-  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
   const iosUrl = 'itms-apps://itunes.apple.com/cn/app/id1457304322?mt=8'
   const androidUrl =
     'https://app.zhuanzhuan.com/zzopredirect/zzgbaselogic/download'
   return {
     browser: isAndroid ? androidUrl : iosUrl,
+  }
+})()
+
+// 一格各版本下载地址
+export const yigeDownloadUrl = (function () {
+  const iosUrl =
+    'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1524602621?l=zh&ls=1&mt=8'
+  const androidUrl = 'market://search?q=pname:com.zhuanzhuan.yige'
+  const wechatAndroid =
+    'https://sj.qq.com/myapp/detail.htm?apkName=com.zhuanzhuan.yige'
+  return {
+    ios: iosUrl,
+    android: androidUrl,
+    wechat_android: wechatAndroid,
+    browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
   }
 })()
 

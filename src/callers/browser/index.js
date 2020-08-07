@@ -29,7 +29,7 @@ export default class BrowserCaller extends BaseCaller {
       return universal.call(this, options)
     }
 
-    if (compareVersion(iosVer, '12.3.0')) options.delay = 2500
+    if (compareVersion(iosVer, '12.3.0')) options.delay = 3000
 
     this.__openApp(options)
     const ua = navigator.userAgent

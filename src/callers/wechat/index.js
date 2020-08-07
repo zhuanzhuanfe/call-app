@@ -1,6 +1,3 @@
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import BaseCaller from '../../core/base'
 import { dependencies } from '../../libs/config'
 import { regTest } from '../../libs/utils'
@@ -12,27 +9,20 @@ export default class WeChatCaller extends BaseCaller {
     window.__json_jsticket = resp => {
       this.WX_JSTICKET = (resp.respCode == 0 && resp.respData) || {}
     }
-    super(
-      [
-        dependencies.WX_JWEIXIN,
-        // dependencies.WX_WIKI,
-        dependencies.WX_JSTICKET,
-      ],
-      () => {
-        this.cbs = []
-        this.__onReady().then(() => {
-          this.Wechat = window.WeixinJSBridge
-          this.App = new WechatApp(this.Wechat, this.WX_JSTICKET)
-          this.cbs.forEach(obj => {
-            obj.cb.apply(this, obj.args)
-          })
+    super([dependencies.WX_JWEIXIN, dependencies.WX_JSTICKET], () => {
+      this.cbs = []
+      this.__onReady().then(() => {
+        this.Wechat = window.WeixinJSBridge
+        this.App = new WechatApp(this.Wechat, this.WX_JSTICKET)
+        this.cbs.forEach(obj => {
+          obj.cb.apply(this, obj.args)
         })
-      }
-    )
+      })
+    })
   }
   init() {}
   __onReady() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       (window.WeixinJSBridge && resolve()) ||
         document.addEventListener(
           'WeixinJSBridgeReady',
@@ -64,6 +54,7 @@ export default class WeChatCaller extends BaseCaller {
       }, 800)
       return
     }
+
     return this.App.launchApplication({ appID, parameter, extInfo })
       .then(() => {})
       .catch(() => this.__download(options))

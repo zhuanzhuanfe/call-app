@@ -25,21 +25,30 @@ export default class BaseCaller {
   }
 
   __download(options) {
-    const { channelId, middleWareUrl, path, download } = options
+    const { channelId, middleWareUrl, download } = options
     if (!download) return
     const plat = new Platform({})
     const platName = plat.getCurrentPlatform()
     let wechat = platName === 'wechat' ? '#mp.weixin.qq.com' : ''
 
     // 不同平台的下载逻辑
-    // TODO：补充一格App
-    const isCheck = /^(zzcheck)/.test(path)
-    const downloadCofig = isCheck
-      ? this.config.checkDownloadUrl
-      : this.config.downloadUrl
+    const downloadCofig = this.getDownloadConfig(options)
+
     location.href =
       middleWareUrl ||
       downloadCofig.browser + '?channelId=' + channelId + wechat
+  }
+
+  getDownloadConfig(options) {
+    const { path, __SCHEMA_PATH } = options
+    const p = __SCHEMA_PATH || path
+    if (/^(zzcheck)/.test(p)) {
+      return this.config.checkDownloadUrl
+    } else if (/^(zzyige)/.test(p)) {
+      return this.config.yigeDownloadUrl
+    } else {
+      return this.config.downloadUrl
+    }
   }
 
   wrap(fn, args) {
