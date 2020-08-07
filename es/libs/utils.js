@@ -25,7 +25,7 @@ export var IOSVersion = function IOSVersion() {
   var ver = str.match(/cpu iphone os (.*?) like mac os/);
 
   try {
-    if (ver) ver = ver[1].replace(/_/g, ".");
+    if (ver) ver = ver[1].replace(/_/g, '.');
   } catch (error) {
     console.log(error);
   }

@@ -10,7 +10,7 @@ export var Platform = /*#__PURE__*/function () {
 
     _classCallCheck(this, Platform);
 
-    this.ua = opts.ua || navigator.userAgent; // this.types = platformTypes;
+    this.ua = opts.ua || navigator.userAgent;
   }
 
   _createClass(Platform, [{
@@ -20,11 +20,10 @@ export var Platform = /*#__PURE__*/function () {
       var defaultType = {
         name: 'browser'
       };
-      var isWechat = /micromessenger/g.test(ua) && 'wechat';
       var plat = Object.assign({}, defaultType, platformTypes.filter(function (plat) {
         return plat.reg.test(ua);
       })[0]);
-      return isWechat || plat.name;
+      return plat.name;
     }
   }]);
 

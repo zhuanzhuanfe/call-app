@@ -1,5 +1,7 @@
 import CallApp from '../src'
 
+// location.href = 'zhuanzhuan://jump/group/manage/jump'
+
 const btn = document.getElementById('btn')
 const callApp = (window.callApp = new CallApp())
 btn.addEventListener('click', function () {
@@ -7,7 +9,7 @@ btn.addEventListener('click', function () {
     path: 'jump/group/manage/jump', // 兼容app所有统跳地址
     channelId: '777',
     download: true,
-    // targetApp: 'yige',
+    targetApp: 'yige',
     // universal: true,
   })
 })

@@ -1,6 +1,9 @@
+import "core-js/modules/es.date.to-string";
+import "core-js/modules/es.function.bind";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.regexp.to-string";
+import "core-js/modules/web.timers";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _get from "@babel/runtime/helpers/esm/get";
@@ -8,7 +11,7 @@ import _inherits from "@babel/runtime/helpers/esm/inherits";
 import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
 
-function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
@@ -39,8 +42,8 @@ var WBAppCaller = /*#__PURE__*/function (_BaseCaller) {
     key: "__isInstallApp",
     value: function __isInstallApp() {
       return this.App.isInstallApp({
-        'urlschema': this.config.AppInfomation.SCHEMA,
-        'package': this.config.AppInfomation.ANDROID_PACKAGE_NAME
+        urlschema: this.config.AppInfomation.SCHEMA,
+        "package": this.config.AppInfomation.ANDROID_PACKAGE_NAME
       });
     }
   }, {
@@ -56,15 +59,14 @@ var WBAppCaller = /*#__PURE__*/function (_BaseCaller) {
       }
 
       return this.App.openApp({
-        'urlschema': options.__SCHEMA_PATH || this.config.AppInfomation.SCHEMA,
-        'package': this.config.AppInfomation.ANDROID_PACKAGE_NAME,
-        'maincls': this.config.AppInfomation.ANDROID_MAINCLS
+        urlschema: options.__SCHEMA_PATH || this.config.AppInfomation.SCHEMA,
+        "package": this.config.AppInfomation.ANDROID_PACKAGE_NAME,
+        maincls: this.config.AppInfomation.ANDROID_MAINCLS
       });
     }
   }, {
     key: "__download",
-    value: function __download(_ref) {
-      var channelId = _ref.channelId;
+    value: function __download() {
       // 58App 渠道下载, 无法传递channelId (Android & IOS 下载都跳转应用市场)
       var type = this.config.device.getType();
       location.href = this.config.downloadUrl[type];
@@ -84,9 +86,9 @@ var WBAppCaller = /*#__PURE__*/function (_BaseCaller) {
     value: function launch(opts) {
       var _this2 = this;
 
-      this.__isInstallApp().then(function (_ref2) {
-        var data = _ref2.data,
-            code = _ref2.code;
+      this.__isInstallApp().then(function (_ref) {
+        var data = _ref.data,
+            code = _ref.code;
         // status: "0" 是已安装, “1”是未安装
         if (code != 0) return;
 

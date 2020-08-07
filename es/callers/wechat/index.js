@@ -1,9 +1,11 @@
 import "core-js/modules/es.array.for-each";
+import "core-js/modules/es.date.to-string";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.promise";
 import "core-js/modules/es.reflect.construct";
 import "core-js/modules/es.regexp.to-string";
 import "core-js/modules/web.dom-collections.for-each";
+import "core-js/modules/web.timers";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _assertThisInitialized from "@babel/runtime/helpers/esm/assertThisInitialized";
@@ -12,13 +14,10 @@ import _inherits from "@babel/runtime/helpers/esm/inherits";
 import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
 
-function _createSuper(Derived) { return function () { var Super = _getPrototypeOf(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-/**
- * Created by luyunhai on 2018/11/8.
- */
 import BaseCaller from '../../core/base';
 import { dependencies } from '../../libs/config';
 import { regTest } from '../../libs/utils';
@@ -39,8 +38,7 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
       _this.WX_JSTICKET = resp.respCode == 0 && resp.respData || {};
     };
 
-    return _this = _super.call(this, [dependencies.WX_JWEIXIN, // dependencies.WX_WIKI,
-    dependencies.WX_JSTICKET], function () {
+    return _this = _super.call(this, [dependencies.WX_JWEIXIN, dependencies.WX_JSTICKET], function () {
       _this.cbs = [];
 
       _this.__onReady().then(function () {
@@ -60,7 +58,7 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
   }, {
     key: "__onReady",
     value: function __onReady() {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         window.WeixinJSBridge && resolve() || document.addEventListener('WeixinJSBridgeReady', function () {
           resolve();
         }, false);
@@ -99,7 +97,7 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
         appID: appID,
         parameter: parameter,
         extInfo: extInfo
-      }).then(function (data) {}).catch(function (data) {
+      }).then(function () {})["catch"](function () {
         return _this2.__download(options);
       });
     }
@@ -118,7 +116,7 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
     value: function __tryLaunch(options) {
       var _this3 = this;
 
-      return this.__openApp(options).catch(function (data) {
+      return this.__openApp(options)["catch"](function () {
         return _this3.__download(options);
       });
     }
@@ -137,9 +135,9 @@ var WeChatCaller = /*#__PURE__*/function (_BaseCaller) {
     value: function __start(options) {
       var _this4 = this;
 
-      this.config.device.isAndroid && this.__isInstallApp(options).then(function (data) {
+      this.config.device.isAndroid && this.__isInstallApp(options).then(function () {
         return _this4.__openApp(options);
-      }).catch(function (data) {
+      })["catch"](function () {
         return _this4.__download(options);
       }) || this.__tryLaunch(options);
     }

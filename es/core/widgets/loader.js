@@ -1,8 +1,4 @@
 import "core-js/modules/es.array.map";
-
-/**
- * Created by luyunhai on 2018/11/8.
- */
 export var loadJS = function loadJS(url, cb) {
   var head = window.document.getElementsByTagName('head')[0];
   var js = window.document.createElement('script');

@@ -3,7 +3,6 @@ import "core-js/modules/web.dom-collections.for-each";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import { loadJSArr } from './widgets/loader';
-import { Event } from './widgets/Event';
 import PatternsAdapter from './widgets/PatternsAdapter';
 import * as config from '../libs/config';
 import { Platform } from '../libs/platform';
@@ -41,7 +40,6 @@ var BaseCaller = /*#__PURE__*/function () {
             args = _ref.args;
         return cb.call(_this2, args);
       });
-      Event.emit('mounted');
     }
   }, {
     key: "__appendCallback",
@@ -56,20 +54,29 @@ var BaseCaller = /*#__PURE__*/function () {
     value: function __download(options) {
       var channelId = options.channelId,
           middleWareUrl = options.middleWareUrl,
-          path = options.path,
           download = options.download;
       if (!download) return;
-      var wechat = '';
       var plat = new Platform({});
       var platName = plat.getCurrentPlatform();
+      var wechat = platName === 'wechat' ? '#mp.weixin.qq.com' : ''; // 不同平台的下载逻辑
 
-      if (platName === 'wechat') {
-        wechat = '#mp.weixin.qq.com';
-      }
-
-      var isCheck = /^(zzcheck)/.test(path);
-      var downloadCofig = isCheck ? this.config.checkDownloadUrl : this.config.downloadUrl;
+      var downloadCofig = this.getDownloadConfig(options);
       location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + wechat;
+    }
+  }, {
+    key: "getDownloadConfig",
+    value: function getDownloadConfig(options) {
+      var path = options.path,
+          __SCHEMA_PATH = options.__SCHEMA_PATH;
+      var p = __SCHEMA_PATH || path;
+
+      if (/^(zzcheck)/.test(p)) {
+        return this.config.checkDownloadUrl;
+      } else if (/^(zzyige)/.test(p)) {
+        return this.config.yigeDownloadUrl;
+      } else {
+        return this.config.downloadUrl;
+      }
     }
   }, {
     key: "wrap",

@@ -42,7 +42,7 @@ var WechatApp = /*#__PURE__*/function () {
         _this.App.invoke(name, options, function (data) {
           var err_msg = data.err_msg;
           regTest({
-            reg: /(\:ok)|(\:yes)/g,
+            reg: /(:ok)|(:yes)/g,
             str: data && data.err_msg
           }) && resolve({
             code: 0,
@@ -68,7 +68,7 @@ var WechatApp = /*#__PURE__*/function () {
     value: function onReady() {
       var _this2 = this;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function (resolve) {
         document.addEventListener('WeixinJSBridgeReady', function () {
           _this2.App = window.WeixinJSBridge;
           resolve();
