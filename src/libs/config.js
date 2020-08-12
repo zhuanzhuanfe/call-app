@@ -75,7 +75,7 @@ export const yigeDownloadUrl = (function () {
     ios: iosUrl,
     android: androidUrl,
     wechat_android: wechatAndroid,
-    browser: 'https://app.zhuanzhuan.com/zz/redirect/download',
+    browser: 'https://app.zhuanzhuan.com/zzopredirect/tobtoollogic/download',
   }
 })()
 
