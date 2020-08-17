@@ -11,7 +11,7 @@
 npm i @zz-common/call-app -S
 ```
 
-或者使用cdn直引，地址：`https://s1.zhuanstatic.com/common/call-app/static/js/3.2.0/index.min.js`，其中版本号可以使用任意正式版本
+或者使用cdn直引，地址：`https://s1.zhuanstatic.com/common/call-app/static/js/3.2.2-beta.2/index.min.js`，其中版本号可以使用任意正式版本
 
 ### Step2：引入
 ```js
