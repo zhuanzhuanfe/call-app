@@ -1,15 +1,23 @@
 import CallApp from '../src'
 
-// location.href = 'zhuanzhuan://jump/group/manage/jump'
+// 微信唤起app按钮
+// var btn = document.getElementById('launch-btn')
+// btn.addEventListener('launch', function (e) {
+//   console.log('success', e)
+// })
+// btn.addEventListener('error', function (e) {
+//   console.log('fail', e.detail)
+// })
 
-const btn = document.getElementById('btn')
+const btn2 = document.getElementById('btn')
 const callApp = (window.callApp = new CallApp())
-btn.addEventListener('click', function () {
+btn2.addEventListener('click', function () {
   callApp.start({
     path: 'jump/group/manage/jump', // 兼容app所有统跳地址
-    // channelId: '777',
-    download: true,
+    channelId: '777',
     targetApp: 'yige',
+    // wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
     // universal: true,
+    // download: true,
   })
 })

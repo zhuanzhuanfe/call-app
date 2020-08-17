@@ -20,6 +20,7 @@ export default class WechatApp {
       signature: conf.signature,
       beta: true,
       jsApiList: ['launchApplication', 'getInstallState'],
+      openTagList: ['wx-open-launch-app'],
     }
     ;(window.wx && window.wx.config(wxconfig)) || (window.wxconfig = wxconfig)
   }
@@ -43,7 +44,7 @@ export default class WechatApp {
    *  @return {Promise}
    * */
   onReady() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       document.addEventListener(
         'WeixinJSBridgeReady',
         () => {

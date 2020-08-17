@@ -54,7 +54,6 @@ export default class WeChatCaller extends BaseCaller {
       }, 800)
       return
     }
-
     return this.App.launchApplication({ appID, parameter, extInfo })
       .then(() => {})
       .catch(() => this.__download(options))
@@ -70,7 +69,30 @@ export default class WeChatCaller extends BaseCaller {
   __invoke({ cb, args }) {
     this.cbs.push({ cb, args })
   }
+
+  __createShareMask() {
+    const mask = document.createElement('div')
+    mask.style.cssText =
+      'position: fixed;z-index: 100000;transition: all 0.5s;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.6);opacity:0'
+    mask.innerHTML =
+      '<img src="https://pic3.zhuanstatic.com/zhuanzh/n_v28e90120d40634639b6f606af7ca40fb3.png" style="position:absolute;top:20px;right:20px;left:auto;bottom:auto;line-height:0;width:168px;height:81px;transform: translate3d(0, 0, 0);">'
+    document.body.appendChild(mask)
+    setTimeout(() => {
+      mask.style.opacity = 1
+    }, 300)
+
+    mask.addEventListener('click', function () {
+      document.body.removeChild(mask)
+    })
+  }
+
   __start(options) {
+    // 如果不是转转app，那么直接弹出蒙层，提示用户去浏览器打开
+    if (options.targetApp !== 'zz' && options.wechatStyle === 1) {
+      this.__createShareMask()
+      return false
+    }
+
     (this.config.device.isAndroid &&
       this.__isInstallApp(options)
         .then(() => this.__openApp(options))

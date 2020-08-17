@@ -132,7 +132,7 @@ export const dependencies = {
   ZZ_SDK:
     'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
   WB_SDK: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',
-  WX_JWEIXIN: 'https://s1.zhuanstatic.com/common/jweixin-1.5.0.js',
+  WX_JWEIXIN: 'https://s1.zhuanstatic.com/common/jweixin-1.6.0.js',
   WX_WIKI: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
   WX_JSTICKET:
     `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=` +

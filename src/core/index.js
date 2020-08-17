@@ -45,6 +45,7 @@ class Core {
           wechatCheckInstallState: () => {}, //微信端初始化检测安装后的回调函数
           universal: false,
           download: true, // 默认吊起失败后，转入下载逻辑
+          wechatStyle: 1, // 默认微信吊起失败后，提示右上角打开
         },
         opts
       )
