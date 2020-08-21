@@ -12,8 +12,9 @@ var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
  * */
 
 export var platformTypes = [{
-  reg: /zhuanzhuanseller/g,
-  name: 'zzSeller'
+  // 卖家版、采货侠、一格app都走zzLike的适配器，它们都是只需要拉起转转
+  reg: /(zhuanzhuanseller)|(zzhunter)|(yigeapp)/g,
+  name: 'zzLike'
 }, {
   reg: /58zhuanzhuan/g,
   name: 'zz'
@@ -112,7 +113,14 @@ var getWxPublicId = function getWxPublicId() {
 
 
 export var dependencies = {
-  ZZ_SELLER_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
+  ZZ_LIKE_SDK: function ZZ_LIKE_SDK(plat) {
+    var urls = {
+      zzseller: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
+      zzhunter: 'https://s1.zhuanstatic.com/common/hunterapp/static/js/1.1.1/index.min.js',
+      yige: 'https://s1.zhuanstatic.com/common/yigeapp/static/js/1.0.0/index.min.js'
+    };
+    return urls[plat];
+  },
   ZZ_SDK: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
   WB_SDK: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',
   WX_JWEIXIN: 'https://s1.zhuanstatic.com/common/jweixin-1.6.0.js',

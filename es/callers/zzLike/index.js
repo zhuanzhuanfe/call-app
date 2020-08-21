@@ -1,3 +1,4 @@
+import "core-js/modules/es.array.concat";
 import "core-js/modules/es.date.to-string";
 import "core-js/modules/es.object.to-string";
 import "core-js/modules/es.reflect.construct";
@@ -13,12 +14,24 @@ function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflec
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-/**
- * Created by luyunhai on 2018/12/3.
- */
 import BaseCaller from '../../core/base';
 import { dependencies } from '../../libs/config';
-import ZZSellerAPP from './sdk';
+import ZZSellerAPP from './sdk'; // 具体平台识别
+
+var plat = '';
+var schemaPerfix = 'zhuanzhuan://';
+var ua = navigator.userAgent.toLowerCase();
+
+if (/zhuanzhuanseller/g.test(ua)) {
+  plat = 'zzseller';
+  schemaPerfix = 'zhuanzhuanseller://';
+} else if (/zzhunter/g.test(ua)) {
+  plat = 'zzhunter';
+  schemaPerfix = 'zzhunter://';
+} else if (/yigeapp/g.test(ua)) {
+  plat = 'yige';
+  schemaPerfix = 'zzyige://';
+}
 
 var ZZAppCaller = /*#__PURE__*/function (_BaseCaller) {
   _inherits(ZZAppCaller, _BaseCaller);
@@ -30,8 +43,12 @@ var ZZAppCaller = /*#__PURE__*/function (_BaseCaller) {
 
     _classCallCheck(this, ZZAppCaller);
 
-    return _this = _super.call(this, dependencies.ZZ_SELLER_SDK, function () {
-      _this.ZZSellerAPP = window.ZZSELLER;
+    return _this = _super.call(this, dependencies.ZZ_LIKE_SDK(plat), function () {
+      _this.ZZSellerAPP = {
+        zzseller: window.ZZSELLER,
+        zzhunter: window.HUNTERAPP,
+        yige: window.YIGEAPP
+      }[plat];
       _this.App = new ZZSellerAPP(_this.ZZSellerAPP);
     });
   }
@@ -45,7 +62,7 @@ var ZZAppCaller = /*#__PURE__*/function (_BaseCaller) {
       var options = _get(_getPrototypeOf(ZZAppCaller.prototype), "adaptOptions", this).call(this, opts);
 
       var url = encodeURIComponent(options.__SCHEMA_PATH);
-      var schema = 'zhuanzhuanseller://jump/core/openZhuanZhuan/jump';
+      var schema = "".concat(schemaPerfix, "jump/core/openZhuanZhuan/jump");
       var unifiedUrl = "".concat(schema, "?url=").concat(url);
       this.App.openApp({
         unifiedUrl: unifiedUrl

@@ -21,7 +21,12 @@ export var Platform = /*#__PURE__*/function () {
         name: 'browser'
       };
       var plat = Object.assign({}, defaultType, platformTypes.filter(function (plat) {
-        return plat.reg.test(ua);
+        if (plat.reg.test(ua)) {
+          plat.reg.lastIndex = 0;
+          return true;
+        }
+
+        return false;
       })[0]);
       return plat.name;
     }

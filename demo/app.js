@@ -15,7 +15,7 @@ btn2.addEventListener('click', function () {
   callApp.start({
     path: 'jump/group/manage/jump', // 兼容app所有统跳地址
     channelId: '777',
-    targetApp: 'yige',
+    targetApp: 'zz',
     // wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
     // universal: true,
     // download: true,
