@@ -40,7 +40,7 @@ class Core {
         {
           targetApp: 'zz', // 目标App（zz: 主App, seller: 商家App）
           channelId: 923, //渠道号
-          delay: 800, //触发下载的延时时间，低于1600可能会出现调起的同时触发下载
+          delay: 2500, //触发下载的延时时间，低于2500可能会出现调起的同时触发下载
           middleWareUrl: '', //下载中转页,如不设置，将直接下载安装包或跳appstore
           wechatCheckInstallState: () => {}, //微信端初始化检测安装后的回调函数
           universal: false,

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
-    <title>call-app测试</title>
+    <title>唤起App测试demo</title>
     <link rel="dns-prefetch" href="https://s1.zhuanstatic.com" />
     <link rel="dns-prefetch" href="https://img1.zhuanstatic.com" />
     <link
@@ -19,15 +19,13 @@
     <meta content="telephone=no,email=no" name="format-detection" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <script src="https://cdn.bootcss.com/vConsole/3.3.2/vconsole.min.js"></script>
-    <script>new VConsole();</script>
     <style>
       body {
         text-align: center;
       }
       .btn {
         display: block;
-        width: 200px;
+        width: 150px;
         height: 30px;
         font-size: 14px;
         text-align: center;
@@ -37,23 +35,7 @@
     </style>
   </head>
   <body>
-    <h1 style="text-align: center;">call-app</h1>
-    <input type="button" class="btn" value="点击测试call-app" id="btn" />
-
-    <wx-open-launch-app
-      id="launch-btn"
-      appid="wx6f1a8464fa672b11"
-      extinfo="zzyige://jump/group/manage/jump"
-    >
-      <template>
-        <style>
-          .launch-btn {
-            padding: 12px;
-            margin-top: 50px;
-          }
-        </style>
-        <button class="launch-btn">微信launch功能</button>
-      </template>
-    </wx-open-launch-app>
+    <h3 style="text-align: center;">唤起App测试Demo</h3>
+    <input type="button" class="btn" value="点击唤起App" id="btn" />
   </body>
 </html>
