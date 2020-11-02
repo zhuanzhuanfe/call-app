@@ -1,6 +1,6 @@
 {
   "name": "@zz-common/call-app",
-  "version": "3.2.2-beta.3",
+  "version": "3.2.3-beta.1",
   "description": "通用的唤起app的库",
   "scripts": {
     "cz": "git cz -a",
@@ -13,7 +13,7 @@
     "compile": "commander-tools run compile",
     "dist": "commander-tools run dist",
     "analyz": "commander-tools run dist --analyz",
-    "build": "commander-tools run build",
+    "build": "commander-tools run build -s",
     "pub": "commander-tools run pub",
     "pub-beta": "commander-tools run pub-beta",
     "unpub": "commander-tools run unpub",
@@ -42,13 +42,13 @@
     }
   },
   "devDependencies": {
-    "@zz-common/commander-tools": "^3.0.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@zz-common/commander-tools": "^3.0.8",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-plugin-html": "^6.0.2",
-    "husky": "^4.2.5",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-proposal-decorators": "^7.10.5"
+    "husky": "^4.2.5"
   },
   "peerDependencies": {},
   "dependencies": {

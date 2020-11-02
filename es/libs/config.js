@@ -37,7 +37,7 @@ export var targetToSchema = {
 }; // 转转各版本下载地址
 
 export var downloadUrl = function () {
-  var iosUrl = 'itms-apps://itunes.apple.com/us/app/zhuan-zhuan-kuai-ren-yi-bu/id1002355194?l=zh&ls=1&mt=8';
+  var iosUrl = 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8';
   var androidUrl = 'market://search?q=pname:com.wuba.zhuanzhuan';
   var wechatAndroid = 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan';
   return {
