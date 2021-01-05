@@ -4,6 +4,7 @@ import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import BaseCaller from './base';
 import { Platform } from '../libs/platform';
+import { copy } from '../libs/utils';
 var base = new BaseCaller();
 
 var Core = /*#__PURE__*/function () {
@@ -39,6 +40,8 @@ var Core = /*#__PURE__*/function () {
   }, {
     key: "start",
     value: function start(opts) {
+      // 复制地址到剪切板，用于下载后，启动app页面还原
+      copy("1.0$$".concat(base.adaptOptions(opts).__SCHEMA_PATH));
       this.caller.wrap(this.caller.launch.bind(this.caller), Object.assign({}, {
         targetApp: 'zz',
         // 目标App（zz: 主App, seller: 商家App）

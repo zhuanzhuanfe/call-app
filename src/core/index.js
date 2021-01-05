@@ -1,5 +1,6 @@
 import BaseCaller from './base'
 import { Platform } from '../libs/platform'
+import { copy } from '../libs/utils'
 
 const base = new BaseCaller()
 
@@ -33,6 +34,9 @@ class Core {
    * @param fail：调起失败的回调
    */
   start(opts) {
+    // 复制地址到剪切板，用于下载后，启动app页面还原
+    copy(`1.0$$${base.adaptOptions(opts).__SCHEMA_PATH}`)
+
     this.caller.wrap(
       this.caller.launch.bind(this.caller),
       Object.assign(
@@ -49,7 +53,7 @@ class Core {
         },
         opts
       )
-    )
+    );
   }
 }
 
