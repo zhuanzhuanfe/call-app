@@ -7,5 +7,5 @@ const targetToPath = {
 
 export default function (opt) {
   const { __SCHEMA_PATH } = opt
-  location.href = `https://mjump.zhuanzhuan.com/${targetToPath[opt.targetApp]}/index.html?path=${__SCHEMA_PATH}`
+  location.href = `https://mjump.zhuanzhuan.com/${targetToPath[opt.targetApp]}/index.html?path=${encodeURIComponent(__SCHEMA_PATH)}`
 }
