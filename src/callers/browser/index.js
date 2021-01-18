@@ -19,6 +19,8 @@ export default class BrowserCaller extends BaseCaller {
     const ua = navigator.userAgent
 
     if (!/(iphone)|(ipad)|(ipod)/gi.test(ua)) return false
+    if (!compareVersion(iosVer, '9.0.0')) return false
+
     // 限定百度app、safari、抖音可以使用
     if (/(baiduboxapp)/gi.test(ua) || /(Safari)/gi.test(ua) || /(aweme)/gi.test(ua)) return true
     return false

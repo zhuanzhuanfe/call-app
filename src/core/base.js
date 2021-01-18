@@ -33,7 +33,6 @@ export default class BaseCaller {
 
     // 不同平台的下载逻辑
     const downloadCofig = this.getDownloadConfig(options)
-
     location.href =
       middleWareUrl ||
       downloadCofig.browser + '?channelId=' + channelId + wechat

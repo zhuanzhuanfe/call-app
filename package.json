@@ -1,6 +1,6 @@
 {
   "name": "@zz-common/call-app",
-  "version": "3.2.3-beta.3",
+  "version": "3.3.0-beta.1",
   "description": "通用的唤起app的库",
   "scripts": {
     "cz": "git cz -a",

@@ -26,7 +26,6 @@ const callApp = new CallApp();
 callApp.start({
   path:'jump/group/manage/jump', // 兼容app所有统跳地址
   channelId: '777',
-  universal: true,
 });
 ```
 
@@ -37,7 +36,7 @@ https://fe.zhuanspirit.com/common/@zz-common/call-app/
 - **path** `String` 调起app时，默认打开的页面，类型为app的统跳地址（选填）
 - **channelId** `String` 渠道号，当用户没有安装app时，默认下载的渠道号，安卓支持，iOS不支持，默认`923`（选填）
 - **targetApp** `String` 调起的目标app，其中：zz(转转),zzseller(转转卖家版),check(切克app),yige(一格app)，默认为`zz`
-- **universal** `Boolean` 是否开启通用链接调起模式，默认为`false`
+- **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
 - **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
 - **middleWareUrl** 中转url，如空则直接跳转下载安装包或appstore
 - **urlSearch** `Object` [已废弃] 指定页面调起方式，不推荐，直接设置path来跳转即可

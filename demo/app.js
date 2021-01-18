@@ -8,6 +8,5 @@ btn2.addEventListener('click', function () {
     channelId: '777',
     targetApp: 'zz',
     wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
-    universal: true,
   })
 })

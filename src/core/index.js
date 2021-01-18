@@ -14,7 +14,7 @@ class Core {
 
   // 直接下载能力
   static download({ channelId = 923, middleWareUrl, path }) {
-    base.__download({ channelId, middleWareUrl, path })
+    base.__download({ channelId, middleWareUrl, path, download: true })
   }
 
   loader() {
@@ -37,6 +37,12 @@ class Core {
     // 复制地址到剪切板，用于下载后，启动app页面还原
     copy(`1.0$$${base.adaptOptions(opts).__SCHEMA_PATH}`)
 
+    // 如果是在mjump域名下(universal link情况)，那么就只能走下载
+    if (document.domain === 'mjump.zhuanzhuan.com') {
+      Core.download(opts);
+      return ;
+    }
+
     this.caller.wrap(
       this.caller.launch.bind(this.caller),
       Object.assign(
@@ -47,7 +53,7 @@ class Core {
           delay: 2500, //触发下载的延时时间，低于2500可能会出现调起的同时触发下载
           middleWareUrl: '', //下载中转页,如不设置，将直接下载安装包或跳appstore
           wechatCheckInstallState: () => {}, //微信端初始化检测安装后的回调函数
-          universal: false,
+          universal: true,
           download: true, // 默认吊起失败后，转入下载逻辑
           wechatStyle: 1, // 默认微信吊起失败后，提示右上角打开
         },
