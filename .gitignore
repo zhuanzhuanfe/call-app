@@ -5,3 +5,5 @@ npm-debug.log
 v2/
 package-lock.json
 dist/
+es/
+lib/
