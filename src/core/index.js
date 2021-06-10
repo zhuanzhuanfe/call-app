@@ -56,6 +56,7 @@ class Core {
           universal: true,
           download: true, // 默认吊起失败后，转入下载逻辑
           wechatStyle: 1, // 默认微信吊起失败后，提示右上角打开
+          deeplinkId: '', // deeplink接口支持的id配置
         },
         opts
       )
@@ -63,5 +64,7 @@ class Core {
   }
 }
 
-window.CallApp = Core
+if (typeof window !== 'undefined') {
+  window.CallApp = Core
+}
 export default Core

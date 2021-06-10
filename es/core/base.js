@@ -54,14 +54,15 @@ var BaseCaller = /*#__PURE__*/function () {
     value: function __download(options) {
       var channelId = options.channelId,
           middleWareUrl = options.middleWareUrl,
-          download = options.download;
+          download = options.download,
+          deeplinkId = options.deeplinkId;
       if (!download) return;
       var plat = new Platform({});
       var platName = plat.getCurrentPlatform();
       var wechat = platName === 'wechat' ? '#mp.weixin.qq.com' : ''; // 不同平台的下载逻辑
 
       var downloadCofig = this.getDownloadConfig(options);
-      location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + wechat;
+      location.href = middleWareUrl || downloadCofig.browser + '?channelId=' + channelId + '&deeplinkId=' + deeplinkId + wechat;
     }
   }, {
     key: "getDownloadConfig",

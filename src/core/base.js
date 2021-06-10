@@ -25,7 +25,7 @@ export default class BaseCaller {
   }
 
   __download(options) {
-    const { channelId, middleWareUrl, download } = options
+    const { channelId, middleWareUrl, download, deeplinkId } = options
     if (!download) return
     const plat = new Platform({})
     const platName = plat.getCurrentPlatform()
@@ -35,7 +35,7 @@ export default class BaseCaller {
     const downloadCofig = this.getDownloadConfig(options)
     location.href =
       middleWareUrl ||
-      downloadCofig.browser + '?channelId=' + channelId + wechat
+      downloadCofig.browser + '?channelId=' + channelId + '&deeplinkId=' + deeplinkId + wechat
   }
 
   getDownloadConfig(options) {
