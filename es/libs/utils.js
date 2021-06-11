@@ -62,7 +62,11 @@ export var compareVersion = function compareVersion(curV, reqV) {
   }
 };
 export var getUrlParams = function getUrlParams(url) {
-  url = url || location.href;
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
+  url = url || location && location.href;
   if (url.indexOf('?') < 0) return {};
   return url.replace(/^.+?\?/, '').replace(/#.+/, '').split('&').filter(function (param) {
     return param;
@@ -80,6 +84,10 @@ export var getCookie = function getCookie(name) {
 };
 
 function select(element) {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
   var selectedText;
 
   if (element.nodeName === 'SELECT') {
@@ -117,6 +125,10 @@ function select(element) {
 }
 
 export function copy(text, options) {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
   var debug,
       fakeElem,
       success = false;

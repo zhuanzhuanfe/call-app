@@ -48,7 +48,8 @@ export const compareVersion = (curV, reqV) => {
 }
 
 export const getUrlParams = url => {
-  url = url || location.href
+  if(typeof window === 'undefined') { return {} }
+  url = url || (location && location.href)
   if (url.indexOf('?') < 0) return {}
 
   return url
@@ -74,6 +75,7 @@ export const getCookie = name =>
   ).replace(/[^=]+=/, '')
 
 function select(element) {
+  if(typeof window === 'undefined') { return {} }
   var selectedText
   if (element.nodeName === 'SELECT') {
     element.focus()
@@ -109,6 +111,7 @@ function select(element) {
 }
 
 export function copy(text, options) {
+  if(typeof window === 'undefined') { return {} }
   var debug,
     fakeElem,
     success = false

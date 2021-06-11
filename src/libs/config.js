@@ -120,6 +120,7 @@ export const domain = {
  * 授权的公众号id
  * */
 const getWxPublicId = () => {
+  if(typeof window === 'undefined') { return {} }
   const query = getUrlParams()
   const config = Object.assign({}, window.nativeAdapterConfig)
   return (
@@ -151,7 +152,7 @@ export const dependencies = {
   WX_WIKI: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
   WX_JSTICKET:
     `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=` +
-    encodeURIComponent(window.location.href.split('#')[0]) +
+    encodeURIComponent(location.href.split('#')[0]) +
     '&callback=__json_jsticket',
 }
 
