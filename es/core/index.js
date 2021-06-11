@@ -40,6 +40,7 @@ var Core = /*#__PURE__*/function () {
     key: "start",
     value: function start(opts) {
       // 复制地址到剪切板，用于下载后，启动app页面还原
+      var base = new BaseCaller();
       copy("1.0$$".concat(base.adaptOptions(opts).__SCHEMA_PATH)); // 如果是在mjump域名下(universal link情况)，那么就只能走下载
 
       if (document.domain === 'mjump.zhuanzhuan.com') {
