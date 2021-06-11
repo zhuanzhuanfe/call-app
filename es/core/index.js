@@ -5,7 +5,6 @@ import _createClass from "@babel/runtime/helpers/esm/createClass";
 import BaseCaller from './base';
 import { Platform } from '../libs/platform';
 import { copy } from '../libs/utils';
-var base = new BaseCaller();
 
 var Core = /*#__PURE__*/function () {
   function Core() {
@@ -75,6 +74,7 @@ var Core = /*#__PURE__*/function () {
           channelId = _ref$channelId === void 0 ? 923 : _ref$channelId,
           middleWareUrl = _ref.middleWareUrl,
           path = _ref.path;
+      var base = new BaseCaller();
 
       base.__download({
         channelId: channelId,

@@ -2,8 +2,6 @@ import BaseCaller from './base'
 import { Platform } from '../libs/platform'
 import { copy } from '../libs/utils'
 
-const base = new BaseCaller()
-
 class Core {
   constructor() {
     const plat = new Platform({})
@@ -14,6 +12,7 @@ class Core {
 
   // 直接下载能力
   static download({ channelId = 923, middleWareUrl, path }) {
+    const base = new BaseCaller()
     base.__download({ channelId, middleWareUrl, path, download: true })
   }
 
@@ -35,6 +34,7 @@ class Core {
    */
   start(opts) {
     // 复制地址到剪切板，用于下载后，启动app页面还原
+    const base = new BaseCaller()
     copy(`1.0$$${base.adaptOptions(opts).__SCHEMA_PATH}`)
 
     // 如果是在mjump域名下(universal link情况)，那么就只能走下载

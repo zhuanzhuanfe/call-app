@@ -18,6 +18,14 @@ import "core-js/modules/es.string.split";
  * @param {Reg} options.reg - 必填项，正则表达式
  * @param {String} options.str - 必填项，被匹配的字符串
  * */
+var document, location, navigator;
+
+if (typeof window !== 'undefined') {
+  document = window.document;
+  navigator = window.navigator;
+  location = window.location;
+}
+
 export var regTest = function regTest(_ref) {
   var reg = _ref.reg,
       str = _ref.str;
@@ -54,7 +62,7 @@ export var compareVersion = function compareVersion(curV, reqV) {
   }
 };
 export var getUrlParams = function getUrlParams(url) {
-  url = url || window.location.href;
+  url = url || location.href;
   if (url.indexOf('?') < 0) return {};
   return url.replace(/^.+?\?/, '').replace(/#.+/, '').split('&').filter(function (param) {
     return param;

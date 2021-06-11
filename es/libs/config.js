@@ -3,13 +3,21 @@ import "core-js/modules/es.object.assign";
 import "core-js/modules/es.regexp.exec";
 import "core-js/modules/es.string.split";
 import { regTest, getUrlParams, getCookie } from './utils';
-var u = navigator.userAgent;
-var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+var u, isAndroid;
+var navigator, location;
+
+if (typeof window !== 'undefined') {
+  navigator = window.navigator;
+  location = window.location;
+  u = navigator.userAgent;
+  isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+}
 /**
  * 所适配的各种终端 (name 要与 '/src/callers/**' 保持一致)
  * 该终端指的是调起时候的执行环境，而不是需要调起的app
  * 其余终端统一当做browser处理
  * */
+
 
 export var platformTypes = [{
   // 卖家版、采货侠、一格app都走zzLike的适配器，它们都是只需要拉起转转
@@ -74,11 +82,11 @@ export var yigeDownloadUrl = function () {
 export var device = {
   isAndroid: regTest({
     reg: /android/g,
-    str: navigator.userAgent.toLowerCase()
+    str: navigator && navigator.userAgent.toLowerCase()
   }),
   isIOS: regTest({
     reg: /iphone/g,
-    str: navigator.userAgent.toLowerCase()
+    str: navigator && navigator.userAgent.toLowerCase()
   }),
   getType: function getType() {
     return this.isAndroid && 'android' || 'ios';
@@ -91,11 +99,11 @@ export var device = {
 export var domain = {
   is58Domain: regTest({
     reg: /\.58\.com/g,
-    str: location.origin.toLowerCase()
+    str: location && location.origin.toLowerCase()
   }),
   isZZDomain: regTest({
     reg: /\.zhuanzhuan\.com/g,
-    str: location.origin.toLowerCase()
+    str: location && location.origin.toLowerCase()
   })
 };
 /**

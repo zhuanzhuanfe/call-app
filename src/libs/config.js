@@ -1,7 +1,15 @@
 import { regTest, getUrlParams, getCookie } from './utils'
 
-const u = navigator.userAgent
-const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+let u, isAndroid;
+
+let navigator, location;
+
+if (typeof window !== 'undefined') {
+  navigator = window.navigator;
+  location = window.location;
+  u = navigator.userAgent
+  isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+}
 
 /**
  * 所适配的各种终端 (name 要与 '/src/callers/**' 保持一致)
@@ -86,9 +94,9 @@ export const yigeDownloadUrl = (function () {
 export const device = {
   isAndroid: regTest({
     reg: /android/g,
-    str: navigator.userAgent.toLowerCase(),
+    str: navigator && navigator.userAgent.toLowerCase(),
   }),
-  isIOS: regTest({ reg: /iphone/g, str: navigator.userAgent.toLowerCase() }),
+  isIOS: regTest({ reg: /iphone/g, str: navigator && navigator.userAgent.toLowerCase() }),
   getType() {
     return (this.isAndroid && 'android') || 'ios'
   },
@@ -100,11 +108,11 @@ export const device = {
 export const domain = {
   is58Domain: regTest({
     reg: /\.58\.com/g,
-    str: location.origin.toLowerCase(),
+    str: location && location.origin.toLowerCase(),
   }),
   isZZDomain: regTest({
     reg: /\.zhuanzhuan\.com/g,
-    str: location.origin.toLowerCase(),
+    str: location && location.origin.toLowerCase(),
   }),
 }
 
