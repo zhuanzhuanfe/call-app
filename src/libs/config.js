@@ -152,7 +152,7 @@ export const dependencies = {
   WX_WIKI: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
   WX_JSTICKET:
     `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=` +
-    encodeURIComponent(location.href.split('#')[0]) +
+    encodeURIComponent(location ? location.href.split('#')[0] : '') +
     '&callback=__json_jsticket',
 }
 
