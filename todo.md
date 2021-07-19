@@ -1,0 +1,5 @@
+- [ ] 整理 download 方法
+- [ ] 整理 platform 方法
+- [ ] 整理 gen-url-scheme 方法
+- [ ] 整理 launch 方法
+- [ ] 支持 ts

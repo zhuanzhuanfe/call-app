@@ -5,7 +5,7 @@ import WechatApp from './sdk'
 
 export default class WeChatCaller extends BaseCaller {
   constructor() {
-    // jsonp拉取微信信息接口回调函数
+    // jsonp 拉取微信信息接口回调函数
     window.__json_jsticket = resp => {
       this.WX_JSTICKET = (resp.respCode == 0 && resp.respData) || {}
     }
@@ -47,6 +47,7 @@ export default class WeChatCaller extends BaseCaller {
     const appID = this.config.wechatInfomation.appID
     const parameter = options.__SCHEMA_PATH
     const extInfo = options.__SCHEMA_PATH
+
     if (this.config.domain.is58Domain) {
       location.href = options.__SCHEMA_PATH
       setTimeout(() => {
@@ -54,6 +55,7 @@ export default class WeChatCaller extends BaseCaller {
       }, 800)
       return
     }
+
     return this.App.launchApplication({ appID, parameter, extInfo })
       .then(() => {})
       .catch(() => this.__download(options))
@@ -61,10 +63,11 @@ export default class WeChatCaller extends BaseCaller {
   __isInstallApp(options) {
     const packageName = this.config.AppInfomation.ANDROID_PACKAGE_NAME
     const packageUrl = options.__SCHEMA_PATH
+
     return this.App.getInstallState({ packageName, packageUrl })
   }
   __tryLaunch(options) {
-    return this.__openApp(options).catch(() => this.__download(options))
+
   }
   __invoke({ cb, args }) {
     this.cbs.push({ cb, args })
@@ -96,13 +99,17 @@ export default class WeChatCaller extends BaseCaller {
     (this.config.device.isAndroid &&
       this.__isInstallApp(options)
         .then(() => this.__openApp(options))
-        .catch(() => this.__download(options))) ||
-      this.__tryLaunch(options)
+        .catch(() => this.__download(options))
+    ) ||
+    (this.__openApp(options)
+      .catch(() => this.__download(options))
+    )
   }
   launch(opts) {
     if (window.wx) {
       wx.ready(() => {
         const options = super.adaptOptions(opts)
+
         ;(this.Wechat && this.__start(options)) ||
           this.__invoke({
             cb: this.__start,

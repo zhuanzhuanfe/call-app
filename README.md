@@ -33,7 +33,7 @@ callApp.start({
 https://fe.zhuanspirit.com/common/@zz-common/call-app/
 
 ## 配置参数说明
-- **path** `String` 调起app时，默认打开的页面，类型为app的统跳地址（选填）
+- **path** `String` 调起app时，默认打开的页面，类型为 app 的统跳地址（选填）
 - **channelId** `String` 渠道号，当用户没有安装app时，默认下载的渠道号，安卓支持，iOS不支持，默认`923`（选填）
 - **targetApp** `String` 调起的目标app，其中：zz(转转),zzseller(转转卖家版),check(切克app),yige(一格app)，默认为`zz`
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`

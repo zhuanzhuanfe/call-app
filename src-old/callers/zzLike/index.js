@@ -34,7 +34,8 @@ export default class ZZAppCaller extends BaseCaller {
     const url = encodeURIComponent(options.__SCHEMA_PATH)
     const schema = `${schemaPerfix}jump/core/openZhuanZhuan/jump`
     const unifiedUrl = `${schema}?url=${url}`
-    this.App.openApp({ unifiedUrl })
+    // this.App.openApp({ unifiedUrl })
+    this.App.enterUnifiedUrl({ unifiedUrl })
   }
   __download() {}
   __tryLaunch(opts) {
