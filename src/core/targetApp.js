@@ -12,13 +12,13 @@ export const getTargetInfo = (options) => {
   let name = 'zz'
   let schemePrefix, downloadConfig, universalPath;
 
-  if(name = isZZ(targetApp)) {
+  if(isZZ(targetApp)) {
     name = 'zz'
-  } else if(name = isZZSeller(options)) {
+  } else if(isZZSeller(options)) {
     name = 'zzSeller'
-  } else if(name = isZZHunter(options)) {
+  } else if(isZZHunter(options)) {
     name = 'zzHunter'
-  } else if(name = isZZSeeker(options)) {
+  } else if(isZZSeeker(options)) {
     name = 'zzSeeker'
   } else {
     console.error ?
@@ -50,7 +50,7 @@ export const targetAppFlag = {
   'zzSeller': 1 << 1,
   'zzHunter': 1 << 2,
   'zzSeeker': 1 << 3,
-  'zzLike': (1 << 1) | (1 << 2) | (1 << 3)
+  'zzInner': 1 || (1 << 1) | (1 << 2) | (1 << 3)
 }
 
 export const targetAppSchemePrefix = {

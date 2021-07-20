@@ -1,8 +1,16 @@
 /**
  * scheme 构造相关
  */
+import { targetAppSchemePrefix } from './targetApp'
 
-const zzSchemeReg = /^((zzcheck:)|(zhuanzhuan:)|(zhuanzhuanseller:)|(zzyige:))/
+const zzSchemePrefix = targetAppSchemePrefix['zz']
+
+const zzInnerSchemeReg = Object.values(targetAppSchemePrefix)
+  .reduce((acc, cur, i, m) => {
+    const ll = m.length-1
+    return `${acc}(${cur})${i >= ll ? '' : '|'}${i >= ll ? ')' : '' }`
+  }, '^(');
+
 const universalLinkHost = 'mjump.zhuanzhuan.com'
 
 const buildScheme = (instance) => {
@@ -12,9 +20,9 @@ const buildScheme = (instance) => {
 
   path = path || getSchemeByUrlSearch(urlSearch || {})
 
-  const schemeReg = new RegExp(zzSchemeReg, '')
+  const schemeReg = new RegExp(zzInnerSchemeReg, '')
   let _path = schemeReg.test(path) && path;
-  _path = _path || `${targetInfo.schemePrefix || 'zhuanzhuan:'}//${path}`
+  _path = _path || `${targetInfo.schemePrefix || zzSchemePrefix}//${path}`
 
   return _path
 }

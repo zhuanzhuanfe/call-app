@@ -3,8 +3,8 @@ import {
   isAndroid,
   isIos,
   isWechat,
-} from './platform'
-import { is58Host } from './hostname'
+} from '../libs/platform'
+import { is58Host } from '../libs/hostname'
 
 // 目标app 各平台下载地址 配置
 export const allDownloadUrl = {
@@ -18,9 +18,12 @@ export const allDownloadUrl = {
     // download-api 下载
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
+  // 采货侠
+  'zzHunter': {},
+  // 找靓机
+  'zzSeeker': {},
+  // 卖家版
   // 'zzSeller': {},
-  // 'zzHunter': {},
-  // 'zzSeeker': {},
 }
 
 // 构造 下载链接
