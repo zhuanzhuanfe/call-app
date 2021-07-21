@@ -1,9 +1,10 @@
 
+import { getUrlParams, getCookie } from './utils'
 /**
  * 授权的公众号id
  * */
 const getWxPublicId = () => {
-  if(typeof window === 'undefined') { return {} }
+  if (typeof window === 'undefined') { return {} }
   const query = getUrlParams()
   const config = Object.assign({}, window.nativeAdapterConfig)
   return (

@@ -57,7 +57,7 @@ export const generateDownloadUrl = (instance) => {
   } else {
     //  其他 走 download-api 下载 channelId deeplinkId,  // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
     // wx 特殊处理 deepLinkId
-    let wechat = isWechat() ? '#mp.weixin.qq.com' : '';
+    let wechat = isWechat ? '#mp.weixin.qq.com' : '';
     downloadUrl = downloadConfig.api + '?channelId=' + channelId + '&deeplinkId=' + deeplinkId + wechat
   }
 

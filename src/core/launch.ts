@@ -2,11 +2,13 @@
  * 根据不同环境 加载不同 sdk, 调用不同 evoke方法
  */
 
-import { isQQ, isWeibo, isZZ,
-  isZZHunter, isZZSeller,
-  isZZSeeker, isAndroid, isIos,
-  isZZInner, getIOSVersion, semverCompare ,
-  IOSVersion } from "../libs/platform"
+import {
+  isQQ, isWeibo, isZZ,
+  isZZHunter, isZZSeller, isQzone,
+  isZZSeeker, isAndroid, isIos, isQQBrowser,
+  isZZInner, getIOSVersion, semverCompare,
+  IOSVersion
+} from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
 import { generateIntent, generateScheme, generateUniversalLink } from './generate'
 import { dependencies } from '../libs/config'
