@@ -33,7 +33,6 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         'no-param-reassign': 'off',
-        // airbnb 配置导致 tsx 文件引用一直报错
         'import/extensions': ['error', 'ignorePackages', { ts: 'never' }],
       },
     },

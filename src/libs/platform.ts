@@ -1,6 +1,6 @@
 
 //  获取平台类型
-const ua = (navigator && navigator.userAgent) || '';
+const ua: string = (navigator && navigator.userAgent) || '';
 
 /**
  *
@@ -8,34 +8,34 @@ const ua = (navigator && navigator.userAgent) || '';
  *
  */
 // 58 app
-export const is58App = /wuba/i.test(ua);
+export const is58App: boolean = /wuba/i.test(ua);
 // zz app
-export const isZZ = /58zhuanzhuan/i.test(ua);
+export const isZZ: boolean = /58zhuanzhuan/i.test(ua);
 // zz采货侠 app
-export const isZZHunter = /zzHunter/i.test(ua);
+export const isZZHunter: boolean = /zzHunter/i.test(ua);
 // zz卖家版 app
-export const isZZSeller = /zhuanzhuanSeller/i.test(ua);
+export const isZZSeller: boolean = /zhuanzhuanSeller/i.test(ua);
 // zz找靓机 app
-export const isZZSeeker = /zhuanzhuanzSeeker/i.test(ua);
+export const isZZSeeker: boolean = /zhuanzhuanzSeeker/i.test(ua);
 // zz 内部 app
-export const isZZInner = /^((58zhuanzhuan)|(zzHunter)|(zhuanzhuanseller)|(zhuanzhuanzSeeker))/i.test(ua)
+export const isZZInner: boolean = /^((58zhuanzhuan)|(zzHunter)|(zhuanzhuanseller)|(zhuanzhuanzSeeker))/i.test(ua)
 
-export const isWechat = /micromessenger\/([\d.]+)/i.test(ua);
+export const isWechat: boolean = /micromessenger\/([\d.]+)/i.test(ua);
 
-export const isWeibo = /(weibo).*weibo__([\d.]+)/i.test(ua);
+export const isWeibo: boolean = /(weibo).*weibo__([\d.]+)/i.test(ua);
 
-export const isQQ = /qq\/([\d.]+)/i.test(ua);
+export const isQQ: boolean = /qq\/([\d.]+)/i.test(ua);
 
-export const isQzone = /qzone\/.*_qz_([\d.]+)/i.test(ua);
+export const isQzone: boolean = /qzone\/.*_qz_([\d.]+)/i.test(ua);
 
 /**
  *
  * 操作系统 相关
  *
  */
-export const isAndroid = /android/i.test(ua);
+export const isAndroid: boolean = /android/i.test(ua);
 
-export const isIos = /iphone|ipad|ipod/i.test(ua);
+export const isIos: boolean = /iphone|ipad|ipod/i.test(ua);
 
 /**
  *
@@ -43,12 +43,12 @@ export const isIos = /iphone|ipad|ipod/i.test(ua);
  *
  */
 
-export const isBaidu = /(baiduboxapp)\/([\d.]+)/i.test(ua);
+export const isBaidu: boolean = /(baiduboxapp)\/([\d.]+)/i.test(ua);
 
-export const isQQBrowser = /(qqbrowser)\/([\d.]+)/i.test(ua);
+export const isQQBrowser: boolean = /(qqbrowser)\/([\d.]+)/i.test(ua);
 
 // 安卓 chrome 浏览器，包含 原生chrome浏览器、三星自带浏览器、360浏览器以及早期国内厂商自带浏览器
-export const isOriginalChrome =
+export const isOriginalChrome: boolean =
   /chrome\/[\d.]+ mobile safari\/[\d.]+/i.test(ua) && isAndroid && ua.indexOf('Version') < 0;
 
 /**
@@ -58,7 +58,7 @@ export const isOriginalChrome =
  */
 
 // 版本号比较
-export const semverCompare = (versionA, versionB)=> {
+export const semverCompare = (versionA: string, versionB: string): number => {
   // eslint-disable-next-line no-restricted-properties
   const { isNaN } = window;
   const splitA = versionA.split('.');
@@ -80,24 +80,26 @@ export const semverCompare = (versionA, versionB)=> {
 };
 
 //  获取 ios 大版本号
-export const getIOSVersion = () => {
+export const getIOSVersion = ():number => {
   const version = navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
   return Number.parseInt(version[1], 10);
 };
 
 //  获取 微信 版本号
-export const getWeChatVersion = () => {
+export const getWeChatVersion = ():string => {
   const version = navigator.appVersion.match(/micromessenger\/(\d+\.\d+\.\d+)/i);
   return version[1];
 };
 
 // IOS 版本号
-export const IOSVersion = () => {
+export const IOSVersion = (): string|null => {
   let str = navigator.userAgent.toLowerCase()
-  let ver = str.match(/cpu iphone os (.*?) like mac os/)
+  let ver: string | null;
   try {
-    if (ver) ver = ver[1].replace(/_/g, '.')
+    let m = str.match(/cpu iphone os (.*?) like mac os/)
+    if (m) ver = m[1].replace(/_/g, '.')
   } catch (error) {
+    ver = null
     console.log(error)
   }
   return ver

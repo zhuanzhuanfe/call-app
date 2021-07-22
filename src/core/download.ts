@@ -5,7 +5,7 @@ import {
   isWechat,
 } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
-
+import { CallAppInstance, downloadConfig } from '../types'
 // 目标app 各平台下载地址 配置
 export const allDownloadUrl = {
   'zz': {
@@ -18,16 +18,16 @@ export const allDownloadUrl = {
     // download-api 下载
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
-  // 采货侠
-  'zzHunter': {},
   // 找靓机
   'zzSeeker': {},
+  // 采货侠
+  // 'zzHunter': {},
   // 卖家版
   // 'zzSeller': {},
 }
 
 // 构造 下载链接
-export const generateDownloadUrl = (instance) => {
+export const generateDownloadUrl = (instance: CallAppInstance) => {
   const { options, targetInfo } = instance
   const {
     channelId,
@@ -38,7 +38,7 @@ export const generateDownloadUrl = (instance) => {
 
   if (!download) return
 
-  let downloadUrl
+  let downloadUrl: string
   // 不同 目标app 下载配置
   const downloadConfig =  targetInfo.downloadConfig
 
@@ -65,7 +65,7 @@ export const generateDownloadUrl = (instance) => {
 }
 
 // 根据目标app 获取下载链接 配置
-export const getDownloadConfig = (targetAPPName) => {
+export const getDownloadConfig = (targetAPPName: string): downloadConfig => {
   // 根据需要唤起的 目标 app ，获取 downloadUrl
   return allDownloadUrl[targetAPPName]
 }
