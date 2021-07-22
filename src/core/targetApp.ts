@@ -37,13 +37,13 @@ export const getTargetInfo = (options) => {
 }
 
 //  转转 app
-const isZZ = (targetApp) => /^(zhuanzhuan|zz|)$/i.test(targetApp)
+const isZZ = (targetApp: string): boolean => /^(zhuanzhuan|zz|)$/i.test(targetApp)
 //  转转卖家版 app
-const isZZSeller = (targetApp) => /^zzSeller$/i.test(targetApp)
+const isZZSeller = (targetApp: string): boolean => /^zzSeller$/i.test(targetApp)
 //  转转采货侠 app
-const isZZHunter = (targetApp) => /^zzHunter$/i.test(targetApp)
+const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 //  转转找靓机 app
-const isZZSeeker = (targetApp) => /^zzSeeker$/i.test(targetApp)
+const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
 
 export const targetAppFlag = {
   'zz': 1,

@@ -9,7 +9,7 @@ import { launch } from "./core/launch";
 import { sdkLaunch } from './core/sdkLaunch'
 import { is58App, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
-import { evokeByLocation, evokeByTagA } from "./libs/evoke";
+import { evokeByLocation } from "./libs/evoke";
 
 import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
 
@@ -69,6 +69,7 @@ export default class CallApp {
    * 触发下载
    */
   download() {
+    console.log('downloadLink', this.downloadLink)
     if (this.downloadLink) return evokeByLocation(this.downloadLink)
     console.warn('please check options.download is true')
   }

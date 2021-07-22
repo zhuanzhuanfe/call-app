@@ -6,6 +6,7 @@ export interface TargetInfo {
   universalPath: string,
   downloadConfig: downloadConfig
 }
+
 export interface downloadConfig {
   // 苹果市场
   ios: string,
@@ -19,19 +20,21 @@ export interface downloadConfig {
 
 export interface CallAppInstance {
   options: CallAppOptions
-  start?: () => void,
-  download?: () => void,
+  start: () => void,
+  download: () => void,
   targetInfo: TargetInfo
-  downloadLink?: string
-  APP?: null | Record<string, any>
+  downloadLink: string
+  APP: null | Record<string, any>
 }
 
 export enum TargetAppNames {
   ZZ = 'zz',
   ZZHunter = 'zzHunter',
   ZZSeller = 'zzSeller',
-  ZZSeeker = 'zzSeeker'
+  ZZSeeker = 'zzSeeker',
+  ZZInner = 'zzInner'
 }
+
 export interface CallAppOptions {
   // 唤起的页面 path
   path: string,
