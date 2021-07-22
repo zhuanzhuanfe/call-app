@@ -5,7 +5,7 @@
  */
 
 import { generateDownloadUrl } from "./core/download";
-import { launch, sdkLaunch } from "./core/launch";
+import { launch } from "./core/launch";
 import {  sdkLaunch } from './core/sdkLaunch'
 import { is58App, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
@@ -32,7 +32,7 @@ const defaultOptions = {
   callStart: () => {}, // 开始唤起 hook
 }
 
-export class CallApp {
+export default class CallApp {
   // Create an instance of CallApp
   constructor(options) {
     this.options = Object.assign(defaultOptions, options);

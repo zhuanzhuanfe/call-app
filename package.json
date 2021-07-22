@@ -37,14 +37,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "commander-tools run lint --staged",
       "commit-msg": "commander-tools run commitlint"
     }
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-decorators": "^7.10.5",
-    "@zz-common/commander-tools": "^3.0.9",
+    "@zz-common/commander-tools": "^3.1.2-beta.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-plugin-html": "^6.0.2",
