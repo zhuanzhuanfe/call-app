@@ -1,11 +1,24 @@
-import { isQQ, isWeibo, isZZ,
-  isZZHunter, isZZSeller,
-  isZZSeeker, isAndroid, isIos,
-  isZZInner, getIOSVersion, semverCompare ,
-  IOSVersion } from "../libs/platform"
+import {
+  isQQ, 
+  isWeibo, 
+  isZZ,
+  isZZHunter,
+  isZZSeller,
+  isZZSeeker, 
+  isAndroid, 
+  isIos,
+  isZZInner, 
+  is58App,
+  isWechat,
+  getIOSVersion, semverCompare,
+  IOSVersion
+} from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
 import { generateIntent, generateScheme, generateUniversalLink } from './generate'
 import { dependencies } from '../libs/config'
+// import { resolve } from "core-js/fn/promise"
+import { loadJSArr } from "../libs/utils"
+import { targetAppSchemePrefix } from './targetApp'
 
 
 /**
@@ -33,17 +46,43 @@ export const sdkLaunch = async (instance) => {
   let checkOpenFall;
   const supportUniversal = !!universal
   const schemeURL = generateScheme(instance)
+
+  //打开转转app
+  const OpenZZAPP = (schemeURL, App, originApp) => {
+    const url = encodeURIComponent(schemeURL)
+    let schemaPerfix = targetAppSchemePrefix[originApp]
+    const schema = `${schemaPerfix}//jump/core/openZhuanZhuan/jump`
+    const unifiedUrl = `${schema}?url=${url}`
+    //通过sdk唤起
+    App.enterUnifiedUrl({ unifiedUrl })
+  }
   try {
-    if(is58App) {
+    if (is58App) {
       APP._name_ = ''
       await load58SDK(APP)
 
-    } else if(isWechat) {
+    } else if (isWechat) {
       APP._name_ = ''
       loadWXSDK(resolve, APP)
 
-    } else if(isZZInner) {
+    } else if (isZZInner) {
+      if (isZZ) { //转转app环境内, 可以唤起找靓机/采货侠/卖家版
 
+
+
+      } else if (isZZSeeker) { //找靓机app环境内, 可主动唤起转转/采货侠/卖家版
+
+
+
+      } else if (isZZHunter) {  //命中采货侠  唤起转转app
+        APP._name_ = ''
+        const _originApp = 'zzHunter'
+        OpenZZAPP(schemeURL, APP, _originApp)
+      } else { // 命中卖家版 唤起转转app
+        APP._name_ = ''
+        const _originApp = 'zzSeller'
+        OpenZZAPP(schemeURL, APP, _originApp)
+      }
     } else {
       console.error('')
     }
@@ -79,7 +118,7 @@ const loadWXSDK = (resolve, app) => {
 
 const wx_onReady = (app) =>
   new Promise(resolve => {
-    if(window.WeixinJSBridge) {
+    if (window.WeixinJSBridge) {
       resolve()
     } else {
       document.addEventListener(
