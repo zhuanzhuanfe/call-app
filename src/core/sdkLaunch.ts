@@ -1,14 +1,22 @@
 import {
-  isQQ, isWeibo, isZZ,
-  isZZHunter, isZZSeller,
-  isZZSeeker, isAndroid, isIos,
-  isZZInner, getIOSVersion, semverCompare,
+  isQQ, 
+  isWeibo, 
+  isZZ,
+  isZZHunter,
+  isZZSeller,
+  isZZSeeker, 
+  isAndroid, 
+  isIos,
+  isZZInner, 
+  is58App,
+  isWechat,
+  getIOSVersion, semverCompare,
   IOSVersion
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
 import { generateIntent, generateScheme, generateUniversalLink } from './generate'
 import { dependencies } from '../libs/config'
-import { resolve } from "core-js/fn/promise"
+// import { resolve } from "core-js/fn/promise"
 import { loadJSArr } from "../libs/utils"
 import { targetAppSchemePrefix } from './targetApp'
 
@@ -69,11 +77,11 @@ export const sdkLaunch = async (instance) => {
       } else if (isZZHunter) {  //命中采货侠  唤起转转app
         APP._name_ = ''
         const _originApp = 'zzHunter'
-        OpenZZAPP(schemeURL, App, _originApp)
+        OpenZZAPP(schemeURL, APP, _originApp)
       } else { // 命中卖家版 唤起转转app
         APP._name_ = ''
         const _originApp = 'zzSeller'
-        OpenZZAPP(schemeURL, App, _originApp)
+        OpenZZAPP(schemeURL, APP, _originApp)
       }
     } else {
       console.error('')

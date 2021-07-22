@@ -17,7 +17,7 @@ class Core {
   }
 
   loader() {
-    const ZZCaller = require('../callers/' + this.plat).default
+    const ZZCaller = require('../callers/qq').default
     this.caller = new ZZCaller()
     this.caller.init()
   }
