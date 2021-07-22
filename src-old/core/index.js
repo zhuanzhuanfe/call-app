@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-20 10:17:07
+ * @LastEditTime: 2021-07-22 12:01:23
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /call-app/src-old/core/index.js
+ */
 import BaseCaller from './base'
 import { Platform } from '../libs/platform'
 import { copy } from '../libs/utils'
@@ -17,7 +25,7 @@ class Core {
   }
 
   loader() {
-    const ZZCaller = require('../callers/qq').default
+    const ZZCaller = require('../callers/' + this.plat).default
     this.caller = new ZZCaller()
     this.caller.init()
   }
