@@ -43,7 +43,7 @@ const isZZSeller = (targetApp: string): boolean => /^zzSeller$/i.test(targetApp)
 //  转转采货侠 app
 const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 //  转转找靓机 app
-const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
+const isZZSeeker = (targetApp: string): boolean => /^zljgo$/i.test(targetApp)
 
 export const targetAppFlag = {
   [TargetAppNames.ZZ]: 1,
@@ -57,12 +57,12 @@ export const targetAppSchemePrefix = {
   [TargetAppNames.ZZ]: 'zhuanzhuan:',
   [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:',
   [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter:',
-  [TargetAppNames.ZZSeeker]: 'zhuanzhuanSeeker',
+  [TargetAppNames.ZZSeeker]: 'zljgo:',
 }
 
 export const targetAppUniversalPath = {
   [TargetAppNames.ZZ]: 'zhuanzhuan',
   [TargetAppNames.ZZSeller]: 'zhuanzhuanseller',
   [TargetAppNames.ZZHunter]: '',
-  [TargetAppNames.ZZSeeker]: '',
+  [TargetAppNames.ZZSeeker]: 'zljgo',
 }

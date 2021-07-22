@@ -16,7 +16,7 @@ export const isZZHunter: boolean = /zzHunter/i.test(ua);
 // zz卖家版 app
 export const isZZSeller: boolean = /zhuanzhuanSeller/i.test(ua);
 // zz找靓机 app
-export const isZZSeeker: boolean = /zhuanzhuanSeeker/i.test(ua);
+export const isZZSeeker: boolean = /zljgo/i.test(ua);
 // zz 内部 app
 export const isZZInner: boolean = /^((58zhuanzhuan)|(zzHunter)|(zhuanzhuanseller)|(zhuanzhuanSeeker))/i.test(ua)
 
