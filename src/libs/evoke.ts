@@ -1,6 +1,9 @@
-let hidden;
-let visibilityChange;
-let iframe;
+type Hidden = 'hidden' | 'msHidden' | 'webkitHidden' | undefined
+type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange' | undefined
+
+let hidden: Hidden;
+let visibilityChange: VisibilityChange;
+let iframe: HTMLIFrameElement;
 
 function getSupportedProperty() {
   if (typeof document === 'undefined') return;
@@ -40,7 +43,7 @@ export function evokeByLocation(uri) {
  * 通过 A 标签唤起
  * @param {string} uri - 需要打开的地址
  */
-export function evokeByTagA(uri) {
+export function evokeByTagA(uri: string) {
   const tagA = document.createElement('a');
 
   tagA.setAttribute('href', uri);
@@ -54,7 +57,7 @@ export function evokeByTagA(uri) {
  * 通过 iframe 唤起
  * @param {string} [uri] - 需要打开的地址
  */
-export function evokeByIFrame(uri) {
+export function evokeByIFrame(uri: string) {
   if (!iframe) {
     iframe = document.createElement('iframe');
     iframe.style.cssText = 'display:none;border:0;width:0;height:0;';
@@ -69,7 +72,7 @@ export function evokeByIFrame(uri) {
  * @param cb - 唤端失败回调函数
  * @param timeout
  */
-export function checkOpen(failure, timeout) {
+export function checkOpen(failure: () => void, timeout: number) {
   const timer = setTimeout(() => {
     const pageHidden = isPageHidden();
     if (!pageHidden) {

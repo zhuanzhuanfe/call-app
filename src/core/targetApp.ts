@@ -4,22 +4,22 @@
  *
  */
 import { getDownloadConfig } from './download'
-
+import { TargetAppNames, CallAppOptions } from '../types'
 // 获取 目标 app 类型
-export const getTargetInfo = (options) => {
+export const getTargetInfo = (options: CallAppOptions) => {
   const { targetApp } = options
-  let flag = 1
-  let name = 'zz'
-  let schemePrefix, downloadConfig, universalPath;
+  let name = TargetAppNames.ZZ
+  let flag = 1,
+  schemePrefix, downloadConfig, universalPath;
 
   if(isZZ(targetApp)) {
-    name = 'zz'
-  } else if(isZZSeller(options)) {
-    name = 'zzSeller'
-  } else if(isZZHunter(options)) {
-    name = 'zzHunter'
-  } else if(isZZSeeker(options)) {
-    name = 'zzSeeker'
+    name = TargetAppNames.ZZ
+  } else if(isZZSeller(targetApp)) {
+    name =  TargetAppNames.ZZSeller
+  } else if(isZZHunter(targetApp)) {
+    name = TargetAppNames.ZZHunter
+  } else if(isZZSeeker(targetApp)) {
+    name = TargetAppNames.ZZSeeker
   } else {
     console.error ?
       console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`) :
@@ -46,23 +46,23 @@ const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
 
 export const targetAppFlag = {
-  'zz': 1,
-  'zzSeller': 1 << 1,
-  'zzHunter': 1 << 2,
-  'zzSeeker': 1 << 3,
-  'zzInner': 1 || (1 << 1) | (1 << 2) | (1 << 3)
+  [TargetAppNames.ZZ]: 1,
+  [TargetAppNames.ZZSeller]: 1 << 1,
+  [TargetAppNames.ZZHunter]: 1 << 2,
+  [TargetAppNames.ZZSeeker]: 1 << 3,
+  [TargetAppNames.ZZInner]: 1 || (1 << 1) | (1 << 2) | (1 << 3)
 }
 
 export const targetAppSchemePrefix = {
-  'zz': 'zhuanzhuan:',
-  'zzSeller': 'zhuanzhuanseller:',
-  'zzHunter': '',
-  'zzSeeker': '',
+  [TargetAppNames.ZZ]: 'zhuanzhuan:',
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:',
+  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter:',
+  [TargetAppNames.ZZSeeker]: 'zhuanzhuanSeeker',
 }
 
 export const targetAppUniversalPath = {
-  'zz': 'zhuanzhuan',
-  'zzSeller': 'zhuanzhuanseller',
-  'zzHunter': '',
-  'zzSeeker': '',
+  [TargetAppNames.ZZ]: 'zhuanzhuan',
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller',
+  [TargetAppNames.ZZHunter]: '',
+  [TargetAppNames.ZZSeeker]: '',
 }

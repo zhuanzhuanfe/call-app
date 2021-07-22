@@ -24,7 +24,8 @@
         text-align: center;
       }
 
-      .btn {
+      button {
+        cursor: pointer;
         display: block;
         width: 150px;
         height: 30px;
@@ -33,11 +34,41 @@
         line-height: 30px;
         margin: 0 auto;
       }
+
+      .wrap {
+        display: flex;
+        width: 300px;
+        margin: auto;
+        flex-direction: column;
+      }
+
+      .wrap .start, .wrap .download {
+        margin-top: 30px;
+        font-size: 12px;
+      }
+      .wrap .display-info {
+        margin-top: 20px;
+        border: 1px solid #eee;
+        padding: 5px 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+      .wrap .display-info input[type=textarea] {
+        height: 20px;
+        word-wrap: break-word;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
     </style>
   </head>
 
   <body>
+
     <h3 style="text-align: center">唤起App测试Demo</h3>
-    <input type="button" class="btn" value="点击唤起App" id="btn" />
+    <div id="app"></div>
+    <!-- 利用 vue 语法 -->
+    <script src="https://dl.zhuanstatic.com/fecommon/vue3.1.5.js"></script>
   </body>
 </html>

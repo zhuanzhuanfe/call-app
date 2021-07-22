@@ -1,5 +1,5 @@
 // 加载 js 资源
-export const loadJS = (url, cb) => {
+export const loadJS = (url: string, cb: () => void) => {
   let head = window.document.getElementsByTagName('head')[0]
   let js = window.document.createElement('script')
   js.setAttribute('type', 'text/javascript')
@@ -9,7 +9,7 @@ export const loadJS = (url, cb) => {
   head.appendChild(js)
 }
 
-export const loadJSArr = (urls, cb) => {
+export const loadJSArr = (urls: string[], cb: () => void) => {
   let done = 0
   if (typeof urls === 'string') urls = [urls]
   const { length } = urls
@@ -21,7 +21,7 @@ export const loadJSArr = (urls, cb) => {
 }
 
 //
-export const getUrlParams = url => {
+export const getUrlParams = (url?: string): Record<string, string> => {
   if(typeof window === 'undefined') { return {} }
   url = url || (location && location.href)
   if (url.indexOf('?') < 0) return {}
@@ -40,7 +40,7 @@ export const getUrlParams = url => {
     }, {})
 }
 //
-export const getCookie = name =>
+export const getCookie = (name: string): string =>
   (
     document.cookie
       .split('; ')
@@ -84,8 +84,8 @@ function select(element) {
   return selectedText
 }
 // 复制内容到剪切板
-export function copy(text, options) {
-  if(typeof window === 'undefined') { return {} }
+export function copy(text: string, options?: Record<string, any>): boolean {
+  if(typeof window === 'undefined') { return null }
   var debug,
     fakeElem,
     success = false

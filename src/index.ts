@@ -10,7 +10,7 @@ import { sdkLaunch } from './core/sdkLaunch'
 import { is58App, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
 import { evokeByLocation } from "./libs/evoke";
-
+import { generateScheme } from './core/generate'
 import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
 
 const defaultOptions: CallAppOptions = {
@@ -25,13 +25,11 @@ const defaultOptions: CallAppOptions = {
   wechatStyle: 1, // 蒙层样式， 默认 微信吊起失败后，提示右上角打开
   deeplinkId: '', // deeplink 接口支持的id配置
   middleWareUrl: '', // 下载中间页 url
-  urlSearch: { // 兼容 旧版本 scheme 生成规则
-    id: '',
-    openType: ''
-  },
+  urlSearch: undefined,
   callFailed: () => { }, // 失败 hook
   callSuccess: () => { }, // 成功 hook
   callStart: () => { }, // 开始唤起 hook
+  callDownload: () => {} // 触发下载 hook
 }
 
 export default class CallApp {
@@ -39,9 +37,14 @@ export default class CallApp {
   targetInfo: TargetInfo
   downloadLink: string
   APP: null | Record<string, any>
+  urlScheme: string
+
   // Create an instance of CallApp
   constructor(options: CallAppOptions) {
     // 原生app js-sdk 实例, 用于调用原生 app能力 (目前支持58app/wx平台)
+    this.init(options)
+  }
+  init(options: CallAppOptions) {
     this.APP = null;
     this.options = Object.assign(defaultOptions, options);
     // 待唤起目标 app 信息
@@ -49,12 +52,21 @@ export default class CallApp {
     // 根据平台 初始化 下载链接
     this.downloadLink = generateDownloadUrl(this);
 
+    this.urlScheme = generateScheme(this)
+
     console.log('callAppInstance: ', this);
   }
   /**
    * 触发唤起
    */
-  start() {
+  start(options?: CallAppOptions) {
+    //
+    this.init(options)
+
+    const { callStart } = options
+
+    callStart && callStart()
+
     if (is58App || isZZ || isZZHunter ||
       isZZSeller || isZZSeeker || isWechat) {
       // by native-app launch
@@ -68,9 +80,17 @@ export default class CallApp {
   /**
    * 触发下载
    */
-  download() {
+  download(options?: CallAppOptions) {
+    //
+    this.init(options)
+
+    const { callDownload } = options
+
+    callDownload && callDownload()
+
     console.log('downloadLink', this.downloadLink)
     if (this.downloadLink) return evokeByLocation(this.downloadLink)
+
     console.warn('please check options.download is true')
   }
 }

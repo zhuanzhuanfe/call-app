@@ -2,23 +2,24 @@
  * scheme 构造相关
  */
 import { targetAppSchemePrefix } from './targetApp'
+import { CallAppInstance, UrlSearch, TargetAppNames } from '../types'
 
-const zzSchemePrefix = targetAppSchemePrefix['zz']
+const zzSchemePrefix: string = targetAppSchemePrefix[TargetAppNames.ZZ]
 
-const zzInnerSchemeReg = Object.values(targetAppSchemePrefix)
+const zzInnerSchemeReg: string = Object.values(targetAppSchemePrefix)
   .reduce((acc, cur, i, m) => {
     const ll = m.length-1
     return `${acc}(${cur})${i >= ll ? '' : '|'}${i >= ll ? ')' : '' }`
   }, '^(');
 
-const universalLinkHost = 'mjump.zhuanzhuan.com'
+const universalLinkHost: string = 'mjump.zhuanzhuan.com'
 
-const buildScheme = (instance) => {
+const buildScheme = (instance: CallAppInstance) => {
   // 生成  path || urlSearch || targetApp
   const { options, targetInfo } = instance
   let { path, urlSearch } = options
 
-  path = path || getSchemeByUrlSearch(urlSearch || {})
+  path = path || getSchemeByUrlSearch(urlSearch)
 
   const schemeReg = new RegExp(zzInnerSchemeReg, '')
   let _path = schemeReg.test(path) && path;
@@ -28,27 +29,28 @@ const buildScheme = (instance) => {
 }
 
 // 生成 scheme 链接
-export const generateScheme = (instance) => {
+export const generateScheme = (instance: CallAppInstance) => {
   const uri = buildScheme(instance)
 
   return uri
 }
 
 // 生成 universalLink 链接
-export const generateUniversalLink = (instance) => {
+export const generateUniversalLink = (instance: CallAppInstance) => {
   const { targetInfo, options } = instance
   const { channelId } = options
   const host = universalLinkHost
   const path = targetInfo.universalPath
   const scheme = generateScheme(instance)
+  const channel = channelId ? `&channelId=${channelId}` : ''
 
-  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme)}&channelId=${channelId}`
+  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme)}${channel}`
 
   return universalLink
 }
 
 // 生成 appLinks 链接
-export const generateIntent = (instance) => {
+export const generateIntent = (instance: CallAppInstance) => {
 
   return instance
 }
@@ -140,7 +142,7 @@ export const SchemaMap = {
   },
 }
 
-const getSchemeByUrlSearch = ({ openType = '', id = '' }) => {
+const getSchemeByUrlSearch = ({ openType = '', id = '' }: UrlSearch ): string => {
   if (!openType) {
     return SchemaMap.home.path
   }

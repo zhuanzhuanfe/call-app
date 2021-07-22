@@ -24,7 +24,8 @@ export interface CallAppInstance {
   download: () => void,
   targetInfo: TargetInfo
   downloadLink: string
-  APP: null | Record<string, any>
+  APP: null | Record<string, any>,
+  urlScheme?: string
 }
 
 export enum TargetAppNames {
@@ -60,14 +61,18 @@ export interface CallAppOptions {
    // 下载中间页 url
   middleWareUrl?: string,
   // 兼容 旧版本 scheme 生成规则
-  urlSearch?: {
-    id: number | string,
-    openType?: number | string | undefined
-  },
+  urlSearch?: UrlSearch,
   // 失败 hook
   callFailed?: () => void,
   // 成功 hook
   callSuccess?: () => void,
   // 开始唤起 hook
   callStart?: () => void,
+  // 开始下载 hook
+  callDownload?: () => void,
+}
+
+export interface UrlSearch {
+  id: number | string,
+  openType?: number | string | undefined
 }

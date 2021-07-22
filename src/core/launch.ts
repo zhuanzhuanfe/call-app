@@ -49,7 +49,7 @@ export const launch = (instance: CallAppInstance) => {
 
   if(isIos) {
     // ios-version > v12.3.0
-    if (semverCompare(IOSVersion(), '12.3.0') > 0) options.timeout = 3000;
+    if (semverCompare(IOSVersion(), '12.3.0') > 0) options.delay = 3000;
 
     if(isWeibo) {
       // 触发下载 或者 显示遮罩， 需要测试

@@ -5,10 +5,10 @@ import {
   isWechat,
 } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
-import { CallAppInstance, downloadConfig } from '../types'
+import { CallAppInstance, downloadConfig, TargetAppNames } from '../types'
 // 目标app 各平台下载地址 配置
 export const allDownloadUrl = {
-  'zz': {
+  [TargetAppNames.ZZ]: {
     // ios 商店 下载
     ios: 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8',
     // 安卓 市场 下载
@@ -19,11 +19,16 @@ export const allDownloadUrl = {
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
   // 找靓机
-  'zzSeeker': {},
+  [TargetAppNames.ZZSeeker]: {
+    ios: '',
+    android: '',
+    wechat_android: '',
+    api: ''
+  },
   // 采货侠
-  // 'zzHunter': {},
+  [TargetAppNames.ZZHunter]: {},
   // 卖家版
-  // 'zzSeller': {},
+  [TargetAppNames.ZZSeller]: {},
 }
 
 // 构造 下载链接
@@ -58,7 +63,9 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
     //  其他 走 download-api 下载 channelId deeplinkId,  // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
     // wx 特殊处理 deepLinkId
     let wechat = isWechat ? '#mp.weixin.qq.com' : '';
-    downloadUrl = downloadConfig.api + '?channelId=' + channelId + '&deeplinkId=' + deeplinkId + wechat
+    let deeplink = deeplinkId ? `&deeplinkId=${deeplinkId}${wechat}` : ''
+
+    downloadUrl = downloadConfig.api + '?channelId=' + channelId + deeplink
   }
 
   return middleWareUrl || downloadUrl
