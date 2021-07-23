@@ -2,18 +2,34 @@ import CallApp from '../src'
 
 console.log(Vue)
 
-const { createApp, onMounted, reactive } = Vue
+const { createApp, onMounted, reactive, watch } = Vue
 
 createApp({
   template: (`
     <div class="wrap">
-      <section class="start">
+      <section class="config">
         <div class="display-info">
-          <span>目标APP:</span>
-          <select v-model="state.targetApp" @change="changeTarget">
-            <option value="zz" selected>转转</option>
-            <option value="zzSeeker">找靓机</option>
-          </select>
+          <h3 style="height: 10px;font-size: 14px;">参数配置项</h3>
+          <div class="config-item">
+            <span>path:</span>
+            <input type="text" v-model="state.path"/>
+          </div>
+          <div class="config-item">
+            <span>channelId:</span>
+            <input type="text" v-model="state.channelId"/>
+          </div>
+           <div class="config-item">
+            <span>deeplinkId:</span>
+            <input type="text" v-model="state.deeplinkId"/>
+          </div>
+          <div class="config-item">
+            <span>目标APP:</span>
+            <select v-model="state.targetApp">
+              <option value="zz" selected>转转</option>
+              <option value="zzSeeker">找靓机</option>
+            </select>
+          </div>
+
         </div>
       </section>
       <section class="start">
@@ -35,6 +51,21 @@ createApp({
   `),
   setup() {
     let callApp;
+    const hooks = {
+      callStart: function() {
+        console.log('--- trigger --- hook:callStart ')
+      },
+      callFailed: function() {
+        console.log('--- trigger --- hook:callFailed ')
+      },
+      callSuccess: function() {
+        console.log('--- trigger --- hook:callSuccess ')
+      },
+      callDownload: function() {
+        console.log('--- trigger --- hook:callDownload ')
+      }
+    }
+    const { callStart, callSuccess, callFailed, callDownload } = hooks;
 
     callApp = window.callApp = new CallApp({
       path: 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
@@ -42,52 +73,48 @@ createApp({
       targetApp: 'zz',
       wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
       // deeplinkId: getQuery('channelId')
+      callStart,
+      callSuccess,
+      callFailed,
+      callDownload
     })
 
-    console.log(callApp)
-
     onMounted(() => {
-      console.log('onMounted')
+      console.log('demo onMounted')
     })
     //
     const state = reactive({
+      targetApp: 'zz',
+      path: 'jump/shortVideo/videoHome/jump',
+      channelId: 'BM_GJ618XC',
+      deeplinkId: 'BM_GJ618XC',
+      //
       urlScheme: '',
       downloadLink: '',
-      targetApp: 'zz'
     })
     //
     state.downloadLink = callApp.downloadLink || ''
     state.urlScheme = callApp.urlScheme || ''
 
-    const changeTarget = (e) => {
-      console.log(e.target.value)
-      const v = e.target.value;
-      if(v == 'zz') {
-        //
-        callApp = new CallApp({
-          path: 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
-          channelId: 'BM_GJ618XC',
-          targetApp: 'zz',
-          wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
-          // deeplinkId: getQuery('channelId')
-        })
-        //
-        state.downloadLink = callApp.downloadLink || ''
-        state.urlScheme = callApp.urlScheme || ''
-      } else if(v == 'zzSeeker') {
-        //
-        callApp = new CallApp({
-          path: 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
-          channelId: 'BM_GJ618XC',
-          targetApp: 'zzSeeker',
-          wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
-          // deeplinkId: getQuery('channelId')
-        })
-        //
-        state.downloadLink = callApp.downloadLink || ''
-        state.urlScheme = callApp.urlScheme || ''
-      }
-    }
+    watch(() => state, (opts) => {
+
+      callApp = new CallApp({
+        path: opts.path, // 兼容app所有统跳地址
+        channelId: opts.channelId,
+        targetApp: opts.targetApp,
+        wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
+        deeplinkId: opts.deeplinkId,
+        callStart,
+        callSuccess,
+        callFailed,
+        callDownload,
+      })
+
+      //
+      state.downloadLink = callApp.downloadLink || ''
+      state.urlScheme = callApp.urlScheme || ''
+    }, { deep: true })
+
     //
     const openApp = () => {
       console.log('trigger start')
@@ -106,7 +133,6 @@ createApp({
     return {
       openApp,
       handleDownload,
-      changeTarget,
       state,
     }
   }

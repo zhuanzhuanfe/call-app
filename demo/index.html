@@ -40,19 +40,24 @@
         width: 300px;
         margin: auto;
         flex-direction: column;
-      }
-
-      .wrap .start, .wrap .download {
-        margin-top: 30px;
         font-size: 12px;
       }
-      .wrap .display-info {
+
+      .wrap .start,
+      .wrap .download {
         margin-top: 20px;
+      }
+      .wrap .display-info {
         border: 1px solid #eee;
         padding: 5px 10px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+      }
+      .wrap .config .display-info,
+      .wrap .start .display-info,
+      .wrap .download .display-info {
+        margin-top: 10px;
       }
       .wrap .display-info input[type=textarea] {
         height: 20px;
@@ -61,6 +66,16 @@
         box-sizing: border-box;
       }
 
+      .wrap .display-info .config-item {
+        margin-bottom: 0px;
+        padding: 5px 10px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+      }
+      .wrap .display-info .config-item:last-child {
+        margin-bottom: 10px;
+      }
     </style>
   </head>
 
