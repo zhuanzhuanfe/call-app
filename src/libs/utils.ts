@@ -22,7 +22,7 @@ export const loadJSArr = (urls: string[], cb: () => void) => {
 
 //
 export const getUrlParams = (url?: string): Record<string, string> => {
-  if(typeof window === 'undefined') { return {} }
+  if (typeof window === 'undefined') { return {} }
   url = url || (location && location.href)
   if (url.indexOf('?') < 0) return {}
 
@@ -49,7 +49,7 @@ export const getCookie = (name: string): string =>
   ).replace(/[^=]+=/, '')
 
 function select(element) {
-  if(typeof window === 'undefined') { return {} }
+  if (typeof window === 'undefined') { return {} }
   var selectedText
   if (element.nodeName === 'SELECT') {
     element.focus()
@@ -85,7 +85,7 @@ function select(element) {
 }
 // 复制内容到剪切板
 export function copy(text: string, options?: Record<string, any>): boolean {
-  if(typeof window === 'undefined') { return null }
+  if (typeof window === 'undefined') { return null }
   var debug,
     fakeElem,
     success = false
@@ -134,4 +134,21 @@ export function copy(text: string, options?: Record<string, any>): boolean {
     }
   }
   return success
+}
+
+// 展示遮罩层
+export const showMask = (): void => {
+  const mask = document.createElement('div')
+  mask.style.cssText =
+    'position: fixed;z-index: 100000;transition: all 0.5s;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.6);opacity:0'
+  mask.innerHTML =
+    '<img src="https://pic3.zhuanstatic.com/zhuanzh/n_v28e90120d40634639b6f606af7ca40fb3.png" style="position:absolute;top:20px;right:20px;left:auto;bottom:auto;line-height:0;width:168px;height:81px;transform: translate3d(0, 0, 0);">'
+  document.body.appendChild(mask)
+  setTimeout(() => {
+    mask.style.opacity = '1'
+  }, 300)
+
+  mask.addEventListener('click', function () {
+    document.body.removeChild(mask)
+  })
 }

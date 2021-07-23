@@ -69,24 +69,38 @@ export function evokeByIFrame(uri: string) {
 
 /**
  * 检测是否唤端成功
- * @param cb - 唤端失败回调函数
+ * @param failure - 唤端失败回调函数
+ * @param success - 唤端成功回调函数
  * @param timeout
  */
-export function checkOpen(failure: () => void, timeout: number) {
-  const timer = setTimeout(() => {
+export function checkOpen(failure: () => void, success: () => void,  timeout: number) {
+  let hasFailed = false
+
+  let timer = setTimeout(() => {
     const pageHidden = isPageHidden();
     if (!pageHidden) {
+      hasFailed = true
       failure();
     }
-  }, timeout);
+  }, timeout)
+
+  let t = setTimeout(() => {
+    if(!hasFailed) success()
+  }, timeout + 100)
 
   if (typeof visibilityChange !== 'undefined') {
     document.addEventListener(visibilityChange, () => {
-      clearTimeout(timer);
+      clearTimeout(timer)
+      timer = null
+      success()
+      clearTimeout(t)
     });
   } else {
     window.addEventListener('pagehide', () => {
-      clearTimeout(timer);
+      clearTimeout(timer)
+      timer = null
+      success()
+      clearTimeout(t)
     });
   }
 }

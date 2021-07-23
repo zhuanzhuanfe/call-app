@@ -53,10 +53,8 @@ export default class CallApp {
     this.targetInfo = getTargetInfo(this.options);
     // 根据平台 初始化 下载链接
     this.downloadLink = generateDownloadUrl(this);
-
+    // 初始化 scheme
     this.urlScheme = generateScheme(this)
-
-    console.log('callAppInstance: ', this);
   }
   /**
    * 触发唤起

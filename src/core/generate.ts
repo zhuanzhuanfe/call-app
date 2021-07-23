@@ -2,7 +2,7 @@
  * scheme 构造相关
  */
 import { targetAppSchemePrefix } from './targetApp'
-import { CallAppInstance, UrlSearch, TargetAppNames } from '../types'
+import { CallAppInstance, UrlSearch, TargetAppNames, Intent } from '../types'
 
 const zzSchemePrefix: string = targetAppSchemePrefix[TargetAppNames.ZZ]
 
@@ -50,9 +50,29 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
 }
 
 // 生成 appLinks 链接
-export const generateIntent = (instance: CallAppInstance) => {
+export const generateIntent = (instance: CallAppInstance): string => {
+  const { options, downloadLink } = instance
+  const { intent, intentParams } = options;
 
-  return instance
+  if(intent && !intentParams) {
+    console.error ?
+      console.error(`Error: options.intentParams is not found, please check`) :
+      console.log(`Error: \n options.intentParams is not found, please check`);
+  }
+
+  if (!intent || !intentParams) return '';
+
+  const keys = Object.keys(intentParams) as Array<keyof Intent>;
+  const intentParam = keys.map((key) => `${key}=${intent[key]};`).join('');
+  const intentTail = `#Intent;${intentParam}S.browser_fallback_url=${encodeURIComponent(
+    downloadLink
+  )};end;`;
+
+  let urlPath = generateScheme(instance);
+
+  urlPath = urlPath.slice(urlPath.indexOf('//') + 2);
+
+  return `intent://${urlPath}${intentTail}`;
 }
 
 

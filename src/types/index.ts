@@ -70,9 +70,18 @@ export interface CallAppOptions {
   callStart?: () => void,
   // 开始下载 hook
   callDownload?: () => void,
+  intentParams?: Intent,
 }
 
 export interface UrlSearch {
   id: number | string,
   openType?: number | string | undefined
+}
+
+export interface Intent {
+  package: string;
+  scheme: string;
+  action?: string;
+  category?: string;
+  component?: string;
 }

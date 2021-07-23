@@ -4,13 +4,15 @@
  *
  */
 import { getDownloadConfig } from './download'
-import { TargetAppNames, CallAppOptions } from '../types'
+import { TargetAppNames, CallAppOptions, downloadConfig } from '../types'
 // 获取 目标 app 类型
 export const getTargetInfo = (options: CallAppOptions) => {
   const { targetApp } = options
   let name = TargetAppNames.ZZ
   let flag = 1,
-  schemePrefix, downloadConfig, universalPath;
+    schemePrefix: string,
+    downloadConfig: downloadConfig,
+    universalPath: string;
 
   if(isZZ(targetApp)) {
     name = TargetAppNames.ZZ
@@ -50,19 +52,19 @@ export const targetAppFlag = {
   [TargetAppNames.ZZSeller]: 1 << 1,
   [TargetAppNames.ZZHunter]: 1 << 2,
   [TargetAppNames.ZZSeeker]: 1 << 3,
-  [TargetAppNames.ZZInner]: 1 || (1 << 1) | (1 << 2) | (1 << 3)
+  [TargetAppNames.ZZInner]: 1 | (1 << 1) | (1 << 2) | (1 << 3)
 }
 
 export const targetAppSchemePrefix = {
   [TargetAppNames.ZZ]: 'zhuanzhuan:',
-  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:',
-  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter:',
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:', // 目前不支持
+  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter:', // 目前不支持
   [TargetAppNames.ZZSeeker]: 'zljgo:',
 }
 
 export const targetAppUniversalPath = {
   [TargetAppNames.ZZ]: 'zhuanzhuan',
-  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller',
-  [TargetAppNames.ZZHunter]: '',
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller', // 目前不支持
+  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter', // 目前不支持
   [TargetAppNames.ZZSeeker]: 'zljgo',
 }
