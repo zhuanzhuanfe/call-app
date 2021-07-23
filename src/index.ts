@@ -46,7 +46,9 @@ export default class CallApp {
   }
   init(options: CallAppOptions) {
     this.APP = null;
-    this.options = Object.assign(defaultOptions, options);
+    this.options = this.options ?
+      Object.assign(this.options, options) :
+      Object.assign(defaultOptions, options);
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options);
     // 根据平台 初始化 下载链接
@@ -63,7 +65,7 @@ export default class CallApp {
     //
     this.init(options)
 
-    const { callStart } = options
+    const { callStart } = this.options
 
     callStart && callStart()
 
@@ -84,7 +86,7 @@ export default class CallApp {
     //
     this.init(options)
 
-    const { callDownload } = options
+    const { callDownload } = this.options
 
     callDownload && callDownload()
 

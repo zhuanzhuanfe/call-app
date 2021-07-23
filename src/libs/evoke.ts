@@ -35,7 +35,7 @@ function isPageHidden() {
  * 通过 top.location.href 跳转
  * @param {string}} [uri] - 需要打开的地址
  */
-export function evokeByLocation(uri) {
+export function evokeByLocation(uri: string) {
   window.top.location.href = uri;
 }
 

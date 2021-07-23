@@ -54,7 +54,7 @@ export interface CallAppOptions {
   channelId?: string | number | undefined,
   // 微信端初始化检测安装后的回调函数
   wechatCheckInstallState?: () => void,
-  // 蒙层样式， 默认 微信吊起失败后，提示右上角打开, 默认 1
+  // 蒙层样式， 默认 微信吊起失败后，提示右上角打开, // 1表示浮层右上角，2表示浮层按钮, 默认 1
   wechatStyle?: number | string | undefined,
   // deeplink 接口支持的id配置
   deeplinkId?: number | string | undefined,
