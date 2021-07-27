@@ -25,7 +25,8 @@ export interface CallAppInstance {
   targetInfo: TargetInfo
   downloadLink: string
   APP: null | Record<string, any>,
-  urlScheme?: string
+  urlScheme?: string,
+  universalLink?: string
 }
 
 export enum TargetAppNames {
@@ -71,6 +72,7 @@ export interface CallAppOptions {
   // 开始下载 hook
   callDownload?: () => void,
   intentParams?: Intent,
+  callError?: () => void,
 }
 
 export interface UrlSearch {

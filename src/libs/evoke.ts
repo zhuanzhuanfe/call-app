@@ -73,34 +73,65 @@ export function evokeByIFrame(uri: string) {
  * @param success - 唤端成功回调函数
  * @param timeout
  */
-export function checkOpen(failure: () => void, success: () => void,  timeout: number) {
-  let hasFailed = false
+export function checkOpen(
+  failure: () => void,
+  success: () => void,
+  error: () => void,
+  timeout: number) {
+
+  let haveChanged = false
+  console.log('trigger -- checkOpen')
 
   let timer = setTimeout(() => {
+    clearTimeout(timer);
+
+    if (haveChanged) {
+      return;
+    }
+
+    // window.addEventListener('pagehide', pageChange, false);
+    document.removeEventListener(visibilityChange, pageChange, false)
+    document.removeEventListener('baiduboxappvisibilitychange', pageChange, false)
+
+    console.log('checkOpen timeout', timeout)
+    console.log('checkOpen isPageHidden', isPageHidden())
+    // 判断页面是否隐藏（进入后台）
     const pageHidden = isPageHidden();
     if (!pageHidden) {
-      hasFailed = true
       failure();
+      console.log('checkOpen hasFailed-failure')
+    } else {
+      console.error ?
+        console.error('unknown error') :
+        console.log('Error: \n unknown error');
+
+      error()
     }
+
+    haveChanged = true
   }, timeout)
 
-  let t = setTimeout(() => {
-    if(!hasFailed) success()
-  }, timeout + 100)
+  const pageChange = function (e: any) {
+    haveChanged = true
 
-  if (typeof visibilityChange !== 'undefined') {
-    document.addEventListener(visibilityChange, () => {
-      clearTimeout(timer)
-      timer = null
+    if (document[hidden] || e.hidden || document.visibilityState == 'hidden') {
+      console.log('checkOpen pagehide -- success')
       success()
-      clearTimeout(t)
-    });
-  } else {
-    window.addEventListener('pagehide', () => {
-      clearTimeout(timer)
-      timer = null
-      success()
-      clearTimeout(t)
-    });
-  }
+    } else {
+      console.log('checkOpen pagehide -- error')
+      console.error ?
+        console.error('unknown error') :
+        console.log('Error: \n unknown error');
+
+      error()
+    }
+
+    // window.addEventListener('pagehide', pageChange, false);
+    document.removeEventListener(visibilityChange, pageChange, false);
+    document.removeEventListener('baiduboxappvisibilitychange', pageChange, false);
+  };
+
+  // window.addEventListener('pagehide', pageChange, false);
+  document.addEventListener(visibilityChange, pageChange, false);
+  document.addEventListener('baiduboxappvisibilitychange', pageChange, false);
 }

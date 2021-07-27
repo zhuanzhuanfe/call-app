@@ -7,11 +7,12 @@
 import { generateDownloadUrl } from "./core/download";
 import { launch } from "./core/launch";
 import { sdkLaunch } from './core/sdkLaunch'
-import { is58App, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
+import { is58App, isAndroid, isUC, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
-import { evokeByLocation } from "./libs/evoke";
-import { generateScheme } from './core/generate'
+import { evokeByLocation, evokeByTagA } from "./libs/evoke";
+import { generateScheme, generateUniversalLink } from './core/generate'
 import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
+import { copy } from "./libs/utils";
 
 const defaultOptions: CallAppOptions = {
   path: '/', // 唤起的页面 path
@@ -29,7 +30,8 @@ const defaultOptions: CallAppOptions = {
   callFailed: () => { }, // 失败 hook
   callSuccess: () => { }, // 成功 hook
   callStart: () => { }, // 开始唤起 hook
-  callDownload: () => {} // 触发下载 hook
+  callDownload: () => {}, // 触发下载 hook
+  callError: () => {} // 触发异常 hook
 }
 
 export default class CallApp {
@@ -38,6 +40,7 @@ export default class CallApp {
   downloadLink: string
   APP: null | Record<string, any>
   urlScheme: string
+  universalLink: string;
 
   // Create an instance of CallApp
   constructor(options: CallAppOptions) {
@@ -55,20 +58,22 @@ export default class CallApp {
     this.downloadLink = generateDownloadUrl(this);
     // 初始化 scheme
     this.urlScheme = generateScheme(this)
+    //
+    this.universalLink = generateUniversalLink(this)
   }
   /**
    * 触发唤起
    */
   start(options?: CallAppOptions) {
     //
-    this.init(options)
+    options && this.init(options)
 
     const { callStart } = this.options
 
     callStart && callStart()
 
     if (is58App || isZZ || isZZHunter ||
-      isZZSeller || isZZSeeker || isWechat) {
+      isZZSeller || isZZSeeker || (isWechat && isZZ)) {
       // by native-app launch
       this.APP = Object.create(null)
       sdkLaunch(this)
@@ -82,14 +87,24 @@ export default class CallApp {
    */
   download(options?: CallAppOptions) {
     //
-    this.init(options)
+    options && this.init(options)
 
     const { callDownload } = this.options
+
+    copy(`1.0$$${this.urlScheme}`)
 
     callDownload && callDownload()
 
     console.log('downloadLink', this.downloadLink)
-    if (this.downloadLink) return evokeByLocation(this.downloadLink)
+
+    if (this.downloadLink) {
+      // 个别浏览器需要单独处理evoke方式, 防止页面跳转到下载链接 展示异常
+      if(isAndroid && isUC) {
+        return evokeByTagA(this.downloadLink)
+      }
+
+      return evokeByLocation(this.downloadLink)
+    }
 
     console.warn('please check options.download is true')
   }

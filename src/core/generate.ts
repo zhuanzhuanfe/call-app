@@ -6,7 +6,7 @@ import { CallAppInstance, UrlSearch, TargetAppNames, Intent } from '../types'
 
 const zzSchemePrefix: string = targetAppSchemePrefix[TargetAppNames.ZZ]
 
-const zzInnerSchemeReg: string = Object.values(targetAppSchemePrefix)
+const zzInnerSchemeReg: any = Object.values(targetAppSchemePrefix)
   .reduce((acc, cur, i, m) => {
     const ll = m.length-1
     return `${acc}(${cur})${i >= ll ? '' : '|'}${i >= ll ? ')' : '' }`
@@ -37,11 +37,12 @@ export const generateScheme = (instance: CallAppInstance) => {
 
 // 生成 universalLink 链接
 export const generateUniversalLink = (instance: CallAppInstance) => {
-  const { targetInfo, options } = instance
+  const { targetInfo, options, urlScheme } = instance
   const { channelId } = options
   const host = universalLinkHost
   const path = targetInfo.universalPath
-  const scheme = generateScheme(instance)
+  // const scheme = generateScheme(instance)
+  const scheme = urlScheme
   const channel = channelId ? `&channelId=${channelId}` : ''
 
   const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme)}${channel}`

@@ -24,10 +24,10 @@ import {targetAppSchemePrefix} from './targetApp'
  */
 export const sdkLaunch = async (instance) => {
   const {options, APP, targetInfo, download} = instance;
-  const {universal, callFailed, callSuccess, delay} = options;
+  const {universal, callFailed, callSuccess, callError, delay} = options;
 
   // 唤端失败 才执行 checkOpen(cb)
-  const checkOpen = (failure: any, success?: any) => {
+  const checkOpen = (failure: any, success?: any, error?: any) => {
     // 唤端失败执行 checkOpen(failedCb, successCb, time) , hack by setTimeout
     return _checkOpen(() => {
       callFailed && callFailed()
@@ -35,6 +35,9 @@ export const sdkLaunch = async (instance) => {
     }, () => {
       callSuccess && callSuccess()
       success()
+    }, () => {
+      callError && callError()
+      error()
     }, delay);
   }
   // 处理落地状态
@@ -74,7 +77,7 @@ export const sdkLaunch = async (instance) => {
         loadSkd('ZZ_SDK').then(res => {
           APP._name_ = res
           if (targetInfo.name == 'zzHunter'){ //采货侠app
-            
+
 
           }
           if (targetInfo.name == 'zzSeller'){ //商家版app

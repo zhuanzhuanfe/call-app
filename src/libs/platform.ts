@@ -1,7 +1,7 @@
 
 //  获取平台类型
 const ua: string = (navigator && navigator.userAgent) || '';
-
+console.log('ua', ua)
 /**
  *
  * native-webview 相关
@@ -27,6 +27,12 @@ export const isWeibo: boolean = /(weibo).*weibo__([\d.]+)/i.test(ua);
 export const isQQ: boolean = /qq\/([\d.]+)/i.test(ua);
 
 export const isQzone: boolean = /qzone\/.*_qz_([\d.]+)/i.test(ua);
+
+export const isUC: boolean = /ucBrowser\//i.test(ua);
+
+export const isQuark: boolean = /quark\//i.test(ua);
+
+export const isHuaWei: boolean = /huaweiBrowser\//i.test(ua);
 
 /**
  *
@@ -100,7 +106,7 @@ export const IOSVersion = (): string => {
     if (m) ver = m[1].replace(/_/g, '.')
   } catch (error) {
     ver = null
-    console.log(error)
+    console.log('IOSVersion', error)
   }
   return ver
 }
