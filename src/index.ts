@@ -68,12 +68,13 @@ export default class CallApp {
     //
     options && this.init(options)
 
-    const { callStart } = this.options
+    const { callStart, targetApp } = this.options
 
     callStart && callStart()
 
     if (is58App || isZZ || isZZHunter ||
-      isZZSeller || isZZSeeker || (isWechat && isZZ)) {
+      isZZSeller || isZZSeeker ||
+      (isWechat && targetApp == TargetAppNames.ZZ)) {
       // by native-app launch
       this.APP = Object.create(null)
       sdkLaunch(this)
