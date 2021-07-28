@@ -73,8 +73,19 @@ export function evokeByIFrame(uri: string) {
  * @param success - 唤端成功回调函数
  * @param timeout
  */
-export function checkOpen(failure: () => void, success: () => void,  timeout: number) {
+export function checkOpen(failure: () => void, success: () => void,  timeout: number, isSdkCheck?:boolean) {
   let hasFailed = false
+
+  //skd成功失败回调处理
+  if(isSdkCheck){
+    let timer = setTimeout(() => {
+      if (!isSdkCheck) {
+        failure();
+      }else {
+        success()
+      }
+    }, timeout)
+  }
 
   let timer = setTimeout(() => {
     const pageHidden = isPageHidden();

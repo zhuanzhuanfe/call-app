@@ -1,5 +1,5 @@
 
-import { getUrlParams, getCookie } from './utils'
+import { getUrlParams, getCookie, regTest } from './utils'
 /**
  * 授权的公众号id
  * */
@@ -66,4 +66,19 @@ export const AppInfomation = {
  * */
 export const wechatInfomation = {
   appID: 'wx6f1a8464fa672b11', //转转app在微信绑定的appid
+}
+
+
+/**
+ * 页面域名
+ * */
+export const domain = {
+  is58Domain: regTest({
+    reg: /\.58\.com/g,
+    str: location && location.origin.toLowerCase(),
+  }),
+  isZZDomain: regTest({
+    reg: /\.zhuanzhuan\.com/g,
+    str: location && location.origin.toLowerCase(),
+  }),
 }

@@ -152,3 +152,8 @@ export const showMask = (): void => {
     document.body.removeChild(mask)
   })
 }
+
+
+export const regTest = ({ reg, str }) => {
+  return reg.test(str)
+}
