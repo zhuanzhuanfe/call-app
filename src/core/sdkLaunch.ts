@@ -30,11 +30,11 @@ declare var window: Window & {
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance) => {
-  let {options, APP, targetInfo, download,downloadLink} = instance;
-  const {universal, callFailed, callSuccess, delay, wechatStyle} = options;
+  const {options, APP, targetInfo, download} = instance;
+  const {universal, callFailed, callSuccess, callError, delay, wechatStyle} = options;
 
   // 唤端失败 才执行 checkOpen(cb)
-  const checkOpen = (failure: any, success?: any, isSdkCheck?:boolean) => {
+  const checkOpen = (failure: any, success?: any, error?: any,isSdkCheck?:boolean) => {
     // 唤端失败执行 checkOpen(failedCb, successCb, time) , hack by setTimeout
     return _checkOpen(() => {
       callFailed && callFailed()
@@ -42,6 +42,9 @@ export const sdkLaunch = async (instance) => {
     }, () => {
       callSuccess && callSuccess()
       success()
+    }, () => {
+      callError && callError()
+      error()
     }, delay,isSdkCheck);
   }
   // 处理落地状态
@@ -112,8 +115,8 @@ export const sdkLaunch = async (instance) => {
         //加载zz的sdk
         loadSkd('ZZ_SDK').then(res => {
           APP._name_ = res
-          if (targetInfo.name == 'zzHunter') { //采货侠app
 
+          if (targetInfo.name == 'zzHunter'){ //采货侠app
 
           }
           if (targetInfo.name == 'zzSeller') { //商家版app
@@ -202,8 +205,6 @@ const loadSkd = (sdkName) => {
     }
   })
 }
-
-
 //微信skd回调
 const __invoke = (name, options,App) =>{
   return new Promise((resolve, reject) => {
