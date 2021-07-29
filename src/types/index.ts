@@ -12,6 +12,7 @@ export interface downloadConfig {
   ios: string,
   // 安卓市场
   android: string,
+  android_api?: string,
   // 应用宝
   wechat_android: string,
   // api

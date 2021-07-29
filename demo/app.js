@@ -103,16 +103,16 @@ function initVuePage() {
         <button @click="openApp" >唤起app</button>
         <div class="display-info">
           <span>urlScheme:</span>
-          <textarea type="textarea" disabled v-model="state.urlScheme"></textarea>
+          <textarea type="textarea" v-model="state.urlScheme"></textarea>
           <span>universalLink:</span>
-          <textarea rows="3" cols="20" wrap="hard" type="textarea" disabled v-model="state.universalLink"></textarea>
+          <textarea rows="3" cols="20" wrap="hard" type="textarea" v-model="state.universalLink"></textarea>
         </div>
       </section>
       <section class="download">
         <button @click="handleDownload" >下载app</button>
         <div class="display-info">
           <span>downloadLink:</span>
-          <textarea type="textarea" rows="3" cols="20" wrap="hard" disabled v-model="state.downloadLink"></textarea>
+          <textarea type="textarea" rows="3" cols="20" wrap="hard" v-model="state.downloadLink"></textarea>
         </div>
       </section>
     </div>
@@ -189,7 +189,10 @@ function initVuePage() {
 
       //
       const openApp = function () {
-        console.log(window.navigator.userAgent)
+        console.log(window.navigator.userAgent, '\n',
+          window.navigator.appVersion, '\n',
+          window.navigator.appName)
+
         console.log('trigger start')
         callApp.start()
         state.downloadLink = callApp.downloadLink || ''

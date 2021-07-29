@@ -28,12 +28,6 @@ export const isQQ: boolean = /qq\/([\d.]+)/i.test(ua);
 
 export const isQzone: boolean = /qzone\/.*_qz_([\d.]+)/i.test(ua);
 
-export const isUC: boolean = /ucBrowser\//i.test(ua);
-
-export const isQuark: boolean = /quark\//i.test(ua);
-
-export const isHuaWei: boolean = /huaweiBrowser\//i.test(ua);
-
 /**
  *
  * 操作系统 相关
@@ -52,6 +46,14 @@ export const isIos: boolean = /iphone|ipad|ipod/i.test(ua);
 export const isBaidu: boolean = /(baiduboxapp)\/([\d.]+)/i.test(ua);
 
 export const isQQBrowser: boolean = /(qqbrowser)\/([\d.]+)/i.test(ua);
+
+export const isUC: boolean = /ucBrowser\//i.test(ua);
+
+export const isQuark: boolean = /quark\//i.test(ua);
+
+export const isSougou: boolean = /sogouMobileBrowser\//i.test(ua)
+
+export const isHuaWei: boolean = /huaweiBrowser\//i.test(ua);
 
 // 安卓 chrome 浏览器，包含 原生chrome浏览器、三星自带浏览器、360浏览器以及早期国内厂商自带浏览器
 export const isOriginalChrome: boolean =
