@@ -7,7 +7,7 @@
 import { generateDownloadUrl } from "./core/download";
 import { launch } from "./core/launch";
 import { sdkLaunch } from './core/sdkLaunch'
-import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
+import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isWeibo, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
 import { evokeByIFrame, evokeByLocation, evokeByTagA } from "./libs/evoke";
 import { generateScheme, generateUniversalLink } from './core/generate'
@@ -15,8 +15,8 @@ import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
 import { copy, showMask } from "./libs/utils";
 
 const defaultOptions: CallAppOptions = {
-  path: '/', // 唤起的页面 path
-  targetApp: TargetAppNames.ZZ, // 唤起的目标app
+  path: '', // 唤起的页面 path
+  targetApp: undefined, // 唤起的目标app
   universal: true, // 是否开启 universal-link
   intent: false, // 是否开启 app-links
   download: true, // 是否支持下载
@@ -54,6 +54,7 @@ export default class CallApp {
       Object.assign(defaultOptions, options);
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options);
+    console.log(this.targetInfo)
     // 根据平台 初始化 下载链接
     this.downloadLink = generateDownloadUrl(this);
     // 初始化 scheme
@@ -67,8 +68,8 @@ export default class CallApp {
   start(options?: CallAppOptions) {
     //
     options && this.init(options)
-
-    const { callStart, targetApp } = this.options
+    const { targetInfo: { name: targetApp } } = this
+    const { callStart } = this.options
 
     callStart && callStart()
 
@@ -108,7 +109,7 @@ export default class CallApp {
         return evokeByIFrame(this.downloadLink)
       }
 
-      if(isIos && isSougou) {
+      if(isWeibo || (isIos && isSougou)) {
         return showMask()
       }
 

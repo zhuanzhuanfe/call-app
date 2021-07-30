@@ -3,13 +3,20 @@
  * 需要唤起的 目标app 类型
  *
  */
+
 import { getDownloadConfig } from './download'
 import { TargetAppNames, CallAppOptions, downloadConfig } from '../types'
+
 // 获取 目标 app 类型
 export const getTargetInfo = (options: CallAppOptions) => {
-  const { targetApp } = options
-  let name = TargetAppNames.ZZ
-  let flag = 1,
+  let { path, targetApp } = options
+  // 从 path 解析 target-app
+  let { app } = handlePath2app(path)
+  // 优先取 options.targetApp // 默认 配置为 转转
+  targetApp = targetApp || app || TargetAppNames.ZZ
+
+  let name = ''
+  let flag = 0,
     schemePrefix: string,
     downloadConfig: downloadConfig,
     universalPath: string;
@@ -39,13 +46,26 @@ export const getTargetInfo = (options: CallAppOptions) => {
 }
 
 //  转转 app
-const isZZ = (targetApp: string): boolean => /^(zhuanzhuan|zz|)$/i.test(targetApp)
+const isZZ = (targetApp: string): boolean => /^(zhuanzhuan|zz)$/i.test(targetApp)
 //  转转卖家版 app
 const isZZSeller = (targetApp: string): boolean => /^zzSeller$/i.test(targetApp)
 //  转转采货侠 app
 const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 //  转转找靓机 app
 const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
+
+// 从 options.path 中获取 target-app
+const isZZPath = (path:string) :boolean => /^zhuanzhuan:/.test(path)
+const isZZSeekerPath = (path:string) :boolean => /^zljgo:/i.test(path)
+export const handlePath2app = (path: string): Record<string, any> => {
+  let app = ''
+
+  if(isZZSeekerPath(path)) app = TargetAppNames.ZZSeeker
+  if(isZZPath(path)) app = TargetAppNames.ZZ
+
+  return { app }
+}
+
 
 export const targetAppFlag = {
   [TargetAppNames.ZZ]: 1,

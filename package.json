@@ -22,6 +22,7 @@
     "doc-upload": "commander-tools run doc-upload"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "keywords": [
     "vue",
     "react",

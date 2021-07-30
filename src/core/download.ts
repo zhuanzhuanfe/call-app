@@ -34,7 +34,7 @@ export const allDownloadUrl = {
 
 // 构造 下载链接
 export const generateDownloadUrl = (instance: CallAppInstance) => {
-  const { options, targetInfo } = instance
+  const { options, targetInfo: { downloadConfig, name } } = instance
   const {
     channelId,
     middleWareUrl,
@@ -45,9 +45,7 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
   if (!download) return
 
   let downloadUrl: string
-  // 不同 目标app 下载配置
-  const { downloadConfig, name } = targetInfo
-
+  // 下载配置
   if (name == TargetAppNames.ZZ) {
     // 目标app 是转转
     if (is58App && isAndroid) {
@@ -70,15 +68,20 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
 
       downloadUrl = downloadConfig.api + '?channelId=' + channelId + deeplink
     }
-  } else if(name == TargetAppNames.ZZSeeker) {
-    // 目标app 是找靓机
+  } else if(name == TargetAppNames.ZZSeeker || name) {
+    // 目标app 是找靓机 或者是 第三方
     if(isIos) {
       downloadUrl = downloadConfig.ios
     } else if(isWechat && isAndroid)  {
       downloadUrl = downloadConfig.wechat_android
     } else {
-      downloadUrl = downloadConfig.android_api
+      downloadUrl = downloadConfig.android_api || downloadConfig.android
     }
+  } else {
+    // 不存在 name
+    console.error ?
+      console.error('generate downloadUrl error') :
+      console.log('Error: \n generate downloadUrl error')
   }
 
   return middleWareUrl || downloadUrl
@@ -87,5 +90,5 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
 // 根据目标app 获取下载链接 配置
 export const getDownloadConfig = (targetAPPName: string): downloadConfig => {
   // 根据需要唤起的 目标 app ，获取 downloadUrl
-  return allDownloadUrl[targetAPPName]
+  return allDownloadUrl[targetAPPName] || {}
 }

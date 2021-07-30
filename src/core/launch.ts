@@ -9,7 +9,7 @@ import {
   isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion, isQuark
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
-import { generateIntent, generateScheme, generateUniversalLink } from './generate'
+import { generateIntent } from './generate'
 import { CallAppInstance } from '../types'
 import { showMask } from '../libs/utils'
 /**
@@ -20,7 +20,7 @@ export const launch = (instance: CallAppInstance) => {
   const { options, download, urlScheme: schemeURL, universalLink } = instance;
   let { universal, intent, callFailed, callSuccess, callError, delay } = options;
 
-  //
+  // app-links-uri
   const intentLink = generateIntent(instance)
 
   // 唤端失败时落地处理
@@ -29,17 +29,17 @@ export const launch = (instance: CallAppInstance) => {
   const supportIntent = intent
 
   // 唤端成功/失败检测 才执行 checkOpen(cb)
-  const checkOpen = (failure: any, success?: any, error?: any) => {
+  const checkOpen = (failure?: () => void, success?: () => void, error?: () => void) => {
     // 唤端 执行 checkOpen(failedCb, successCb, errorCb, time) , hack by setTimeout
     return _checkOpen(() => {
       callFailed && callFailed()
-      failure();
+      failure && failure()
     }, () => {
       callSuccess && callSuccess()
-      success()
+      success && success()
     }, () => {
       callError && callError()
-      error()
+      error && error()
     }, delay);
   }
   // scheme 处理落地状态
@@ -69,15 +69,16 @@ export const launch = (instance: CallAppInstance) => {
     console.log('isIos', isIos)
     // ios-version > v12.3.0
     if (semverCompare(IOSVersion(), '12.3.0') > 0) (delay = options.delay = 3000);
+
     console.log('isIos > 12.3.0', semverCompare(IOSVersion(), '12.3.0') > 0)
     console.log('instance', instance)
 
-    if (isWeibo || (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1)) {
+    if (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1) {
       // 显示遮罩 在浏览器打开
       // download.call(instance)
       console.log(
         'isIos - isWeibo || isWechat < 7.0.5',
-        isIos && (isWeibo || (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1 ))
+        isIos &&  (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1)
       )
 
       showMask()
@@ -85,15 +86,25 @@ export const launch = (instance: CallAppInstance) => {
       console.log('isIos - version < 9', isIos, getIOSVersion() < 9)
       evokeByIFrame(schemeURL);
       checkOpenFall = handleFall
+    } else if(!supportUniversal && isBaidu) {
+      console.log('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
+
+      showMask()
+      checkOpenFall = handleFall
+    } else if(!supportUniversal && isWeibo) {
+      console.log('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
+
+      showMask()
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
       console.log('isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
         !supportUniversal || isQQ || isQQBrowser || isQzone);
 
       evokeByTagA(schemeURL);
       checkOpenFall = handleFall
-    } else if(isQuark) {
+    } else if (isQuark) {
+      console.log('isQuark', isQuark)
       evokeByLocation(schemeURL)
-      checkOpenFall = xLinkHandleFall
+      checkOpenFall = handleFall
     } else {
       // universalLink 唤起, 不支持 失败回调处理。
       // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。

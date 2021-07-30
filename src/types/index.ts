@@ -43,7 +43,7 @@ export interface CallAppOptions {
   path: string,
   // 唤起的目标app
   targetApp?: TargetAppNames.ZZ | TargetAppNames.ZZHunter |
-    TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller,
+    TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller | undefined,
   // 是否开启 universal-link, 默认 true
   universal?: boolean,
   // 是否开启 app-links, 默认 false

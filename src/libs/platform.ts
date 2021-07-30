@@ -55,6 +55,7 @@ export const isSougou: boolean = /sogouMobileBrowser\//i.test(ua)
 
 export const isHuaWei: boolean = /huaweiBrowser\//i.test(ua);
 
+export const isMi: boolean = /XiaoMi\/MiuiBrowser\//i.test(ua)
 // 安卓 chrome 浏览器，包含 原生chrome浏览器、三星自带浏览器、360浏览器以及早期国内厂商自带浏览器
 export const isOriginalChrome: boolean =
   /chrome\/[\d.]+ mobile safari\/[\d.]+/i.test(ua) && isAndroid && ua.indexOf('Version') < 0;
