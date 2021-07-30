@@ -20,9 +20,10 @@ export const allDownloadUrl = {
   },
   // 找靓机
   [TargetAppNames.ZZSeeker]: {
-    ios: '',
-    android: '',
-    wechat_android: '',
+    ios: 'https://itunes.apple.com/cn/app/id1060362098',
+    android: 'market://details?id=com.huodao.hdphone',
+    android_api: 'https://dlapk.zhaoliangji.com/zlj_zhaoliangji.apk',
+    wechat_android: 'https://sj.qq.com/myapp/detail.htm?apkName=com.huodao.hdphone',
     api: ''
   },
   // 采货侠
@@ -45,27 +46,39 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
 
   let downloadUrl: string
   // 不同 目标app 下载配置
-  const downloadConfig =  targetInfo.downloadConfig
+  const { downloadConfig, name } = targetInfo
 
-  if(is58App && isAndroid) {
-    // plat 如果 58App ，无法传递 channelId (Android & IOS 下载都跳转应用市场), 应用商店下载 downloadUrl[ios | android]
-    downloadUrl = downloadConfig.android
-  } else if((is58App && isIos) || (isWechat && isIos)) {
-    // plat 如果 58 + ios || wx + ios , 走 苹果商店 , downloadConfig[ios]
-    downloadUrl = downloadConfig.ios
-  } else if (isWechat && is58Host) {
-    // plat 如果 wx + hostname 58.com， downloadConfig[api] + '?channelId=' + channelId
-    downloadUrl = downloadConfig.api + '?channelId=' + channelId
-  } else if(isWechat && isAndroid) {
-    // plat 如果 wx + android ，走应用宝， downloadConfig[wechat_android]
-    downloadUrl = downloadConfig.wechat_android
-  } else {
-    //  其他 走 download-api 下载 channelId deeplinkId,  // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
-    // wx 特殊处理 deepLinkId
-    let wechat = isWechat ? '#mp.weixin.qq.com' : '';
-    let deeplink = deeplinkId ? `&deeplinkId=${deeplinkId}${wechat}` : ''
+  if (name == TargetAppNames.ZZ) {
+    // 目标app 是转转
+    if (is58App && isAndroid) {
+      // plat 如果 58App ，无法传递 channelId (Android & IOS 下载都跳转应用市场), 应用商店下载 downloadUrl[ios | android]
+      downloadUrl = downloadConfig.android
+    } else if ((is58App && isIos) || (isWechat && isIos)) {
+      // plat 如果 58 + ios || wx + ios , 走 苹果商店 , downloadConfig[ios]
+      downloadUrl = downloadConfig.ios
+    } else if (isWechat && is58Host) {
+      // plat 如果 wx + hostname 58.com， downloadConfig[api] + '?channelId=' + channelId
+      downloadUrl = downloadConfig.api + '?channelId=' + channelId
+    } else if (isWechat && isAndroid) {
+      // plat 如果 wx + android ，走应用宝， downloadConfig[wechat_android]
+      downloadUrl = downloadConfig.wechat_android
+    } else {
+      //  其他 走 download-api 下载 channelId deeplinkId,  // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
+      // wx 特殊处理 deepLinkId
+      let wechat = isWechat ? '#mp.weixin.qq.com' : '';
+      let deeplink = deeplinkId ? `&deeplinkId=${deeplinkId}${wechat}` : ''
 
-    downloadUrl = downloadConfig.api + '?channelId=' + channelId + deeplink
+      downloadUrl = downloadConfig.api + '?channelId=' + channelId + deeplink
+    }
+  } else if(name == TargetAppNames.ZZSeeker) {
+    // 目标app 是找靓机
+    if(isIos) {
+      downloadUrl = downloadConfig.ios
+    } else if(isWechat && isAndroid)  {
+      downloadUrl = downloadConfig.wechat_android
+    } else {
+      downloadUrl = downloadConfig.android_api
+    }
   }
 
   return middleWareUrl || downloadUrl

@@ -7,12 +7,12 @@
 import { generateDownloadUrl } from "./core/download";
 import { launch } from "./core/launch";
 import { sdkLaunch } from './core/sdkLaunch'
-import { is58App, isAndroid, isUC, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
+import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
-import { evokeByLocation, evokeByTagA } from "./libs/evoke";
+import { evokeByIFrame, evokeByLocation, evokeByTagA } from "./libs/evoke";
 import { generateScheme, generateUniversalLink } from './core/generate'
 import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
-import { copy } from "./libs/utils";
+import { copy, showMask } from "./libs/utils";
 
 const defaultOptions: CallAppOptions = {
   path: '/', // 唤起的页面 path
@@ -99,9 +99,17 @@ export default class CallApp {
     console.log('downloadLink', this.downloadLink)
 
     if (this.downloadLink) {
-      // 个别浏览器需要单独处理evoke方式, 防止页面跳转到下载链接 展示异常
+      // 个别浏览器 evoke方式 需要单独处理, 防止页面跳转到下载链接 展示异常
       if(isAndroid && isUC) {
         return evokeByTagA(this.downloadLink)
+      }
+
+      if(isIos && isQuark) {
+        return evokeByIFrame(this.downloadLink)
+      }
+
+      if(isIos && isSougou) {
+        return showMask()
       }
 
       return evokeByLocation(this.downloadLink)

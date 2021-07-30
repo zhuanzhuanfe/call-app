@@ -6,13 +6,12 @@ import {
   isQQ, isWeibo, isQzone,
   isAndroid, isIos, isQQBrowser,
   getIOSVersion, semverCompare,
-  isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion
+  isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion, isQuark
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
 import { generateIntent, generateScheme, generateUniversalLink } from './generate'
 import { CallAppInstance } from '../types'
 import { showMask } from '../libs/utils'
-import { compareVersion } from "../../src-old/libs/utils"
 /**
  * 普通 url-scheme 唤起， 不同平台对应不同的 evoke
  * @param {Object} instance
@@ -29,20 +28,17 @@ export const launch = (instance: CallAppInstance) => {
   const supportUniversal = universal
   const supportIntent = intent
 
-  // 唤端失败 才执行 checkOpen(cb)
+  // 唤端成功/失败检测 才执行 checkOpen(cb)
   const checkOpen = (failure: any, success?: any, error?: any) => {
-    // 唤端失败执行 checkOpen(failedCb, successCb, time) , hack by setTimeout
+    // 唤端 执行 checkOpen(failedCb, successCb, errorCb, time) , hack by setTimeout
     return _checkOpen(() => {
       callFailed && callFailed()
-
       failure();
     }, () => {
       callSuccess && callSuccess()
-
       success()
     }, () => {
       callError && callError()
-
       error()
     }, delay);
   }
@@ -95,10 +91,9 @@ export const launch = (instance: CallAppInstance) => {
 
       evokeByTagA(schemeURL);
       checkOpenFall = handleFall
-    } else if(isWechat) {
-      // 失败则跳到应用商店
-      evokeByLocation(universalLink)
-      checkOpenFall = handleFall
+    } else if(isQuark) {
+      evokeByLocation(schemeURL)
+      checkOpenFall = xLinkHandleFall
     } else {
       // universalLink 唤起, 不支持 失败回调处理。
       // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。
