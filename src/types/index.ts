@@ -1,4 +1,3 @@
-
 export interface TargetInfo {
   flag: number,
   name: string,
@@ -60,7 +59,7 @@ export interface CallAppOptions {
   wechatStyle?: number | string | undefined,
   // deeplink 接口支持的id配置
   deeplinkId?: number | string | undefined,
-   // 下载中间页 url
+  // 下载中间页 url
   middleWareUrl?: string,
   // 兼容 旧版本 scheme 生成规则
   urlSearch?: UrlSearch,
@@ -87,4 +86,11 @@ export interface Intent {
   action?: string;
   category?: string;
   component?: string;
+}
+
+export interface WXJSTICKET {
+  appId?: string,
+  timestamp?: string,
+  noncestr?: string,
+  signature?: string,
 }
