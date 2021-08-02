@@ -1,7 +1,12 @@
+/**
+ * 下载处理中心
+ * download-config-center && generate download-url
+ */
 import {
   is58App,
   isAndroid,
   isIos,
+  isQQ,
   isWechat,
 } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
@@ -10,9 +15,10 @@ import { CallAppInstance, downloadConfig, TargetAppNames } from '../types'
 export const allDownloadUrl = {
   [TargetAppNames.ZZ]: {
     // ios 商店 下载
-    ios: 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8',
+    // ios: 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8', // 这种格式链接qq内无法触发下载
+    ios: 'https://itunes.apple.com/cn/app/id1002355194?pt=118679317&ct=923&mt=8',
     // 安卓 市场 下载
-    android: 'market://search?q=pname:com.wuba.zhuanzhuan',
+    android: 'market://details?id=com.wuba.zhuanzhuan',
     // 腾讯 应用宝 下载
     wechat_android: 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
     // download-api 下载
@@ -48,20 +54,21 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
   // 下载配置
   if (name == TargetAppNames.ZZ) {
     // 目标app 是转转
-    if (is58App && isAndroid) {
-      // plat 如果 58App ，无法传递 channelId (Android & IOS 下载都跳转应用市场), 应用商店下载 downloadUrl[ios | android]
-      downloadUrl = downloadConfig.android
-    } else if ((is58App && isIos) || (isWechat && isIos)) {
-      // plat 如果 58 + ios || wx + ios , 走 苹果商店 , downloadConfig[ios]
-      downloadUrl = downloadConfig.ios
-    } else if (isWechat && is58Host) {
+    if (isWechat && is58Host) {
       // plat 如果 wx + hostname 58.com， downloadConfig[api] + '?channelId=' + channelId
       downloadUrl = downloadConfig.api + '?channelId=' + channelId
-    } else if (isWechat && isAndroid) {
-      // plat 如果 wx + android ，走应用宝， downloadConfig[wechat_android]
+    }  else if ((is58App && isIos) || ((isQQ || isWechat) && isIos)) {
+      // plat 如果 58 + ios || wx + ios || qq + ios, 走 苹果商店 , downloadConfig[ios]
+      downloadUrl = downloadConfig.ios
+    } else if ((isQQ || isWechat) && isAndroid) {
+      // plat 如果 wx + android || qq + android， 走应用宝， downloadConfig[wechat_android]
       downloadUrl = downloadConfig.wechat_android
+    } else if (is58App && isAndroid) {
+      // plat 如果 58App ，无法传递 channelId ， 应用商店下载 downloadUrl[ios | android]
+      downloadUrl = downloadConfig.android
     } else {
-      //  其他 走 download-api 下载 channelId deeplinkId,  // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
+      //  其他 走 download-api 下载 channelId deeplinkId,
+      // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
       // wx 特殊处理 deepLinkId
       let wechat = isWechat ? '#mp.weixin.qq.com' : '';
       let deeplink = deeplinkId ? `&deeplinkId=${deeplinkId}${wechat}` : ''

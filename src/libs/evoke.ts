@@ -1,3 +1,8 @@
+/**
+ * 
+ * web evoke methods && check evoke-status
+ */
+
 type Hidden = 'hidden' | 'msHidden' | 'webkitHidden' | undefined
 type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange' | undefined
 
