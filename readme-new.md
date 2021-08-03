@@ -46,7 +46,7 @@ callApp.download()
 
 
 
-#### 示例代码
+## 示例用法
 
 1. 配置options，唤起 转转/找靓机
 
@@ -89,6 +89,7 @@ callApp.download()
 ```
 
 2. 方法中进行配置（高阶）
+
 该用法为高阶用法，仅仅实例化类一次，通过 api 来配置 options，进行执行。
 此一般用于较复杂业务场景下，避免多次实例化而造成内存浪费。
 
@@ -124,13 +125,15 @@ callApp.download({
 })
 ```
 
-1. 第三方配置（高阶）
+3. 第三方配置（高阶）
+
  ⚠️ 注意：
-3-1. 如果配置了 customConfig 参数，则非 hooks 参数（如 path，targetApp 等）的逻辑不再生效。
 
-3-2 landingPage 配置参数优先级大于 downloadConfig
+3-1. 如果配置了 `customConfig` 参数，则非 hooks 参数（如 path，targetApp 等）的配置不再生效。
 
-3-3 如果没有配置 universalLink 则 ios 端降级为 schemeUrl
+3-2 `landingPage` 配置参数优先级大于 `downloadConfig`
+
+3-3 如果没有配置 `universalLink` 则 ios 端降级为 `schemeUrl`
 
 ```javascript
 // 唤起支付宝
