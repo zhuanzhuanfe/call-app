@@ -126,9 +126,9 @@ callApp.download({
 
 1. 第三方配置（高阶）
  ⚠️ 注意：
-3-1. 如果配置了 customConfig 参数，则 path，targetApp 的逻辑不再执行。
+3-1. 如果配置了 customConfig 参数，则非 hooks 参数（如 path，targetApp 等）的逻辑不再生效。
 
-3-2 landingPage 配置优先级大于 downloadConfig
+3-2 landingPage 配置参数优先级大于 downloadConfig
 
 3-3 如果没有配置 universalLink 则 ios 端降级为 schemeUrl
 
@@ -138,7 +138,10 @@ const callApp = new CallApp({
   customConfig: {
     schemeUrl: 'alipay://platformapi/startapp?appId=20000056', // 支付宝转账
     landingPage: 'https://render.alipay.com/p/s/i', // 支付宝落地页（下载页）
-  }
+  },
+  callStart: () => { console.log('触发 开始唤起钩子') },
+  callSuccess: () => { console.log('触发 唤起成功钩子') },
+  callFailed: () => { console.log('触发 唤起失败钩子') },
 })
 
 callApp.start()
