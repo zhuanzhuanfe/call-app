@@ -49,6 +49,8 @@ export const generateIntent = (instance: CallAppInstance): string => {
     console.error ?
       console.error(`Error: options.intentParams is not found, please check`) :
       console.log(`Error: \n options.intentParams is not found, please check`);
+
+    return ''
   }
 
   if (!intent || !intentParams) return '';

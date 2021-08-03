@@ -39,12 +39,112 @@ callApp.download()
 
 
 
+
+
 #### api 方法
 
 
 
 
-## 兼容性
+#### 示例代码
+
+1. 配置options，唤起 转转/找靓机
+
+```javascript
+// 唤起 转转
+const callApp = new CallApp({
+  path: 'jump/shortVideo/videoHome/jump',
+  channelId: '', //  渠道id
+  deeplinkId: '',  //
+  targetApp: 'zz', // 默认 转转
+  callStart: () => { console.log('触发 开始唤起钩子') },
+  callSuccess: () => { console.log('触发 唤起成功钩子') },
+  callFailed: () => { console.log('触发 唤起失败钩子') },
+  callDownload: () => { console.log('触发 下载钩子') },
+  callError: () => { console.log('内部异常') }
+})
+
+// 执行唤起
+callApp.start()
+// 执行下载
+callApp.download()
+```
+
+```javascript
+// 唤起 找靓机
+const callApp = new CallApp({
+  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  targetApp: 'zzSeeker',
+  callStart: () => { console.log('触发 开始唤起钩子') },
+  callSuccess: () => { console.log('触发 唤起成功钩子') },
+  callFailed: () => { console.log('触发 唤起失败钩子') },
+  callDownload: () => { console.log('触发 下载钩子') },
+  callError: () => { console.log('内部异常') }
+})
+
+// 执行唤起
+callApp.start()
+// 执行下载
+callApp.download()
+```
+
+2. 方法中进行配置（高阶）
+该用法为高阶用法，仅仅实例化类一次，通过 api 来配置 options，进行执行。
+此一般用于较复杂业务场景下，避免多次实例化而造成内存浪费。
+
+```javascript
+// 实例化一次
+const callApp = new CallApp()
+// 在方法内进行参数配置
+
+// 唤起转转
+callApp.start({
+  path: 'jump/shortVideo/videoHome/jump',
+  channelId: '', //  渠道id
+  deeplinkId: '',  //
+  targetApp: 'zz', // 默认 转转
+})
+
+// 唤起找靓机
+callApp.start({
+  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  targetApp: 'zzSeeker', // 默认 转转
+})
+
+// 下载转转
+callApp.download({
+  channelId: '', //  渠道id
+  deeplinkId: '',  //
+  targetApp: 'zz', // 默认 转转
+})
+
+// 下载找靓机
+callApp.download({
+  targetApp: 'zzSeeker',
+})
+```
+
+1. 第三方配置（高阶）
+ ⚠️ 注意：
+3-1. 如果配置了 customConfig 参数，则 path，targetApp 的逻辑不再执行。
+
+3-2 landingPage 配置优先级大于 downloadConfig
+
+3-3 如果没有配置 universalLink 则 ios 端降级为 schemeUrl
+
+```javascript
+// 唤起支付宝
+const callApp = new CallApp({
+  customConfig: {
+    schemeUrl: 'alipay://platformapi/startapp?appId=20000056', // 支付宝转账
+    landingPage: 'https://render.alipay.com/p/s/i', // 支付宝落地页（下载页）
+  }
+})
+
+callApp.start()
+
+```
+## 兼容性 😈
 
 #### ios: [iphoneXR]
 

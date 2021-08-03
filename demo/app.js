@@ -1,15 +1,17 @@
 import CallApp from '../src'
 
 try {
+  // 第三方配置， 唤起支付宝
+  // initCustomPage()
+
   // 检测 m 端是否支持 vue/es6 // 后面考虑 升级脚手架支持vue/react
-  console.log(window.Vue)
   initVuePage()
 } catch (error) {
   console.error(error)
-  initMiniPage()
+  initMiniPage({})
 }
 
-function initMiniPage() {
+function initMiniPage(opts) {
   var app = document.querySelector('#app')
   var btn_open = document.createElement('button')
   btn_open.innerText = '唤起'
@@ -35,10 +37,11 @@ function initMiniPage() {
   };
 
   var callApp = window.callApp = new CallApp({
-    path: 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
-    channelId: 'BM_GJ618XC',
-    targetApp: 'zz',
+    path: opts.path || 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
+    channelId: opts.channelId || 'BM_GJ618XC',
+    targetApp: opts.targetApp || 'zz',
     wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
+    customConfig: opts.customConfig,
     // deeplinkId: getQuery('channelId')
     callStart: hooks.callStart,
     callSuccess: hooks.callSuccess,
@@ -232,4 +235,13 @@ function initVuePage() {
     }
   }).mount('#app')
 
+}
+
+function initCustomPage() {
+  initMiniPage({
+    customConfig: {
+      schemeUrl: 'alipay://platformapi/startapp?appId=20000056',
+      landingPage: 'https://render.alipay.com/p/s/i',
+    }
+  })
 }

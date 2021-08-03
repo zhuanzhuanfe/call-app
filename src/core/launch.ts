@@ -10,7 +10,6 @@ import {
   isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion, isQuark
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
-import { generateIntent } from './generate'
 import { CallAppInstance } from '../types'
 import { showMask } from '../libs/utils'
 /**
@@ -18,11 +17,8 @@ import { showMask } from '../libs/utils'
  * @param {Object} instance
  */
 export const launch = (instance: CallAppInstance) => {
-  const { options, download, urlScheme: schemeURL, universalLink } = instance;
+  let { options, download, urlScheme: schemeURL, universalLink, intentLink } = instance;
   let { universal, intent, callFailed, callSuccess, callError, delay } = options;
-
-  // app-links-uri
-  const intentLink = generateIntent(instance)
 
   // 唤端失败时落地处理
   let checkOpenFall: () => void;
@@ -72,11 +68,9 @@ export const launch = (instance: CallAppInstance) => {
     if (semverCompare(IOSVersion(), '12.3.0') > 0) (delay = options.delay = 3000);
 
     console.log('isIos > 12.3.0', semverCompare(IOSVersion(), '12.3.0') > 0)
-    console.log('instance', instance)
 
     if (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1) {
       // 显示遮罩 在浏览器打开
-      // download.call(instance)
       console.log(
         'isIos - isWeibo || isWechat < 7.0.5',
         isIos &&  (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1)
@@ -85,6 +79,7 @@ export const launch = (instance: CallAppInstance) => {
       showMask()
     } else if (getIOSVersion() < 9) {
       console.log('isIos - version < 9', isIos, getIOSVersion() < 9)
+
       evokeByIFrame(schemeURL);
       checkOpenFall = handleFall
     } else if(!supportUniversal && isBaidu) {
@@ -104,6 +99,7 @@ export const launch = (instance: CallAppInstance) => {
       checkOpenFall = handleFall
     } else if (isQuark) {
       console.log('isQuark', isQuark)
+
       evokeByLocation(schemeURL)
       checkOpenFall = handleFall
     } else {
@@ -147,6 +143,7 @@ export const launch = (instance: CallAppInstance) => {
     } else {
       // 其他浏览器 通过 scheme 唤起，失败则下载
       console.log('isAndroid - schemeURL')
+
       evokeByLocation(schemeURL)
       checkOpenFall = handleFall
     }

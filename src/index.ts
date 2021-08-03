@@ -10,7 +10,7 @@ import { sdkLaunch } from './core/sdkLaunch'
 import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isWeibo, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
 import { getTargetInfo } from "./core/targetApp";
 import { evokeByIFrame, evokeByLocation, evokeByTagA } from "./libs/evoke";
-import { generateScheme, generateUniversalLink } from './core/generate'
+import { generateScheme, generateUniversalLink, generateIntent } from './core/generate'
 import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
 import { copy, showMask } from "./libs/utils";
 
@@ -30,8 +30,8 @@ const defaultOptions: CallAppOptions = {
   callFailed: () => { }, // 失败 hook
   callSuccess: () => { }, // 成功 hook
   callStart: () => { }, // 开始唤起 hook
-  callDownload: () => {}, // 触发下载 hook
-  callError: () => {} // 触发异常 hook
+  callDownload: () => { }, // 触发下载 hook
+  callError: () => { }, // 触发异常 hook
 }
 
 export default class CallApp {
@@ -40,7 +40,8 @@ export default class CallApp {
   downloadLink: string
   APP: null | Record<string, any>
   urlScheme: string
-  universalLink: string;
+  universalLink: string
+  intentLink: string
 
   // Create an instance of CallApp
   constructor(options: CallAppOptions) {
@@ -48,6 +49,20 @@ export default class CallApp {
     this.init(options)
   }
   init(options: CallAppOptions) {
+    // 第三方 配置
+    const { customConfig } = options
+
+    if(customConfig) {
+      this.options = options
+      this.downloadLink = generateDownloadUrl(this)
+      this.urlScheme = customConfig.schemeUrl
+      if(customConfig.universalLink) {
+        this.options.universal = true
+        this.universalLink = customConfig.universalLink
+      }
+      return
+    }
+    //
     this.APP = null;
     this.options = this.options ?
       Object.assign(this.options, options) :
@@ -61,6 +76,8 @@ export default class CallApp {
     this.urlScheme = generateScheme(this)
     //
     this.universalLink = generateUniversalLink(this)
+    //
+    this.intentLink = generateIntent(this)
   }
   /**
    * 触发唤起
@@ -68,10 +85,14 @@ export default class CallApp {
   start(options?: CallAppOptions) {
     //
     options && this.init(options)
-    const { targetInfo: { name: targetApp } } = this
-    const { callStart } = this.options
+
+    const { callStart, customConfig } = this.options
 
     callStart && callStart()
+    // 第三方 配置
+    if(customConfig) return launch(this)
+
+    const { targetInfo: { name: targetApp } } = this
 
     if (is58App || isZZ || isZZHunter ||
       isZZSeller || isZZSeeker ||
@@ -91,25 +112,25 @@ export default class CallApp {
     //
     options && this.init(options)
 
-    const { callDownload } = this.options
-
-    copy(`1.0$$${this.urlScheme}`)
+    const { callDownload, customConfig } = this.options
 
     callDownload && callDownload()
 
     console.log('downloadLink', this.downloadLink)
 
+    if(!customConfig) copy(`1.0$$${this.urlScheme}`)
+
     if (this.downloadLink) {
       // 个别浏览器 evoke方式 需要单独处理, 防止页面跳转到下载链接 展示异常
-      if(isAndroid && isUC) {
+      if (isAndroid && isUC) {
         return evokeByTagA(this.downloadLink)
       }
 
-      if(isIos && isQuark) {
+      if (isIos && isQuark) {
         return evokeByIFrame(this.downloadLink)
       }
 
-      if(isWeibo || (isIos && isSougou)) {
+      if (isWeibo || (isIos && isSougou)) {
         return showMask()
       }
 

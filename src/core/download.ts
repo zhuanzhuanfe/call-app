@@ -20,7 +20,7 @@ export const allDownloadUrl = {
     // 安卓 市场 下载
     android: 'market://details?id=com.wuba.zhuanzhuan',
     // 腾讯 应用宝 下载
-    wechat_android: 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
+    android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
     // download-api 下载
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
@@ -29,7 +29,7 @@ export const allDownloadUrl = {
     ios: 'https://itunes.apple.com/cn/app/id1060362098',
     android: 'market://details?id=com.huodao.hdphone',
     android_api: 'https://dlapk.zhaoliangji.com/zlj_zhaoliangji.apk',
-    wechat_android: 'https://sj.qq.com/myapp/detail.htm?apkName=com.huodao.hdphone',
+    android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.huodao.hdphone',
     api: ''
   },
   // 采货侠
@@ -40,6 +40,25 @@ export const allDownloadUrl = {
 
 // 构造 下载链接
 export const generateDownloadUrl = (instance: CallAppInstance) => {
+  // 第三方配置
+  const { options: { customConfig } } = instance
+
+  if(customConfig) {
+    const { downloadConfig, landingPage } = customConfig
+    if(landingPage) return landingPage
+    if(downloadConfig) {
+      if(isIos) {
+        return downloadConfig.ios
+      } else if(isWechat && isAndroid)  {
+        return downloadConfig.android_yyb
+      } else {
+        return downloadConfig.android
+      }
+    }
+    return ''
+  }
+
+  //
   const { options, targetInfo: { downloadConfig, name } } = instance
   const {
     channelId,
@@ -61,8 +80,8 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
       // plat 如果 58 + ios || wx + ios || qq + ios, 走 苹果商店 , downloadConfig[ios]
       downloadUrl = downloadConfig.ios
     } else if ((isQQ || isWechat) && isAndroid) {
-      // plat 如果 wx + android || qq + android， 走应用宝， downloadConfig[wechat_android]
-      downloadUrl = downloadConfig.wechat_android
+      // plat 如果 wx + android || qq + android， 走应用宝， downloadConfig[android_yyb]
+      downloadUrl = downloadConfig.android_yyb
     } else if (is58App && isAndroid) {
       // plat 如果 58App ，无法传递 channelId ， 应用商店下载 downloadUrl[ios | android]
       downloadUrl = downloadConfig.android
@@ -76,11 +95,11 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
       downloadUrl = downloadConfig.api + '?channelId=' + channelId + deeplink
     }
   } else if(name == TargetAppNames.ZZSeeker || name) {
-    // 目标app 是找靓机 或者是 第三方
+    // 目标app 是找靓机
     if(isIos) {
       downloadUrl = downloadConfig.ios
     } else if(isWechat && isAndroid)  {
-      downloadUrl = downloadConfig.wechat_android
+      downloadUrl = downloadConfig.android_yyb
     } else {
       downloadUrl = downloadConfig.android_api || downloadConfig.android
     }
