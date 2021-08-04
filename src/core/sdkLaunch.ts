@@ -31,7 +31,7 @@ declare var window: Window & {
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance: CallAppInstance) => {
-  const {options, APP, targetInfo, download, urlScheme} = instance;
+  const {options, APP, targetInfo, download, urlScheme,downloadLink} = instance;
   const {universal, callFailed, callSuccess, callError, delay} = options;
 
   //打开转转app
@@ -49,6 +49,9 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       // await load58SDK(APP)
 
     } else if (isWechat) {
+      if(isAndroid){
+        return evokeByLocation(downloadLink)
+      }
       try {
         const conf: WXJSTICKET = await loadWXSDK(APP)
         const wxconfig = {
@@ -67,17 +70,18 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
           Object.assign(instance, {
             APP: window.WeixinJSBridge
           })
-          if (isAndroid) {
-            const packageName = AppInfomation.ANDROID_PACKAGE_NAME
-            const packageUrl = urlScheme
-            __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
-              __openApp(urlScheme, instance)
-            }).catch(() => {
-              callFailed()
-            })
-          } else { //ios
-            __openApp(urlScheme, instance)
-          }
+          __openApp(urlScheme, instance)
+          // if (isAndroid) {
+          //   const packageName = AppInfomation.ANDROID_PACKAGE_NAME
+          //   const packageUrl = urlScheme
+          //   __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
+          //     __openApp(urlScheme, instance)
+          //   }).catch(() => {
+          //     callFailed()
+          //   })
+          // } else { //ios
+          //   __openApp(urlScheme, instance)
+          // }
         })
       }catch (e) {
         callFailed()
@@ -139,18 +143,6 @@ const loadWXSDK = (app) => {
   })
 }
 
-// const wx_onReady = () =>
-//   new Promise<void>((resolve) => {
-//     if (window.WeixinJSBridge) {
-//       resolve()
-//     } else {
-//       document.addEventListener<any>(
-//         'WeixinJSBridgeReady',
-//         resolve,
-//         false
-//       )
-//     }
-//   })
 
 // 加载sdk 资源
 const loadSkd = (sdkName) => {
