@@ -35,17 +35,14 @@ export enum TargetAppNames {
   ZZHunter = 'zzHunter',
   ZZSeller = 'zzSeller',
   ZZSeeker = 'zzSeeker',
-  ZZInner = 'zzInner'
+  // ZZInner = 'zzInner'
 }
-
-export type TargetAppName = TargetAppNames.ZZ | TargetAppNames.ZZHunter |
-  TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller
 
 export interface CallAppOptions {
   // 唤起的页面 path
   path?: string,
   // 唤起的目标app
-  targetApp?: TargetAppName | undefined,
+  targetApp?: TargetAppNames,
   // 是否开启 universal-link, 默认 true
   universal?: boolean,
   // 是否开启 app-links, 默认 false

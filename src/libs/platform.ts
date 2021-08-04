@@ -1,6 +1,6 @@
 
 //  获取平台类型
-const ua: string = (navigator && navigator.userAgent) || '';
+const ua: string = (window.navigator && window.navigator.userAgent) || '';
 console.log('ua', ua)
 /**
  *
@@ -89,8 +89,8 @@ export const semverCompare = (versionA: string, versionB: string): number => {
 };
 
 //  获取 ios 大版本号
-export const getIOSVersion = (): number|null => {
-  const version = navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
+export const getIOSVersion = (): number | null => {
+  const version = window.navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
 
   if(version) return Number.parseInt(version[1], 10);
 
@@ -99,16 +99,40 @@ export const getIOSVersion = (): number|null => {
 
 //  获取 微信 版本号
 export const getWeChatVersion = (): string | null => {
-  const version = navigator.appVersion.match(/micromessenger\/(\d+\.\d+\.\d+)/i);
+  const version = window.navigator.appVersion.match(/micromessenger\/(\d+\.\d+\.\d+)/i);
 
   if(version) return version[1]
 
   return null;
 };
 
+const getLow9Ios = ():boolean => {
+  let v = getIOSVersion()
+  if(v) {
+    return v < 9 ? true : false
+  }
+  return false
+}
+
+export const isLow9Ios: boolean = getLow9Ios()
+
+const getLow7WX = (): boolean => {
+  let vv = getWeChatVersion()
+  if(vv) {
+    return semverCompare(vv, '7.0.5') < 0 ? true : false
+  }
+  return false
+}
+
+export const isLow7WX: boolean = getLow7WX()
+
+const getThan12Ios = (): boolean => semverCompare(IOSVersion(), '12.3.0') > 0
+
+export const isThan12Ios: boolean = getThan12Ios()
+
 // IOS 版本号
 export const IOSVersion = (): string => {
-  let str = navigator.userAgent.toLowerCase()
+  let str = window.navigator.userAgent.toLowerCase()
   let ver: string = '';
   try {
     let m = str.match(/cpu iphone os (.*?) like mac os/)

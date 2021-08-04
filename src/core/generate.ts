@@ -19,7 +19,7 @@ export const generateScheme = (instance: CallAppInstance): string => {
   // 检验 path 中是否有 scheme-prefix
   const { app } = handlePath2app(path)
 
-  const uri = app ? path : `${targetInfo.schemePrefix}//${path}`
+  const uri = app ? path : `${targetInfo?.schemePrefix}//${path}`
 
   return uri
 }
@@ -56,7 +56,7 @@ export const generateIntent = (instance: CallAppInstance): string => {
   if (!intent || !intentParams) return '';
 
   const keys = Object.keys(intentParams) as Array<keyof Intent>;
-  const intentParam = keys.map((key) => `${key}=${intent[key]};`).join('');
+  const intentParam = keys.map((key) => `${key}=${intentParams[key]};`).join('');
 
   const intentTail = `#Intent;${intentParam}S.browser_fallback_url=${encodeURIComponent(
     downloadLink || ''

@@ -1,3 +1,7 @@
+declare var window: Window & {
+  clipboardData: Record<string, any>
+}
+
 // 加载 js 资源
 export const loadJS = (url: string, cb: () => void) => {
   let head = window.document.getElementsByTagName('head')[0]
@@ -49,7 +53,7 @@ export const getCookie = (name: string): string =>
       .pop() || ''
   ).replace(/[^=]+=/, '')
 
-function select(element) {
+function select(element: HTMLInputElement) {
   if (typeof window === 'undefined') { return {} }
   var selectedText
   if (element.nodeName === 'SELECT') {
@@ -88,13 +92,14 @@ function select(element) {
 export function copy(text: string, options?: Record<string, any>): boolean {
   if (typeof window === 'undefined') { return false }
   var debug,
-    fakeElem,
+    fakeElem: HTMLInputElement = document.createElement('input'),
     success = false
   options = options || {}
   debug = options.debug || false
   try {
     const isRTL = document.documentElement.getAttribute('dir') == 'rtl'
-    fakeElem = document.createElement('textarea')
+    fakeElem = document.createElement('input')
+    fakeElem.type = "textarea"
     // Prevent zooming on iOS
     fakeElem.style.fontSize = '12pt'
     // Reset box model
@@ -130,9 +135,7 @@ export function copy(text: string, options?: Record<string, any>): boolean {
       debug && console.error('unable to copy using clipboardData: ', err)
     }
   } finally {
-    if (fakeElem) {
-      document.body.removeChild(fakeElem)
-    }
+    fakeElem && document.body.removeChild(fakeElem)
   }
   return success
 }

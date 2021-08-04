@@ -86,7 +86,7 @@ export const targetAppFlag = {
   [TargetAppNames.ZZSeller]: 1 << 1,
   [TargetAppNames.ZZHunter]: 1 << 2,
   [TargetAppNames.ZZSeeker]: 1 << 3,
-  [TargetAppNames.ZZInner]: 1 | (1 << 1) | (1 << 2) | (1 << 3)
+  // [TargetAppNames.ZZInner]: 1 | (1 << 1) | (1 << 2) | (1 << 3)
 }
 
 export const targetAppSchemePrefix = {

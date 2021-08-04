@@ -38,7 +38,6 @@ export default class CallApp {
   options: CallAppOptions = {}
   targetInfo?: TargetInfo
   downloadLink?: string
-  APP?: null | Record<string, any>
   urlScheme?: string
   universalLink?: string
   intentLink?: string
@@ -63,7 +62,6 @@ export default class CallApp {
       return
     }
     //
-    this.APP = null;
     this.options = this.options ?
       Object.assign(this.options, options) :
       Object.assign(defaultOptions, options);
@@ -98,7 +96,6 @@ export default class CallApp {
       isZZSeller || isZZSeeker ||
       (isWechat && targetApp == TargetAppNames.ZZ)) {
       // by native-app launch
-      this.APP = Object.create(null)
       sdkLaunch(this)
     } else {
       // by url-scheme launch

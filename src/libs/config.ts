@@ -3,10 +3,14 @@ import { getUrlParams, getCookie, regTest } from './utils'
 /**
  * 授权的公众号id
  * */
+declare var window: Window & {
+  nativeAdapterConfig: any
+}
+
 const getWxPublicId = (): string | undefined => {
   if (typeof window === 'undefined') { return  }
   const query = getUrlParams()
-  const config = window?.nativeAdapterConfig || {}
+  const config = window.nativeAdapterConfig || {}
   return (
     query.wxPublicId ||
     config.wxPublicId ||
@@ -75,10 +79,10 @@ export const wechatInfomation = {
 export const domain = {
   is58Domain: regTest({
     reg: /\.58\.com/g,
-    str: location && location.origin.toLowerCase(),
+    str: window.location && window.location?.origin?.toLowerCase(),
   }),
   isZZDomain: regTest({
     reg: /\.zhuanzhuan\.com/g,
-    str: location && location.origin.toLowerCase(),
+    str: window.location && window.location?.origin?.toLowerCase(),
   }),
 }

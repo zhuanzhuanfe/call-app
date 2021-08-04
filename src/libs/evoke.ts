@@ -3,12 +3,14 @@
  * web evoke methods && check evoke-status
  */
 
-type Hidden = 'hidden' | 'msHidden' | 'webkitHidden' | ''
-type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange' | ''
+type Hidden = 'hidden' | 'msHidden' | 'webkitHidden'
+type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange'
 
-let hidden: Hidden = '';
-let visibilityChange: VisibilityChange = '';
+let hidden: Hidden;
+let visibilityChange: VisibilityChange;
 let iframe: HTMLIFrameElement;
+
+declare const document: Document
 
 function getSupportedProperty() {
   if (typeof document === 'undefined') return;
@@ -32,8 +34,8 @@ getSupportedProperty();
  * 判断页面是否隐藏（进入后台）
  */
 function isPageHidden(): boolean {
-  if (hidden === '') return false;
-  return !!document[hidden];
+  if (typeof hidden === undefined) return false;
+  return document[hidden] as boolean;
 }
 
 /**
@@ -53,7 +55,7 @@ export function evokeByTagA(uri: string) {
 
   tagA.setAttribute('href', uri);
   tagA.style.display = 'none';
-  document.body.append(tagA);
+  document.body?.append(tagA);
 
   tagA.click();
 }

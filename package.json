@@ -40,7 +40,8 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commander-tools run commitlint"
+      "commit-msg": "commander-tools run commitlint",
+      "pre-commit": "npm run ts-check"
     }
   },
   "devDependencies": {

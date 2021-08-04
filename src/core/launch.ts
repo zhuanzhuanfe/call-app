@@ -4,10 +4,19 @@
  */
 
 import {
-  isQQ, isWeibo, isQzone,
-  isAndroid, isIos, isQQBrowser,
-  getIOSVersion, semverCompare,
-  isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion, isQuark
+  isQQ,
+  isWeibo,
+  isQzone,
+  isAndroid,
+  isIos,
+  isQQBrowser,
+  isBaidu,
+  isOriginalChrome,
+  isWechat,
+  isQuark,
+  isLow9Ios,
+  isLow7WX,
+  isThan12Ios
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
 import { CallAppInstance } from '../../types'
@@ -28,7 +37,7 @@ export const launch = (instance: CallAppInstance) => {
   } = options;
 
   // 唤端失败时落地处理
-  let checkOpenFall: () => void;
+  let checkOpenFall: any = undefined;
   const supportUniversal = universal
   const supportIntent = intent
 
@@ -44,7 +53,7 @@ export const launch = (instance: CallAppInstance) => {
     }, () => {
       callError && callError()
       error && error()
-    }, delay);
+    }, delay || 2500);
   }
   // scheme 处理落地状态
   const handleFall = () => {
@@ -72,22 +81,22 @@ export const launch = (instance: CallAppInstance) => {
   if (isIos) {
     console.log('isIos', isIos)
     // ios-version > v12.3.0
-    if (semverCompare(IOSVersion(), '12.3.0') > 0) (delay = options.delay = 3000);
+    if (isThan12Ios) (delay = options.delay = 3000);
 
-    console.log('isIos > 12.3.0', semverCompare(IOSVersion(), '12.3.0') > 0)
+    console.log('isIos > 12.3.0', isThan12Ios)
 
-    if (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1) {
+    if (isWechat && isLow7WX) {
       // 显示遮罩 在浏览器打开
       console.log(
         'isIos - isWeibo || isWechat < 7.0.5',
-        isIos &&  (isWechat && semverCompare(getWeChatVersion(), '7.0.5') === -1)
+        isIos &&  (isWechat && isLow7WX)
       )
 
       showMask()
-    } else if (getIOSVersion() < 9) {
-      console.log('isIos - version < 9', isIos, getIOSVersion() < 9)
+    } else if (isLow9Ios) {
+      console.log('isIos - version < 9', isIos, isLow9Ios)
 
-      evokeByIFrame(schemeURL);
+      schemeURL && evokeByIFrame(schemeURL);
       checkOpenFall = handleFall
     } else if(!supportUniversal && isBaidu) {
       console.log('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
@@ -102,12 +111,12 @@ export const launch = (instance: CallAppInstance) => {
       console.log('isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
         !supportUniversal || isQQ || isQQBrowser || isQzone);
 
-      evokeByTagA(schemeURL);
+      schemeURL && evokeByTagA(schemeURL);
       checkOpenFall = handleFall
     } else if (isQuark) {
       console.log('isQuark', isQuark)
 
-      evokeByLocation(schemeURL)
+      schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleFall
     } else {
       // universalLink 唤起, 不支持 失败回调处理。
@@ -117,7 +126,7 @@ export const launch = (instance: CallAppInstance) => {
 
       console.log('universalLink', universalLink)
 
-      evokeByLocation(universalLink)
+      universalLink && evokeByLocation(universalLink)
       checkOpenFall = xLinkHandleFall
 
       // 有必要的话, 降级采用 schemeURL 处理
@@ -134,13 +143,13 @@ export const launch = (instance: CallAppInstance) => {
     if (isOriginalChrome) {
       if (supportIntent) {
         console.log('isAndroid - supportIntent', isAndroid && supportIntent)
-        evokeByLocation(intentLink)
+        intentLink && evokeByLocation(intentLink)
         // app-links 无法处理 失败回调， 原因同 universal-link
         checkOpenFall = xLinkHandleFall
       } else {
         console.log('isAndroid - !supportIntent', isAndroid && !supportIntent)
         // scheme 在 andriod chrome 25+ 版本上 iframe 无法正常拉起
-        evokeByLocation(schemeURL)
+        schemeURL && evokeByLocation(schemeURL)
         checkOpenFall = handleFall
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
@@ -151,7 +160,7 @@ export const launch = (instance: CallAppInstance) => {
       // 其他浏览器 通过 scheme 唤起，失败则下载
       console.log('isAndroid - schemeURL')
 
-      evokeByLocation(schemeURL)
+      schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleFall
     }
   } else {
