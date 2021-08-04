@@ -38,12 +38,14 @@ export enum TargetAppNames {
   ZZInner = 'zzInner'
 }
 
+export type TargetAppName = TargetAppNames.ZZ | TargetAppNames.ZZHunter |
+  TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller
+
 export interface CallAppOptions {
   // 唤起的页面 path
   path?: string,
   // 唤起的目标app
-  targetApp?: TargetAppNames.ZZ | TargetAppNames.ZZHunter |
-    TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller | undefined,
+  targetApp?: TargetAppName | undefined,
   // 是否开启 universal-link, 默认 true
   universal?: boolean,
   // 是否开启 app-links, 默认 false
@@ -88,8 +90,21 @@ export interface CallAppOptions {
 }
 
 export interface UrlSearch {
-  id: number | string,
-  openType?: number | string | undefined
+  openType: SchemeMapKeys,
+  id?: string
+}
+
+export enum SchemeMapKeys {
+  HOME = 'home',
+  MSGCENTER = 'messagecenter',
+  MYBUY = 'mybuy',
+  PUBLISH = 'publish',
+  DETAIL = 'detail',
+  MYSELL = 'mysell',
+  ORDER = 'order',
+  PERSON = 'person',
+  VILLAGE = 'village',
+  WEB = 'web',
 }
 
 export interface Intent {

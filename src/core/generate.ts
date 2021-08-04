@@ -3,7 +3,7 @@
  * generate uri center (include generate url-scheme && generate universal-link && generate Intent uri)
  */
 import { handlePath2app } from './targetApp'
-import { CallAppInstance, UrlSearch, Intent } from '../../types'
+import { CallAppInstance, UrlSearch, Intent, SchemeMapKeys } from '../../types'
 
 // universal-link-host
 const universalLinkHost: string = 'mjump.zhuanzhuan.com'
@@ -93,61 +93,72 @@ export const generateIntent = (instance: CallAppInstance): string => {
 /**
  * 跳转协议映射, 老的openType对应统跳的映射表
  * */
+
 export const SchemaMap = {
-  home: {
+  [SchemeMapKeys.HOME]: {
     name: 'home',
     path: 'zhuanzhuan://jump/core/mainPage/jump?tabId=0',
-    params: {},
+    params: {
+      id: ''
+    },
   },
-  messagecenter: {
+  [SchemeMapKeys.MSGCENTER]: {
     name: 'messagecenter',
     path: 'zhuanzhuan://jump/core/mainPage/jump?tabId=2',
-    params: {},
+    params: {
+      id: ''
+    },
   },
-  mybuy: {
+  [SchemeMapKeys.MYBUY]: {
     name: 'mybuy',
     path: 'zhuanzhuan://jump/core/myBuyList/jump?tab=price',
-    params: {},
+    params: {
+      id: ''
+    },
   },
-  publish: {
+  [SchemeMapKeys.PUBLISH]: {
     name: 'publish',
     path: 'zhuanzhuan://jump/core/publish/jump',
-    params: {},
+    params: {
+      id: ''
+    },
   },
-  detail: {
+  [SchemeMapKeys.DETAIL]: {
     name: 'detail',
     path: 'zhuanzhuan://jump/core/infoDetail/jump',
     params: {
       id: 'infoId',
     },
   },
-  mysell: {
+  [SchemeMapKeys.MYSELL]: {
     name: 'mysell',
     path: 'zhuanzhuan://jump/core/mySellList/jump?tab=price',
-    params: {},
+    params: {
+      id: ''
+    },
   },
-  order: {
+  [SchemeMapKeys.ORDER]: {
     name: 'order',
     path: 'huanzhuan://jump/core/orderDetail/jump',
     params: {
       id: 'orderId',
     },
   },
-  person: {
+  [SchemeMapKeys.PERSON]: {
     name: 'person',
     path: 'zhuanzhuan://jump/core/personHome/jump',
     params: {
       id: 'uid',
     },
   },
-  village: {
+  [SchemeMapKeys.VILLAGE]: {
     name: 'village',
     path: 'zhuanzhuan://jump/core/village/jump',
     params: {
       id: 'villageId',
     },
   },
-  web: {
+  [SchemeMapKeys.WEB]: {
     name: 'web',
     path: 'zhuanzhuan://jump/core/web/jump',
     params: {
@@ -156,10 +167,7 @@ export const SchemaMap = {
   },
 }
 
-const getSchemeByUrlSearch = ({ openType = '', id = '' }: UrlSearch ): string => {
-  if (!openType) {
-    return SchemaMap.home.path
-  }
+const getSchemeByUrlSearch = ({ openType = SchemeMapKeys.HOME, id = '' }: UrlSearch ): string => {
   const queryStr =
     (id &&
       (!/\?/g.test(SchemaMap[openType]?.path) && '?') +

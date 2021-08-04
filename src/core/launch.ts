@@ -18,7 +18,14 @@ import { showMask } from '../libs/utils'
  */
 export const launch = (instance: CallAppInstance) => {
   let { options, download, urlScheme: schemeURL, universalLink, intentLink } = instance;
-  let { universal, intent, callFailed, callSuccess, callError, delay } = options;
+  let {
+    universal = false,
+    intent = false,
+    callFailed = () => {},
+    callSuccess = () => {},
+    callError = () => {},
+    delay = 2500
+  } = options;
 
   // 唤端失败时落地处理
   let checkOpenFall: () => void;

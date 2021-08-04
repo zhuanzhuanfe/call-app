@@ -35,13 +35,13 @@ const defaultOptions: CallAppOptions = {
 }
 
 export default class CallApp {
-  options: CallAppOptions
-  targetInfo: TargetInfo
-  downloadLink: string = ''
-  APP: null | Record<string, any> = null
-  urlScheme: string  = ''
-  universalLink: string = ''
-  intentLink: string = ''
+  options: CallAppOptions = {}
+  targetInfo?: TargetInfo
+  downloadLink?: string
+  APP?: null | Record<string, any>
+  urlScheme?: string
+  universalLink?: string
+  intentLink?: string
 
   // Create an instance of CallApp
   constructor(options: CallAppOptions) {
@@ -92,7 +92,7 @@ export default class CallApp {
     // 第三方 配置
     if(customConfig) return launch(this)
 
-    const { targetInfo: { name: targetApp } } = this
+    const { targetInfo: { name: targetApp } = {}} = this
 
     if (is58App || isZZ || isZZHunter ||
       isZZSeller || isZZSeeker ||
