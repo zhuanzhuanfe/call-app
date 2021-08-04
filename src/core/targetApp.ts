@@ -5,7 +5,7 @@
  */
 
 import { getDownloadConfig } from './download'
-import { TargetAppNames, CallAppOptions, downloadConfig } from '../types'
+import { TargetAppNames, CallAppOptions, downloadConfig } from '../../types'
 
 // 获取 目标 app 类型
 export const getTargetInfo = (options: CallAppOptions) => {

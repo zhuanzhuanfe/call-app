@@ -1,3 +1,4 @@
+# 解决的问题
 # 升级内容 (待完善)
 
 1. 项目整体架构升级
@@ -16,11 +17,11 @@
 
 (cover-cases)
 
-5. 支持ts, 完善代码注释，完善demo
+5. 支持ts, 完善代码注释，完善 demo
 
 (截图)
 
-6. 新增 hooks，方便数据埋点
+6. 新增 hooks，方便数据埋点   
 
 (callStart / callSuccess / callFailed)
 

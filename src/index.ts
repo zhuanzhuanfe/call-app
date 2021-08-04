@@ -11,7 +11,7 @@ import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isWeibo, 
 import { getTargetInfo } from "./core/targetApp";
 import { evokeByIFrame, evokeByLocation, evokeByTagA } from "./libs/evoke";
 import { generateScheme, generateUniversalLink, generateIntent } from './core/generate'
-import { TargetAppNames, CallAppOptions, TargetInfo } from './types'
+import { TargetAppNames, CallAppOptions, TargetInfo } from '../types'
 import { copy, showMask } from "./libs/utils";
 
 const defaultOptions: CallAppOptions = {

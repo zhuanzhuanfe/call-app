@@ -1,5 +1,5 @@
 # 简介
-`@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机app, 兼容主流浏览器，并支持用户自定义唤起目标app配置。
+`@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机app, 兼容主流浏览器/webview，并支持用户自定义唤起配置。
 
 体验地址：
 

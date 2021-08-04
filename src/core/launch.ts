@@ -10,7 +10,7 @@ import {
   isBaidu, IOSVersion, isOriginalChrome, isWechat, getWeChatVersion, isQuark
 } from "../libs/platform"
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
-import { CallAppInstance } from '../types'
+import { CallAppInstance } from '../../types'
 import { showMask } from '../libs/utils'
 /**
  * 普通 url-scheme 唤起， 不同平台对应不同的 evoke

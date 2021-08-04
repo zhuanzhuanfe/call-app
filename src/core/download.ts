@@ -10,7 +10,7 @@ import {
   isWechat,
 } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
-import { CallAppInstance, downloadConfig, TargetAppNames } from '../types'
+import { CallAppInstance, downloadConfig, TargetAppNames } from '../../types'
 // 目标app 各平台下载地址 配置
 export const allDownloadUrl = {
   [TargetAppNames.ZZ]: {

@@ -3,7 +3,7 @@
  * generate uri center (include generate url-scheme && generate universal-link && generate Intent uri)
  */
 import { handlePath2app } from './targetApp'
-import { CallAppInstance, UrlSearch, Intent } from '../types'
+import { CallAppInstance, UrlSearch, Intent } from '../../types'
 
 // universal-link-host
 const universalLinkHost: string = 'mjump.zhuanzhuan.com'
