@@ -11,11 +11,25 @@ import { TargetAppNames, CallAppOptions, downloadConfig } from '../../types'
 export const getTargetInfo = (options: CallAppOptions) => {
   let { path, targetApp } = options
   // 从 path 解析 target-app
+  if(!path) {
+    console.error ?
+      console.error(`options.path '${options.path}' is Invalid， please check! \n`) :
+      console.log(`Error:\n options.path '${options.path}' is Invalid， please check! \n`);
+    return
+  }
+
   let { app } = handlePath2app(path)
   // 优先取 options.targetApp // 默认 配置为 转转
   targetApp = targetApp || app || TargetAppNames.ZZ
 
-  let name = ''
+  if(!targetApp) {
+    console.error ?
+      console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`) :
+      console.log(`Error:\n options.targetApp '${options.targetApp}' is Invalid， please check! \n`);
+    return
+  }
+
+  let name = TargetAppNames.ZZ
   let flag = 0,
     schemePrefix: string,
     downloadConfig: downloadConfig,

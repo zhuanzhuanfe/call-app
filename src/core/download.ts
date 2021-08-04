@@ -39,20 +39,20 @@ export const allDownloadUrl = {
 }
 
 // 构造 下载链接
-export const generateDownloadUrl = (instance: CallAppInstance) => {
+export const generateDownloadUrl = (instance: CallAppInstance): string => {
   // 第三方配置
   const { options: { customConfig } } = instance
 
   if(customConfig) {
     const { downloadConfig, landingPage } = customConfig
-    if(landingPage) return landingPage
+    if(landingPage) return landingPage || ''
     if(downloadConfig) {
       if(isIos) {
-        return downloadConfig.ios
+        return downloadConfig?.ios || ''
       } else if(isWechat && isAndroid)  {
-        return downloadConfig.android_yyb
+        return downloadConfig?.android_yyb || ''
       } else {
-        return downloadConfig.android
+        return downloadConfig?.android || ''
       }
     }
     return ''
@@ -67,9 +67,9 @@ export const generateDownloadUrl = (instance: CallAppInstance) => {
     deeplinkId
   } = options
 
-  if (!download) return
+  if (!download) return ''
 
-  let downloadUrl: string
+  let downloadUrl: string = ''
   // 下载配置
   if (name == TargetAppNames.ZZ) {
     // 目标app 是转转

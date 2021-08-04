@@ -37,11 +37,11 @@ const defaultOptions: CallAppOptions = {
 export default class CallApp {
   options: CallAppOptions
   targetInfo: TargetInfo
-  downloadLink: string
-  APP: null | Record<string, any>
-  urlScheme: string
-  universalLink: string
-  intentLink: string
+  downloadLink: string = ''
+  APP: null | Record<string, any> = null
+  urlScheme: string  = ''
+  universalLink: string = ''
+  intentLink: string = ''
 
   // Create an instance of CallApp
   constructor(options: CallAppOptions) {

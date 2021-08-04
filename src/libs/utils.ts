@@ -32,10 +32,11 @@ export const getUrlParams = (url?: string): Record<string, string> => {
     .split('&')
     .filter(param => param)
     .map(decodeURIComponent)
-    .reduce((obj, param) => {
+    .reduce((obj: Record<string, any>, param: string) => {
       const i = param.indexOf('=')
       const t = [param.slice(0, i), param.slice(i + 1)]
-      obj[t[0]] = t[1]
+      const key:string = t[0]
+      obj[key] = t[1]
       return obj
     }, {})
 }
@@ -76,16 +77,16 @@ function select(element) {
     var range = document.createRange()
 
     range.selectNodeContents(element)
-    selection.removeAllRanges()
-    selection.addRange(range)
+    selection?.removeAllRanges()
+    selection?.addRange(range)
 
-    selectedText = selection.toString()
+    selectedText = selection?.toString()
   }
   return selectedText
 }
 // 复制内容到剪切板
 export function copy(text: string, options?: Record<string, any>): boolean {
-  if (typeof window === 'undefined') { return null }
+  if (typeof window === 'undefined') { return false }
   var debug,
     fakeElem,
     success = false
@@ -154,6 +155,6 @@ export const showMask = (): void => {
 }
 
 
-export const regTest = ({ reg, str }) => {
+export const regTest = ({ reg, str }: { reg: RegExp, str: string }) => {
   return reg.test(str)
 }

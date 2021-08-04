@@ -1,13 +1,13 @@
 /**
- * 
+ *
  * web evoke methods && check evoke-status
  */
 
-type Hidden = 'hidden' | 'msHidden' | 'webkitHidden' | undefined
-type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange' | undefined
+type Hidden = 'hidden' | 'msHidden' | 'webkitHidden' | ''
+type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange' | ''
 
-let hidden: Hidden;
-let visibilityChange: VisibilityChange;
+let hidden: Hidden = '';
+let visibilityChange: VisibilityChange = '';
 let iframe: HTMLIFrameElement;
 
 function getSupportedProperty() {
@@ -31,9 +31,9 @@ getSupportedProperty();
 /**
  * 判断页面是否隐藏（进入后台）
  */
-function isPageHidden() {
-  if (typeof hidden === 'undefined') return false;
-  return document[hidden];
+function isPageHidden(): boolean {
+  if (hidden === '') return false;
+  return !!document[hidden];
 }
 
 /**
@@ -83,23 +83,12 @@ export function checkOpen(
   failure: () => void,
   success: () => void,
   error: () => void,
-  timeout: number,
-  isSdkCheck?:boolean
+  timeout: number
   ) {
 
   let haveChanged = false
   console.log('trigger -- checkOpen')
 
-  //skd成功失败回调处理
-  if(isSdkCheck){
-    let timer = setTimeout(() => {
-      if (!isSdkCheck) {
-        failure();
-      }else {
-        success()
-      }
-    }, timeout)
-  }
 
   let timer = setTimeout(() => {
     clearTimeout(timer);
@@ -133,7 +122,7 @@ export function checkOpen(
   const pageChange = function (e: any) {
     haveChanged = true
 
-    if (document[hidden] || e.hidden || document.visibilityState == 'hidden') {
+    if (document?.hidden || e?.hidden || document?.visibilityState == 'hidden') {
       console.log('checkOpen pagehide -- success')
       success()
     } else {

@@ -89,26 +89,31 @@ export const semverCompare = (versionA: string, versionB: string): number => {
 };
 
 //  获取 ios 大版本号
-export const getIOSVersion = (): number => {
+export const getIOSVersion = (): number|null => {
   const version = navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
-  return Number.parseInt(version[1], 10);
+
+  if(version) return Number.parseInt(version[1], 10);
+
+  return null;
 };
 
 //  获取 微信 版本号
-export const getWeChatVersion = ():string => {
+export const getWeChatVersion = (): string | null => {
   const version = navigator.appVersion.match(/micromessenger\/(\d+\.\d+\.\d+)/i);
-  return version[1];
+
+  if(version) return version[1]
+
+  return null;
 };
 
 // IOS 版本号
 export const IOSVersion = (): string => {
   let str = navigator.userAgent.toLowerCase()
-  let ver: string | null;
+  let ver: string = '';
   try {
     let m = str.match(/cpu iphone os (.*?) like mac os/)
     if (m) ver = m[1].replace(/_/g, '.')
   } catch (error) {
-    ver = null
     console.log('IOSVersion', error)
   }
   return ver

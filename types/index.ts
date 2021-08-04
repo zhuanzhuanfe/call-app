@@ -22,9 +22,9 @@ export interface CallAppInstance {
   options: CallAppOptions
   start: () => void,
   download: () => void,
-  targetInfo: TargetInfo
-  downloadLink: string
-  APP: null | Record<string, any>,
+  targetInfo?: TargetInfo
+  downloadLink?: string
+  APP?: null | Record<string, any>,
   urlScheme?: string,
   universalLink?: string,
   intentLink?: string
@@ -77,13 +77,13 @@ export interface CallAppOptions {
   // 用户定义 配置项
   customConfig?: {
     schemeUrl: string, // url-scheme 地址，必选
-    downloadConfig: { // 下载配置， 可选，不传则采用 landingPage
+    downloadConfig?: { // 下载配置， 可选，不传则采用 landingPage
       ios: string, // app-store 链接
       android: string, // apk 下载链接
       android_yyb: string, // 应用宝 下载链接
     },
-    universalLink: string, // universal-link 地址，可选，ios 优先采用 universal-link
-    landingPage: string, // 唤起失败落地页，一般是下载页面，可选，与 downloadConfig 二选一
+    universalLink?: string, // universal-link 地址，可选，ios 优先采用 universal-link
+    landingPage?: string, // 唤起失败落地页，一般是下载页面，可选，与 downloadConfig 二选一
   }
 }
 

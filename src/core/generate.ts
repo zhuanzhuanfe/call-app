@@ -30,12 +30,12 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   if(!universal) return ''
 
   const host = universalLinkHost
-  const path = targetInfo.universalPath
+  const path = targetInfo?.universalPath
   // const scheme = generateScheme(instance)
   const scheme = urlScheme
   const channel = channelId ? `&channelId=${channelId}` : ''
 
-  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme)}${channel}`
+  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme || '')}${channel}`
 
   return universalLink
 }
@@ -57,8 +57,9 @@ export const generateIntent = (instance: CallAppInstance): string => {
 
   const keys = Object.keys(intentParams) as Array<keyof Intent>;
   const intentParam = keys.map((key) => `${key}=${intent[key]};`).join('');
+
   const intentTail = `#Intent;${intentParam}S.browser_fallback_url=${encodeURIComponent(
-    downloadLink
+    downloadLink || ''
   )};end;`;
 
   let urlPath = generateScheme(instance);
@@ -161,8 +162,8 @@ const getSchemeByUrlSearch = ({ openType = '', id = '' }: UrlSearch ): string =>
   }
   const queryStr =
     (id &&
-      (!/\?/g.test(SchemaMap[openType].path) && '?') +
-        `${SchemaMap[openType].params.id}=${encodeURIComponent(id)}`) ||
+      (!/\?/g.test(SchemaMap[openType]?.path) && '?') +
+        `${SchemaMap[openType]?.params?.id}=${encodeURIComponent(id)}`) ||
     ''
-  return `${SchemaMap[openType].path}${queryStr}`
+  return `${SchemaMap[openType]?.path}${queryStr}`
 }
