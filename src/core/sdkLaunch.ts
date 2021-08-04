@@ -31,7 +31,7 @@ declare var window: Window & {
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance: CallAppInstance) => {
-  const {options, APP, targetInfo, download, urlScheme} = instance;
+  const {options, APP, targetInfo, download, urlScheme,downloadLink} = instance;
   const {universal, callFailed, callSuccess, callError, delay} = options;
 
   //打开转转app
@@ -68,13 +68,14 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
             APP: window.WeixinJSBridge
           })
           if (isAndroid) {
-            const packageName = AppInfomation.ANDROID_PACKAGE_NAME
-            const packageUrl = urlScheme
-            __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
-              __openApp(urlScheme, instance)
-            }).catch(() => {
-              callFailed()
-            })
+            // const packageName = AppInfomation.ANDROID_PACKAGE_NAME
+            // const packageUrl = urlScheme
+            // __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
+            //   __openApp(urlScheme, instance)
+            // }).catch(() => {
+            //   callFailed()
+            // })
+            evokeByLocation(downloadLink)
           } else { //ios
             __openApp(urlScheme, instance)
           }
