@@ -105,7 +105,6 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
 
       } else if (isZZHunter) {  //命中采货侠  唤起转转app
         loadSkd('ZZ_HUNTER_SDK').then(res => {
-          APP._name_ = res
           const _originApp = 'zzHunter'
           OpenZZAPP(urlScheme, APP, _originApp)
         }).catch(() => {
@@ -185,7 +184,7 @@ const __invoke = (name, options, App) => {
 
 //打开app
 const __openApp = (schemeURL, instance: CallAppInstance) => {
-  const {options, APP, downloadLink} = instance;
+  const {options, APP, downloadLink, universalLink} = instance;
   const {callFailed, callSuccess} = options;
   const appID = wechatInfomation.appID
   const parameter = schemeURL
@@ -193,7 +192,7 @@ const __openApp = (schemeURL, instance: CallAppInstance) => {
   //如果是58域名的话
   if (domain.is58Domain) {
     const delay = 800
-    evokeByLocation(schemeURL)
+    evokeByLocation(universalLink)
     setTimeout(() => {
       callFailed()
       evokeByLocation(downloadLink)
