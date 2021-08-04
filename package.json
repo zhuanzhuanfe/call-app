@@ -13,7 +13,7 @@
     "compile": "commander-tools run compile",
     "dist": "commander-tools run dist",
     "analyz": "commander-tools run dist --analyz",
-    "build": "commander-tools run build -s",
+    "build": "commander-tools run build",
     "pub": "commander-tools run pub",
     "pub-beta": "commander-tools run pub-beta",
     "unpub": "commander-tools run unpub",
@@ -21,7 +21,9 @@
     "build-doc": "commander-tools run build-doc",
     "doc-upload": "commander-tools run doc-upload"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "types/index.d.ts",
   "keywords": [
     "vue",
     "react",

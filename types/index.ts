@@ -13,7 +13,7 @@ export interface downloadConfig {
   android: string,
   android_api?: string,
   // 应用宝
-  wechat_android: string,
+  android_yyb: string,
   // api
   api: string
 }
@@ -26,7 +26,8 @@ export interface CallAppInstance {
   downloadLink: string
   APP: null | Record<string, any>,
   urlScheme?: string,
-  universalLink?: string
+  universalLink?: string,
+  intentLink?: string
 }
 
 export enum TargetAppNames {
@@ -39,10 +40,10 @@ export enum TargetAppNames {
 
 export interface CallAppOptions {
   // 唤起的页面 path
-  path: string,
+  path?: string,
   // 唤起的目标app
   targetApp?: TargetAppNames.ZZ | TargetAppNames.ZZHunter |
-    TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller,
+    TargetAppNames.ZZSeeker | TargetAppNames.ZZSeller | undefined,
   // 是否开启 universal-link, 默认 true
   universal?: boolean,
   // 是否开启 app-links, 默认 false
@@ -73,6 +74,17 @@ export interface CallAppOptions {
   callDownload?: () => void,
   intentParams?: Intent,
   callError?: () => void,
+  // 用户定义 配置项
+  customConfig?: {
+    schemeUrl: string, // url-scheme 地址，必选
+    downloadConfig: { // 下载配置， 可选，不传则采用 landingPage
+      ios: string, // app-store 链接
+      android: string, // apk 下载链接
+      android_yyb: string, // 应用宝 下载链接
+    },
+    universalLink: string, // universal-link 地址，可选，ios 优先采用 universal-link
+    landingPage: string, // 唤起失败落地页，一般是下载页面，可选，与 downloadConfig 二选一
+  }
 }
 
 export interface UrlSearch {

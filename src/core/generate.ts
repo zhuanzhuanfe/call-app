@@ -1,44 +1,34 @@
 /**
- * scheme 构造相关
+ * uri 生成 处理中心
+ * generate uri center (include generate url-scheme && generate universal-link && generate Intent uri)
  */
-import { targetAppSchemePrefix } from './targetApp'
-import { CallAppInstance, UrlSearch, TargetAppNames, Intent } from '../types'
+import { handlePath2app } from './targetApp'
+import { CallAppInstance, UrlSearch, Intent } from '../../types'
 
-const zzSchemePrefix: string = targetAppSchemePrefix[TargetAppNames.ZZ]
-
-const zzInnerSchemeReg: any = Object.values(targetAppSchemePrefix)
-  .reduce((acc, cur, i, m) => {
-    const ll = m.length-1
-    return `${acc}(${cur})${i >= ll ? '' : '|'}${i >= ll ? ')' : '' }`
-  }, '^(');
-
+// universal-link-host
 const universalLinkHost: string = 'mjump.zhuanzhuan.com'
 
-const buildScheme = (instance: CallAppInstance) => {
+// 生成 scheme 链接
+export const generateScheme = (instance: CallAppInstance): string => {
   // 生成  path || urlSearch || targetApp
   const { options, targetInfo } = instance
   let { path, urlSearch } = options
 
-  path = path || getSchemeByUrlSearch(urlSearch)
+  path = path || (urlSearch ? getSchemeByUrlSearch(urlSearch) : '')
+  // new Regexp(zzInnerSchemeReg).test(path)
+  // 检验 path 中是否有 scheme-prefix
+  const { app } = handlePath2app(path)
 
-  const schemeReg = new RegExp(zzInnerSchemeReg, '')
-  let _path = schemeReg.test(path) && path;
-  _path = _path || `${targetInfo.schemePrefix || zzSchemePrefix}//${path}`
-
-  return _path
-}
-
-// 生成 scheme 链接
-export const generateScheme = (instance: CallAppInstance) => {
-  const uri = buildScheme(instance)
+  const uri = app ? path : `${targetInfo.schemePrefix}//${path}`
 
   return uri
 }
-
 // 生成 universalLink 链接
 export const generateUniversalLink = (instance: CallAppInstance) => {
-  const { targetInfo, options, urlScheme } = instance
-  const { channelId } = options
+  const { targetInfo, options: { universal, channelId }, urlScheme } = instance
+
+  if(!universal) return ''
+
   const host = universalLinkHost
   const path = targetInfo.universalPath
   // const scheme = generateScheme(instance)
@@ -59,6 +49,8 @@ export const generateIntent = (instance: CallAppInstance): string => {
     console.error ?
       console.error(`Error: options.intentParams is not found, please check`) :
       console.log(`Error: \n options.intentParams is not found, please check`);
+
+    return ''
   }
 
   if (!intent || !intentParams) return '';

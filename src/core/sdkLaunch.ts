@@ -18,7 +18,7 @@ import {generateIntent, generateScheme, generateUniversalLink} from './generate'
 import {dependencies, AppInfomation, wechatInfomation, domain} from '../libs/config'
 import {loadJSArr, showMask} from "../libs/utils"
 import {targetAppSchemePrefix} from './targetApp'
-import {CallAppInstance, WXJSTICKET} from '../types/index'
+import {CallAppInstance, WXJSTICKET} from '../../types'
 
 declare var window: Window & {
   __json_jsticket: any,

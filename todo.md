@@ -1,5 +1,8 @@
-- [ ] 整理 download 方法
-- [ ] 整理 platform 方法
-- [ ] 整理 gen-url-scheme 方法
-- [ ] 整理 launch 方法
-- [ ] 支持 ts
+- [x] 整理 download 方法
+- [x] 整理 platform 方法
+- [x] 整理 gen-url-scheme 方法
+- [x] 整理 launch 方法
+- [x] 支持 ts
+- [ ] 支持第三方自定义配置 【支付宝】
+- [ ] 支持 js-sdk
+- [ ] 支持 app-links
