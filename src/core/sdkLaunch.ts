@@ -56,9 +56,9 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       console.log('is58App', is58App)
       openZZIn58(instance, zzAppInfo)
     } else if (isWechat) {
-      if(isAndroid){
-        return evokeByLocation(downloadLink)
-      }
+      // if(isAndroid){
+      //   return evokeByLocation(downloadLink)
+      // }
       try {
         const conf: WXJSTICKET = await loadWXSDK(APP)
         const wxconfig = {
@@ -77,18 +77,18 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
           Object.assign(instance, {
             APP: window.WeixinJSBridge
           })
-          __openApp(urlScheme, instance)
-          // if (isAndroid) {
-          //   const packageName = zzAppInfo.ANDROID_PACKAGE_NAME
-          //   const packageUrl = urlScheme
-          //   __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
-          //     __openApp(urlScheme, instance)
-          //   }).catch(() => {
-          //     callFailed()
-          //   })
-          // } else { //ios
-          //   __openApp(urlScheme, instance)
-          // }
+         // __openApp(urlScheme, instance)
+          if (isAndroid) {
+            const packageName = AppInfomation.ANDROID_PACKAGE_NAME
+            const packageUrl = urlScheme
+            __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
+              __openApp(urlScheme, instance)
+            }).catch(() => {
+              callFailed()
+            })
+          } else { //ios
+            __openApp(urlScheme, instance)
+          }
         })
       }catch (e) {
         callFailed()
