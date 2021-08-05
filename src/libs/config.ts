@@ -24,34 +24,46 @@ const getWxPublicId = (): string | undefined => {
 /**
  * 第三方依赖, 外链js
  * */
+export enum SDKNames {
+  ZZ_SELLER_SDK = 'ZZ_SELLER_SDK',
+  ZZ_HUNTER_SDK = 'ZZ_HUNTER_SDK',
+  ZZ_SDK = 'ZZ_SDK',
+  WB_SDK = 'WB_SDK',
+  WX_JWEIXIN = 'WX_JWEIXIN',
+  WX_JSTICKET = 'WX_JSTICKET',
+  WX_WIKI = 'WX_WIKI',
+}
+
 export const dependencies = {
-  ZZ_SELLER_SDK: {
+  [SDKNames.ZZ_SELLER_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
     name: 'ZZSELLER'
   },
-  ZZ_HUNTER_SDK: {
+  [SDKNames.ZZ_HUNTER_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/hunterapp/static/js/1.1.1/index.min.js',
     name: 'HUNTERAPP',
   },
-  ZZ_SDK: {
+  [SDKNames.ZZ_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
     name: '',
   },
-  WB_SDK: {
+  [SDKNames.WB_SDK]: {
     link: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',
     name: '',
   },
-  WX_JWEIXIN: {
+  [SDKNames.WX_JWEIXIN]: {
     link: 'https://s1.zhuanstatic.com/common/jweixin-1.6.0.js',
     name: '',
   },
-  WX_WIKI: {
+  [SDKNames.WX_WIKI]: {
     link: 'https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115',
+    name: '',
   },
-  WX_JSTICKET: {
+  [SDKNames.WX_JSTICKET]: {
     link: `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=` +
       encodeURIComponent(location ? location.href.split('#')[0] : '') +
       '&callback=__json_jsticket',
+    name: '',
   },
 }
 
@@ -65,9 +77,26 @@ export const AppInfomation = {
     'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
 }
 
+export interface AppInfo {
+  SCHEMA: string
+  ANDROID_PACKAGE_NAME: string
+  ANDROID_MAINCLS: string
+}
+
+export const zzAppInfo: AppInfo = {
+  SCHEMA: 'zhuanzhuan://', // 转转App跳转协议(Android & IOS)
+  ANDROID_PACKAGE_NAME: 'com.wuba.zhuanzhuan', // Android客户端包名
+  ANDROID_MAINCLS:
+    'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
+}
+
 /**
  * 转转微信公众号相关信息
  * */
+export interface WXInfo {
+  appID: string
+
+}
 export const wechatInfomation = {
   appID: 'wx6f1a8464fa672b11', //转转app在微信绑定的appid
 }

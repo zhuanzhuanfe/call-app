@@ -130,8 +130,8 @@ export function checkOpen(
     } else {
       console.log('checkOpen pagehide -- error')
       console.error ?
-        console.error('unknown error') :
-        console.log('Error: \n unknown error');
+        console.error('unknown error when check pagehide') :
+        console.log('Error: \n unknown error when check pagehide');
 
       error()
     }

@@ -109,7 +109,7 @@ export const getWeChatVersion = (): string | null => {
 const getLow9Ios = ():boolean => {
   let v = getIOSVersion()
   if(v) {
-    return v < 9 ? true : false
+    return v < 9
   }
   return false
 }
@@ -119,21 +119,17 @@ export const isLow9Ios: boolean = getLow9Ios()
 const getLow7WX = (): boolean => {
   let vv = getWeChatVersion()
   if(vv) {
-    return semverCompare(vv, '7.0.5') < 0 ? true : false
+    return semverCompare(vv, '7.0.5') < 0
   }
   return false
 }
 
 export const isLow7WX: boolean = getLow7WX()
 
-const getThan12Ios = (): boolean => semverCompare(IOSVersion(), '12.3.0') > 0
-
-export const isThan12Ios: boolean = getThan12Ios()
-
 // IOS 版本号
 export const IOSVersion = (): string => {
   let str = window.navigator.userAgent.toLowerCase()
-  let ver: string = '';
+  let ver: string = '0.0.0';
   try {
     let m = str.match(/cpu iphone os (.*?) like mac os/)
     if (m) ver = m[1].replace(/_/g, '.')
@@ -142,3 +138,8 @@ export const IOSVersion = (): string => {
   }
   return ver
 }
+
+const getThanNumIos = (version: string): boolean =>
+  semverCompare(IOSVersion(), version) > 0
+
+export const isThan12Ios: boolean = getThanNumIos('12.3.0')

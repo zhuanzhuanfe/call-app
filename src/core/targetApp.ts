@@ -91,14 +91,14 @@ export const targetAppFlag = {
 
 export const targetAppSchemePrefix = {
   [TargetAppNames.ZZ]: 'zhuanzhuan:',
-  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:', // 目前不支持
-  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter:', // 目前不支持
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:',
+  [TargetAppNames.ZZHunter]: 'zzhunter:',
   [TargetAppNames.ZZSeeker]: 'zljgo:',
 }
 
 export const targetAppUniversalPath = {
   [TargetAppNames.ZZ]: 'zhuanzhuan',
   [TargetAppNames.ZZSeller]: 'zhuanzhuanseller', // 目前不支持
-  [TargetAppNames.ZZHunter]: 'zhuanzhuanHunter', // 目前不支持
+  [TargetAppNames.ZZHunter]: 'zzhunter', // 目前不支持
   [TargetAppNames.ZZSeeker]: 'zljgo',
 }

@@ -12,16 +12,17 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": false,
+    "experimentalDecorators": true,
     "esModuleInterop": true,
     "noImplicitReturns": true,
     "removeComments": false,
     "noUnusedLocals": true,
     "allowJs": false,
     "strict": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "declaration": true,
+    "paths": {}
   },
   "include": ["src", "types"],
   "exclude": ["node_modules"]
 }
+// https://www.tslang.cn/docs/handbook/compiler-options.html

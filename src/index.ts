@@ -62,9 +62,7 @@ export default class CallApp {
       return
     }
     //
-    this.options = this.options ?
-      Object.assign(this.options, options) :
-      Object.assign(defaultOptions, options);
+    this.options = Object.assign({}, defaultOptions, options);
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options);
     console.log(this.targetInfo)
@@ -88,7 +86,7 @@ export default class CallApp {
 
     callStart && callStart()
     // 第三方 配置
-    if(customConfig) return launch(this)
+    if(customConfig?.schemeUrl) return launch(this)
 
     const { targetInfo: { name: targetApp } = {}} = this
 

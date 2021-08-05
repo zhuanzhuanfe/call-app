@@ -10,15 +10,17 @@ import {
   isZZInner,
   is58App,
   isWechat,
-  getIOSVersion, semverCompare,
+  getIOSVersion,
+  semverCompare,
   IOSVersion
 } from "../libs/platform"
 import {evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen} from "../libs/evoke"
 import {generateIntent, generateScheme, generateUniversalLink} from './generate'
-import {dependencies, AppInfomation, wechatInfomation, domain} from '../libs/config'
+import {dependencies, zzAppInfo, wechatInfomation, domain } from '../libs/config'
 import {loadJSArr, showMask} from "../libs/utils"
 import {targetAppSchemePrefix} from './targetApp'
 import {CallAppInstance, WXJSTICKET} from '../../types'
+import { load58SDK, openZZIn58 } from "../libs/sdk"
 
 declare var window: Window & {
   __json_jsticket: any,
@@ -31,8 +33,14 @@ declare var window: Window & {
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance: CallAppInstance) => {
-  const {options, APP, targetInfo, download, urlScheme,downloadLink} = instance;
-  const {universal, callFailed, callSuccess, callError, delay} = options;
+  const {options, APP, targetInfo, download, urlScheme, downloadLink, universalLink} = instance;
+  const {
+    universal = false,
+    callFailed = () => {},
+    callSuccess = () => {},
+    callError = () => {},
+    delay = 2500
+  } = options;
 
   //打开转转app
   const OpenZZAPP = (schemeURL: string, App: Record<string, any>, originApp?: string): void => {
@@ -45,9 +53,8 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
   }
   try {
     if (is58App) {
-      APP._name_ = ''
-      // await load58SDK(APP)
-
+      console.log('is58App', is58App)
+      openZZIn58(instance, zzAppInfo)
     } else if (isWechat) {
       if(isAndroid){
         return evokeByLocation(downloadLink)
@@ -72,7 +79,7 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
           })
           __openApp(urlScheme, instance)
           // if (isAndroid) {
-          //   const packageName = AppInfomation.ANDROID_PACKAGE_NAME
+          //   const packageName = zzAppInfo.ANDROID_PACKAGE_NAME
           //   const packageUrl = urlScheme
           //   __invoke('getInstallState', {packageName, packageUrl}, instance.APP).then(() => {
           //     __openApp(urlScheme, instance)
@@ -200,5 +207,3 @@ const __openApp = (schemeURL, instance: CallAppInstance) => {
       evokeByLocation(downloadLink)
     })
 }
-
-

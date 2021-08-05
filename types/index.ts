@@ -118,3 +118,13 @@ export interface WXJSTICKET {
   noncestr?: string,
   signature?: string,
 }
+
+export type App58 = {
+  action?: {
+    openApp: (...[]) => void,
+    isInstallApp: (...[]) => void
+  },
+  common?: {
+    appVersion?: string
+  },
+}
