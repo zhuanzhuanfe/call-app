@@ -1,0 +1,14 @@
+/lambda/
+/scripts
+/config
+.history
+public/
+dist/
+mock/
+lib
+es
+build
+docs
+doc
+src-old
+demo

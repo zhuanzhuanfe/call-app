@@ -33,10 +33,10 @@ function initMiniPage(opts) {
     },
     callError: function () {
       console.log('--- trigger --- hook:callError ')
-    }
-  };
+    },
+  }
 
-  var callApp = window.callApp = new CallApp({
+  var callApp = (window.callApp = new CallApp({
     path: opts.path || 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
     channelId: opts.channelId || 'BM_GJ618XC',
     targetApp: opts.targetApp || 'zz',
@@ -47,8 +47,8 @@ function initMiniPage(opts) {
     callSuccess: hooks.callSuccess,
     callFailed: hooks.callFailed,
     callDownload: hooks.callDownload,
-    callError: hooks.callError
-  });
+    callError: hooks.callError,
+  }))
   //
   btn_open.onclick = function () {
     console.log(window.navigator.userAgent)
@@ -67,15 +67,10 @@ function initMiniPage(opts) {
 }
 
 function initVuePage() {
-  const {
-    createApp,
-    onMounted,
-    reactive,
-    watch
-  } = Vue || window.Vue;
+  const { createApp, onMounted, reactive, watch } = Vue || window.Vue
 
   createApp({
-    template: (`
+    template: `
       <div class="wrap">
         <section class="config">
           <div class="display-info">
@@ -126,9 +121,9 @@ function initVuePage() {
           </div>
         </section>
       </div>
-    `),
+    `,
     setup() {
-      let callApp;
+      let callApp
 
       const hooks = {
         callStart: function () {
@@ -145,15 +140,9 @@ function initVuePage() {
         },
         callError: function () {
           console.log('--- trigger --- hook:callError ')
-        }
+        },
       }
-      const {
-        callStart,
-        callSuccess,
-        callFailed,
-        callDownload,
-        callError
-      } = hooks;
+      const { callStart, callSuccess, callFailed, callDownload, callError } = hooks
 
       onMounted(() => {
         console.log('demo onMounted')
@@ -168,47 +157,57 @@ function initVuePage() {
         urlScheme: '',
         downloadLink: '',
         universalLink: '',
-        universal: 0
+        universal: 0,
       })
 
-      watch(function () {
-        return state
-      }, function (opts) {
-        //
-        let p = opts.targetApp == 'zzSeeker' ?
-          'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D' :
-          opts.targetApp == 'zz' ? 'jump/shortVideo/videoHome/jump' : '';
+      watch(
+        function () {
+          return state
+        },
+        function (opts) {
+          //
+          let p =
+            opts.targetApp == 'zzSeeker'
+              ? 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D'
+              : opts.targetApp == 'zz'
+              ? 'jump/shortVideo/videoHome/jump'
+              : ''
 
-        callApp = new CallApp({
-          path: opts.path || p, // 兼容app所有统跳地址
-          channelId: opts.channelId,
-          targetApp: opts.targetApp,
-          wechatStyle: 1, // 1表示浮层右上角
-          deeplinkId: opts.deeplinkId,
-          universal: +opts.universal,
-          callStart,
-          callSuccess,
-          callFailed,
-          callDownload,
-          callError
-        })
+          callApp = new CallApp({
+            path: opts.path || p, // 兼容app所有统跳地址
+            channelId: opts.channelId,
+            targetApp: opts.targetApp,
+            wechatStyle: 1, // 1表示浮层右上角
+            deeplinkId: opts.deeplinkId,
+            universal: +opts.universal,
+            callStart,
+            callSuccess,
+            callFailed,
+            callDownload,
+            callError,
+          })
 
-        console.log('callApp', callApp)
-        //
-        state.downloadLink = callApp.downloadLink || ''
-        state.urlScheme = callApp.urlScheme || ''
-        state.universalLink = callApp.universalLink || ''
-
-      }, {
-        deep: true,
-        immediate: true
-      });
+          console.log('callApp', callApp)
+          //
+          state.downloadLink = callApp.downloadLink || ''
+          state.urlScheme = callApp.urlScheme || ''
+          state.universalLink = callApp.universalLink || ''
+        },
+        {
+          deep: true,
+          immediate: true,
+        }
+      )
 
       //
       const openApp = function () {
-        console.log(window.navigator.userAgent, '\n',
-          window.navigator.appVersion, '\n',
-          window.navigator.appName)
+        console.log(
+          window.navigator.userAgent,
+          '\n',
+          window.navigator.appVersion,
+          '\n',
+          window.navigator.appName
+        )
 
         console.log('trigger start')
         callApp.start()
@@ -232,9 +231,8 @@ function initVuePage() {
         handleDownload,
         state,
       }
-    }
+    },
   }).mount('#app')
-
 }
 
 function initCustomPage() {
@@ -242,6 +240,6 @@ function initCustomPage() {
     customConfig: {
       schemeUrl: 'alipay://platformapi/startapp?appId=20000056',
       landingPage: 'https://render.alipay.com/p/s/i',
-    }
+    },
   })
 }

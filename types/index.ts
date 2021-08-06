@@ -1,32 +1,32 @@
 export interface TargetInfo {
-  flag: number,
-  name: string,
-  schemePrefix: string,
-  universalPath: string,
-  downloadConfig: downloadConfig
+  flag: number
+  name: string
+  schemePrefix: string
+  universalPath: string
+  downloadConfig: DownloadConfig
 }
 
-export interface downloadConfig {
+export interface DownloadConfig {
   // 苹果市场
-  ios: string,
+  ios: string
   // 安卓市场
-  android: string,
-  android_api?: string,
+  android: string
+  android_api?: string
   // 应用宝
-  android_yyb: string,
+  android_yyb: string
   // api
   api: string
 }
 
 export interface CallAppInstance {
   options: CallAppOptions
-  start: () => void,
-  download: () => void,
+  start: () => void
+  download: () => void
   targetInfo?: TargetInfo
   downloadLink?: string
-  APP?: null | Record<string, any>,
-  urlScheme?: string,
-  universalLink?: string,
+  APP?: null | Record<string, any>
+  urlScheme?: string
+  universalLink?: string
   intentLink?: string
 }
 
@@ -40,55 +40,51 @@ export enum TargetAppNames {
 
 export interface CallAppOptions {
   // 唤起的页面 path
-  path?: string,
+  path?: string
   // 唤起的目标app
-  targetApp?: TargetAppNames,
+  targetApp?: TargetAppNames
   // 是否开启 universal-link, 默认 true
-  universal?: boolean,
+  universal?: boolean
   // 是否开启 app-links, 默认 false
-  intent?: boolean,
+  intent?: boolean
   // 是否支持下载, 默认 true
-  download?: boolean,
+  download?: boolean
   // 触发下载 延迟检测时间, 默认 2500
-  delay?: number,
+  delay?: number
   // 下载渠道 id
-  channelId?: string | number | undefined,
+  channelId?: string | number | undefined
   // 微信端初始化检测安装后的回调函数
-  wechatCheckInstallState?: () => void,
+  wechatCheckInstallState?: () => void
   // 蒙层样式， 默认 微信吊起失败后，提示右上角打开, // 1表示浮层右上角，2表示浮层按钮, 默认 1
-  wechatStyle?: number | string | undefined,
+  wechatStyle?: number | string | undefined
   // deeplink 接口支持的id配置
-  deeplinkId?: number | string | undefined,
+  deeplinkId?: number | string | undefined
   // 下载中间页 url
-  middleWareUrl?: string,
+  middleWareUrl?: string
   // 兼容 旧版本 scheme 生成规则
-  urlSearch?: UrlSearch,
+  urlSearch?: UrlSearch
   // 失败 hook
-  callFailed?: () => void,
+  callFailed?: () => void
   // 成功 hook
-  callSuccess?: () => void,
+  callSuccess?: () => void
   // 开始唤起 hook
-  callStart?: () => void,
+  callStart?: () => void
   // 开始下载 hook
-  callDownload?: () => void,
-  intentParams?: Intent,
-  callError?: () => void,
+  callDownload?: () => void
+  intentParams?: Intent
+  callError?: () => void
   // 用户定义 配置项
   customConfig?: {
-    schemeUrl: string, // url-scheme 地址，必选
-    downloadConfig?: { // 下载配置， 可选，不传则采用 landingPage
-      ios: string, // app-store 链接
-      android: string, // apk 下载链接
-      android_yyb: string, // 应用宝 下载链接
-    },
-    universalLink?: string, // universal-link 地址，可选，ios 优先采用 universal-link
-    landingPage?: string, // 唤起失败落地页，一般是下载页面，可选，与 downloadConfig 二选一
+    schemeUrl: string // url-scheme 地址，必选
+    downloadConfig?: {
+      // 下载配置， 可选，不传则采用 landingPage
+      ios: string // app-store 链接
+      android: string // apk 下载链接
+      android_yyb: string // 应用宝 下载链接
+    }
+    universalLink?: string // universal-link 地址，可选，ios 优先采用 universal-link
+    landingPage?: string // 唤起失败落地页，一般是下载页面，可选，与 downloadConfig 二选一
   }
-}
-
-export interface UrlSearch {
-  openType: SchemeMapKeys,
-  id?: string
 }
 
 export enum SchemeMapKeys {
@@ -104,27 +100,31 @@ export enum SchemeMapKeys {
   WEB = 'web',
 }
 
+export interface UrlSearch {
+  openType: SchemeMapKeys
+  id?: string
+}
 export interface Intent {
-  package: string;
-  scheme: string;
-  action?: string;
-  category?: string;
-  component?: string;
+  package: string
+  scheme: string
+  action?: string
+  category?: string
+  component?: string
 }
 
 export interface WXJSTICKET {
-  appId?: string,
-  timestamp?: string,
-  noncestr?: string,
-  signature?: string,
+  appId?: string
+  timestamp?: string
+  noncestr?: string
+  signature?: string
 }
 
 export type App58 = {
   action?: {
-    openApp: (...[]) => void,
-    isInstallApp: (...[]) => void
-  },
+    openApp: (...res: any[]) => void
+    isInstallApp: (...res: any[]) => void
+  }
   common?: {
     appVersion?: string
-  },
+  }
 }

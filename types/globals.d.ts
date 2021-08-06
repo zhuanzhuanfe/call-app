@@ -1,6 +1,6 @@
 interface Document {
-  webkitHidden?: boolean;
-  msHidden?: boolean;
+  webkitHidden?: boolean
+  msHidden?: boolean
 }
 
 interface Window {

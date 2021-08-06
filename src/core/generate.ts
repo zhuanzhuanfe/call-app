@@ -6,7 +6,7 @@ import { handlePath2app } from './targetApp'
 import { CallAppInstance, UrlSearch, Intent, SchemeMapKeys } from '../../types'
 
 // universal-link-host
-const universalLinkHost: string = 'mjump.zhuanzhuan.com'
+const universalLinkHost = 'mjump.zhuanzhuan.com'
 
 // 生成 scheme 链接
 export const generateScheme = (instance: CallAppInstance): string => {
@@ -25,9 +25,13 @@ export const generateScheme = (instance: CallAppInstance): string => {
 }
 // 生成 universalLink 链接
 export const generateUniversalLink = (instance: CallAppInstance) => {
-  const { targetInfo, options: { universal, channelId }, urlScheme } = instance
+  const {
+    targetInfo,
+    options: { universal, channelId },
+    urlScheme,
+  } = instance
 
-  if(!universal) return ''
+  if (!universal) return ''
 
   const host = universalLinkHost
   const path = targetInfo?.universalPath
@@ -35,7 +39,9 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   const scheme = urlScheme
   const channel = channelId ? `&channelId=${channelId}` : ''
 
-  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(scheme || '')}${channel}`
+  const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(
+    scheme || ''
+  )}${channel}`
 
   return universalLink
 }
@@ -43,32 +49,31 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
 // 生成 appLinks 链接
 export const generateIntent = (instance: CallAppInstance): string => {
   const { options, downloadLink } = instance
-  const { intent, intentParams } = options;
+  const { intent, intentParams } = options
 
-  if(intent && !intentParams) {
-    console.error ?
-      console.error(`Error: options.intentParams is not found, please check`) :
-      console.log(`Error: \n options.intentParams is not found, please check`);
+  if (intent && !intentParams) {
+    console.error
+      ? console.error(`Error: options.intentParams is not found, please check`)
+      : console.log(`Error: \n options.intentParams is not found, please check`)
 
     return ''
   }
 
-  if (!intent || !intentParams) return '';
+  if (!intent || !intentParams) return ''
 
-  const keys = Object.keys(intentParams) as Array<keyof Intent>;
-  const intentParam = keys.map((key) => `${key}=${intentParams[key]};`).join('');
+  const keys = Object.keys(intentParams) as Array<keyof Intent>
+  const intentParam = keys.map((key) => `${key}=${intentParams[key]};`).join('')
 
   const intentTail = `#Intent;${intentParam}S.browser_fallback_url=${encodeURIComponent(
     downloadLink || ''
-  )};end;`;
+  )};end;`
 
-  let urlPath = generateScheme(instance);
+  let urlPath = generateScheme(instance)
 
-  urlPath = urlPath.slice(urlPath.indexOf('//') + 2);
+  urlPath = urlPath.slice(urlPath.indexOf('//') + 2)
 
-  return `intent://${urlPath}${intentTail}`;
+  return `intent://${urlPath}${intentTail}`
 }
-
 
 // 兼容旧版本
 /**
@@ -99,28 +104,28 @@ export const SchemaMap = {
     name: 'home',
     path: 'zhuanzhuan://jump/core/mainPage/jump?tabId=0',
     params: {
-      id: ''
+      id: '',
     },
   },
   [SchemeMapKeys.MSGCENTER]: {
     name: 'messagecenter',
     path: 'zhuanzhuan://jump/core/mainPage/jump?tabId=2',
     params: {
-      id: ''
+      id: '',
     },
   },
   [SchemeMapKeys.MYBUY]: {
     name: 'mybuy',
     path: 'zhuanzhuan://jump/core/myBuyList/jump?tab=price',
     params: {
-      id: ''
+      id: '',
     },
   },
   [SchemeMapKeys.PUBLISH]: {
     name: 'publish',
     path: 'zhuanzhuan://jump/core/publish/jump',
     params: {
-      id: ''
+      id: '',
     },
   },
   [SchemeMapKeys.DETAIL]: {
@@ -134,7 +139,7 @@ export const SchemaMap = {
     name: 'mysell',
     path: 'zhuanzhuan://jump/core/mySellList/jump?tab=price',
     params: {
-      id: ''
+      id: '',
     },
   },
   [SchemeMapKeys.ORDER]: {
@@ -167,11 +172,12 @@ export const SchemaMap = {
   },
 }
 
-const getSchemeByUrlSearch = ({ openType = SchemeMapKeys.HOME, id = '' }: UrlSearch ): string => {
+const getSchemeByUrlSearch = ({ openType = SchemeMapKeys.HOME, id = '' }: UrlSearch): string => {
   const queryStr =
     (id &&
-      (!/\?/g.test(SchemaMap[openType]?.path) && '?') +
-        `${SchemaMap[openType]?.params?.id}=${encodeURIComponent(id)}`) ||
+      `${!/\?/g.test(SchemaMap[openType]?.path) && '?'}${
+        SchemaMap[openType]?.params?.id
+      }=${encodeURIComponent(id)}`) ||
     ''
   return `${SchemaMap[openType]?.path}${queryStr}`
 }

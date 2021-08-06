@@ -4,15 +4,28 @@
  *
  */
 
-import { generateDownloadUrl } from "./core/download";
-import { launch } from "./core/launch";
+import { generateDownloadUrl } from './core/download'
+import { launch } from './core/launch'
 import { sdkLaunch } from './core/sdkLaunch'
-import { is58App, isAndroid, isIos, isQuark, isSougou, isUC, isWechat, isWeibo, isZZ, isZZHunter, isZZSeeker, isZZSeller } from "./libs/platform";
-import { getTargetInfo } from "./core/targetApp";
-import { evokeByIFrame, evokeByLocation, evokeByTagA } from "./libs/evoke";
+import {
+  is58App,
+  isAndroid,
+  isIos,
+  isQuark,
+  isSougou,
+  isUC,
+  isWechat,
+  isWeibo,
+  isZZ,
+  isZZHunter,
+  isZZSeeker,
+  isZZSeller,
+} from './libs/platform'
+import { getTargetInfo } from './core/targetApp'
+import { evokeByIFrame, evokeByLocation, evokeByTagA } from './libs/evoke'
 import { generateScheme, generateUniversalLink, generateIntent } from './core/generate'
 import { TargetAppNames, CallAppOptions, TargetInfo } from '../types'
-import { copy, showMask } from "./libs/utils";
+import { copy, showMask } from './libs/utils'
 
 const defaultOptions: CallAppOptions = {
   path: '', // 唤起的页面 path
@@ -22,24 +35,29 @@ const defaultOptions: CallAppOptions = {
   download: true, // 是否支持下载
   delay: 2500, // 触发下载 延迟检测时间
   channelId: '923', // 下载渠道 id
-  wechatCheckInstallState: () => { }, // 微信端初始化检测安装后的回调函数
+  wechatCheckInstallState: () => {}, // 微信端初始化检测安装后的回调函数
   wechatStyle: 1, // 蒙层样式， 默认 微信吊起失败后，提示右上角打开
   deeplinkId: '', // deeplink 接口支持的id配置
   middleWareUrl: '', // 下载中间页 url
   urlSearch: undefined,
-  callFailed: () => { }, // 失败 hook
-  callSuccess: () => { }, // 成功 hook
-  callStart: () => { }, // 开始唤起 hook
-  callDownload: () => { }, // 触发下载 hook
-  callError: () => { }, // 触发异常 hook
+  callFailed: () => {}, // 失败 hook
+  callSuccess: () => {}, // 成功 hook
+  callStart: () => {}, // 开始唤起 hook
+  callDownload: () => {}, // 触发下载 hook
+  callError: () => {}, // 触发异常 hook
 }
 
 export default class CallApp {
   options: CallAppOptions = {}
+
   targetInfo?: TargetInfo
+
   downloadLink?: string
+
   urlScheme?: string
+
   universalLink?: string
+
   intentLink?: string
 
   // Create an instance of CallApp
@@ -47,27 +65,28 @@ export default class CallApp {
     // 原生app js-sdk 实例, 用于调用原生 app能力 (目前支持58app/wx平台)
     this.init(options)
   }
+
   init(options: CallAppOptions) {
     // 第三方 配置
     const { customConfig } = options
 
-    if(customConfig) {
+    if (customConfig) {
       this.options = options
       this.downloadLink = generateDownloadUrl(this)
       this.urlScheme = customConfig.schemeUrl
-      if(customConfig.universalLink) {
+      if (customConfig.universalLink) {
         this.options.universal = true
         this.universalLink = customConfig.universalLink
       }
       return
     }
     //
-    this.options = Object.assign({}, defaultOptions, options);
+    this.options = { ...defaultOptions, ...options }
     // 待唤起目标 app 信息
-    this.targetInfo = getTargetInfo(this.options);
+    this.targetInfo = getTargetInfo(this.options)
     console.log(this.targetInfo)
     // 根据平台 初始化 下载链接
-    this.downloadLink = generateDownloadUrl(this);
+    this.downloadLink = generateDownloadUrl(this)
     // 初始化 scheme
     this.urlScheme = generateScheme(this)
     //
@@ -75,6 +94,7 @@ export default class CallApp {
     //
     this.intentLink = generateIntent(this)
   }
+
   /**
    * 触发唤起
    */
@@ -86,13 +106,18 @@ export default class CallApp {
 
     callStart && callStart()
     // 第三方 配置
-    if(customConfig?.schemeUrl) return launch(this)
+    if (customConfig?.schemeUrl) return launch(this)
 
-    const { targetInfo: { name: targetApp } = {}} = this
+    const { targetInfo: { name: targetApp } = {} } = this
 
-    if (is58App || isZZ || isZZHunter ||
-      isZZSeller || isZZSeeker ||
-      (isWechat && targetApp == TargetAppNames.ZZ)) {
+    if (
+      is58App ||
+      isZZ ||
+      isZZHunter ||
+      isZZSeller ||
+      isZZSeeker ||
+      (isWechat && targetApp == TargetAppNames.ZZ)
+    ) {
       // by native-app launch
       sdkLaunch(this)
     } else {
@@ -100,6 +125,7 @@ export default class CallApp {
       launch(this)
     }
   }
+
   /**
    * 触发下载
    */
@@ -113,7 +139,7 @@ export default class CallApp {
 
     console.log('downloadLink', this.downloadLink)
 
-    if(!customConfig) copy(`1.0$$${this.urlScheme}`)
+    if (!customConfig) copy(`1.0$$${this.urlScheme}`)
 
     if (this.downloadLink) {
       // 个别浏览器 evoke方式 需要单独处理, 防止页面跳转到下载链接 展示异常
@@ -135,4 +161,3 @@ export default class CallApp {
     console.warn('please check options.download is true')
   }
 }
-

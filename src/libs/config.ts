@@ -1,14 +1,15 @@
-
 import { getUrlParams, getCookie, regTest } from './utils'
 /**
  * 授权的公众号id
  * */
-declare var window: Window & {
+declare let window: Window & {
   nativeAdapterConfig: any
 }
 
 const getWxPublicId = (): string | undefined => {
-  if (typeof window === 'undefined') { return  }
+  if (typeof window === 'undefined') {
+    return
+  }
   const query = getUrlParams()
   const config = window.nativeAdapterConfig || {}
   return (
@@ -37,7 +38,7 @@ export enum SDKNames {
 export const dependencies = {
   [SDKNames.ZZ_SELLER_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
-    name: 'ZZSELLER'
+    name: 'ZZSELLER',
   },
   [SDKNames.ZZ_HUNTER_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/hunterapp/static/js/1.1.1/index.min.js',
@@ -60,9 +61,9 @@ export const dependencies = {
     name: '',
   },
   [SDKNames.WX_JSTICKET]: {
-    link: `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=` +
-      encodeURIComponent(location ? location.href.split('#')[0] : '') +
-      '&callback=__json_jsticket',
+    link: `https://app.zhuanzhuan.com/zzopen/wxcommon/getJsTicket?wxPublicId=${getWxPublicId()}&url=${encodeURIComponent(
+      location ? location.href.split('#')[0] : ''
+    )}&callback=__json_jsticket`,
     name: '',
   },
 }
@@ -73,8 +74,7 @@ export const dependencies = {
 export const AppInfomation = {
   SCHEMA: 'zhuanzhuan://', // 转转App跳转协议(Android & IOS)
   ANDROID_PACKAGE_NAME: 'com.wuba.zhuanzhuan', // Android客户端包名
-  ANDROID_MAINCLS:
-    'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
+  ANDROID_MAINCLS: 'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
 }
 
 export interface AppInfo {
@@ -86,8 +86,7 @@ export interface AppInfo {
 export const zzAppInfo: AppInfo = {
   SCHEMA: 'zhuanzhuan://', // 转转App跳转协议(Android & IOS)
   ANDROID_PACKAGE_NAME: 'com.wuba.zhuanzhuan', // Android客户端包名
-  ANDROID_MAINCLS:
-    'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
+  ANDROID_MAINCLS: 'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
 }
 
 /**
@@ -95,12 +94,10 @@ export const zzAppInfo: AppInfo = {
  * */
 export interface WXInfo {
   appID: string
-
 }
 export const wechatInfomation = {
-  appID: 'wx6f1a8464fa672b11', //转转app在微信绑定的appid
+  appID: 'wx6f1a8464fa672b11', // 转转app在微信绑定的appid
 }
-
 
 /**
  * 页面域名

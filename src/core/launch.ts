@@ -16,9 +16,9 @@ import {
   isQuark,
   isLow9Ios,
   isLow7WX,
-  isThan12Ios
-} from "../libs/platform"
-import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from "../libs/evoke"
+  isThan12Ios,
+} from '../libs/platform'
+import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from '../libs/evoke'
 import { CallAppInstance } from '../../types'
 import { showMask } from '../libs/utils'
 /**
@@ -26,92 +26,105 @@ import { showMask } from '../libs/utils'
  * @param {Object} instance
  */
 export const launch = (instance: CallAppInstance) => {
-  let { options, download, urlScheme: schemeURL, universalLink, intentLink } = instance;
+  const { options, download, urlScheme: schemeURL, universalLink, intentLink } = instance
   let {
     universal = false,
     intent = false,
     callFailed = () => {},
     callSuccess = () => {},
     callError = () => {},
-    delay = 2500
-  } = options;
+    delay = 2500,
+  } = options
 
   // 唤端失败时落地处理
-  let checkOpenFall: any = undefined;
+  let checkOpenFall: any
   const supportUniversal = universal
   const supportIntent = intent
 
   // 唤端成功/失败检测 才执行 checkOpen(cb)
   const checkOpen = (failure?: () => void, success?: () => void, error?: () => void) => {
     // 唤端 执行 checkOpen(failedCb, successCb, errorCb, time) , hack by setTimeout
-    return _checkOpen(() => {
-      callFailed && callFailed()
-      failure && failure()
-    }, () => {
-      callSuccess && callSuccess()
-      success && success()
-    }, () => {
-      callError && callError()
-      error && error()
-    }, delay || 2500);
+    return _checkOpen(
+      () => {
+        callFailed && callFailed()
+        failure && failure()
+      },
+      () => {
+        callSuccess && callSuccess()
+        success && success()
+      },
+      () => {
+        callError && callError()
+        error && error()
+      },
+      delay || 2500
+    )
   }
   // scheme 处理落地状态
   const handleFall = () => {
-    checkOpen(() => {
-      // 触发下载 或者 跳指定页面
-      console.log('处理 失败 逻辑')
-      download.call(instance)
-    }, () => {
-      console.log('处理 成功 逻辑')
-    }, () => {
-      console.log('处理 异常 逻辑')
-    });
+    checkOpen(
+      () => {
+        // 触发下载 或者 跳指定页面
+        console.log('处理 失败 逻辑')
+        download.call(instance)
+      },
+      () => {
+        console.log('处理 成功 逻辑')
+      },
+      () => {
+        console.log('处理 异常 逻辑')
+      }
+    )
   }
   // uLink/appLink 处理落地状态
   const xLinkHandleFall = () => {
-    checkOpen(() => {
-      console.log('处理 失败 逻辑')
-    }, () => {
-      console.log('处理 成功 逻辑')
-    }, () => {
-      console.log('处理 异常 逻辑')
-    });
+    checkOpen(
+      () => {
+        download.call(instance)
+        console.log('处理 失败 逻辑')
+      },
+      () => {
+        console.log('处理 成功 逻辑')
+      },
+      () => {
+        console.log('处理 异常 逻辑')
+      }
+    )
   }
 
   if (isIos) {
     console.log('isIos', isIos)
     // ios-version > v12.3.0
-    if (isThan12Ios) (delay = options.delay = 3000);
+    if (isThan12Ios) (delay = options.delay = 3000)
 
     console.log('isIos > 12.3.0', isThan12Ios)
 
     if (isWechat && isLow7WX) {
       // 显示遮罩 在浏览器打开
-      console.log(
-        'isIos - isWeibo || isWechat < 7.0.5',
-        isIos &&  (isWechat && isLow7WX)
-      )
+      console.log('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
 
       showMask()
     } else if (isLow9Ios) {
       console.log('isIos - version < 9', isIos, isLow9Ios)
 
-      schemeURL && evokeByIFrame(schemeURL);
+      schemeURL && evokeByIFrame(schemeURL)
       checkOpenFall = handleFall
-    } else if(!supportUniversal && isBaidu) {
+    } else if (!supportUniversal && isBaidu) {
       console.log('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
 
       showMask()
       checkOpenFall = handleFall
-    } else if(!supportUniversal && isWeibo) {
+    } else if (!supportUniversal && isWeibo) {
       console.log('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
 
       showMask()
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
-      console.log('isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
-        !supportUniversal || isQQ || isQQBrowser || isQzone);
+      console.log(
+        'isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
+        !supportUniversal || isQQ || isQQBrowser || isQzone
+      )
 
-      schemeURL && evokeByTagA(schemeURL);
+      schemeURL && evokeByTagA(schemeURL)
       checkOpenFall = handleFall
     } else if (isQuark) {
       console.log('isQuark', isQuark)
@@ -125,7 +138,7 @@ export const launch = (instance: CallAppInstance) => {
       console.log('isIos - support universalLink')
 
       console.log('universalLink', universalLink)
-
+      // ？？？？
       universalLink && evokeByLocation(universalLink)
       checkOpenFall = xLinkHandleFall
 
@@ -136,7 +149,6 @@ export const launch = (instance: CallAppInstance) => {
       //   checkOpenFall = handleFall
       // });
     }
-
   } else if (isAndroid) {
     //
     console.log('isAndroid', isAndroid)
@@ -153,7 +165,10 @@ export const launch = (instance: CallAppInstance) => {
         checkOpenFall = handleFall
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
-      console.log('isAndroid -- showMask， isBaidu || isWeibo || isQzone', isBaidu || isWeibo || isQzone)
+      console.log(
+        'isAndroid -- showMask， isBaidu || isWeibo || isQzone',
+        isBaidu || isWeibo || isQzone
+      )
       // 不支持 scheme, 显示遮罩 请在浏览器打开
       showMask()
     } else {
@@ -164,9 +179,9 @@ export const launch = (instance: CallAppInstance) => {
       checkOpenFall = handleFall
     }
   } else {
-    console.error ?
-      console.error('your platform is not considered, please contact developer') :
-      console.log('your platform is not considered, please contact developer');
+    console.error
+      ? console.error('your platform is not considered, please contact developer')
+      : console.log('your platform is not considered, please contact developer')
   }
 
   console.log('checkOpenFall', checkOpenFall)

@@ -1,11 +1,11 @@
-declare var window: Window & {
+declare let window: Window & {
   clipboardData: Record<string, any>
 }
 
 // 加载 js 资源
 export const loadJS = (url: string, cb: () => void) => {
-  let head = window.document.getElementsByTagName('head')[0]
-  let js = window.document.createElement('script')
+  const head = window.document.getElementsByTagName('head')[0]
+  const js = window.document.createElement('script')
   js.setAttribute('type', 'text/javascript')
   js.setAttribute('async', 'async')
   js.setAttribute('src', url)
@@ -17,7 +17,7 @@ export const loadJSArr = (urls: string[], cb: () => void) => {
   let done = 0
   if (typeof urls === 'string') urls = [urls]
   const { length } = urls
-  urls.map(url =>
+  urls.map((url) =>
     loadJS(url, () => {
       ++done >= length && cb()
     })
@@ -26,7 +26,9 @@ export const loadJSArr = (urls: string[], cb: () => void) => {
 
 //
 export const getUrlParams = (url?: string): Record<string, string> => {
-  if (typeof window === 'undefined') { return {} }
+  if (typeof window === 'undefined') {
+    return {}
+  }
   url = url || (location && location.href)
   if (url.indexOf('?') < 0) return {}
 
@@ -34,12 +36,12 @@ export const getUrlParams = (url?: string): Record<string, string> => {
     .replace(/^.+?\?/, '')
     .replace(/#.+/, '')
     .split('&')
-    .filter(param => param)
+    .filter((param) => param)
     .map(decodeURIComponent)
     .reduce((obj: Record<string, any>, param: string) => {
       const i = param.indexOf('=')
       const t = [param.slice(0, i), param.slice(i + 1)]
-      const key:string = t[0]
+      const key: string = t[0]
       obj[key] = t[1]
       return obj
     }, {})
@@ -49,18 +51,20 @@ export const getCookie = (name: string): string =>
   (
     document.cookie
       .split('; ')
-      .filter(cookie => +cookie.indexOf(name + '=') === 0)
+      .filter((cookie) => +cookie.indexOf(`${name}=`) === 0)
       .pop() || ''
   ).replace(/[^=]+=/, '')
 
 function select(element: HTMLInputElement) {
-  if (typeof window === 'undefined') { return {} }
-  var selectedText
+  if (typeof window === 'undefined') {
+    return {}
+  }
+  let selectedText
   if (element.nodeName === 'SELECT') {
     element.focus()
     selectedText = element.value
   } else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-    var isReadOnly = element.hasAttribute('readonly')
+    const isReadOnly = element.hasAttribute('readonly')
     if (!isReadOnly) {
       element.setAttribute('readonly', '')
     }
@@ -77,8 +81,8 @@ function select(element: HTMLInputElement) {
       element.focus()
     }
 
-    var selection = window.getSelection()
-    var range = document.createRange()
+    const selection = window.getSelection()
+    const range = document.createRange()
 
     range.selectNodeContents(element)
     selection?.removeAllRanges()
@@ -90,16 +94,18 @@ function select(element: HTMLInputElement) {
 }
 // 复制内容到剪切板
 export function copy(text: string, options?: Record<string, any>): boolean {
-  if (typeof window === 'undefined') { return false }
-  var debug,
-    fakeElem: HTMLInputElement = document.createElement('input'),
-    success = false
+  if (typeof window === 'undefined') {
+    return false
+  }
+  let debug
+  let fakeElem: HTMLInputElement = document.createElement('input')
+  let success = false
   options = options || {}
   debug = options.debug || false
   try {
     const isRTL = document.documentElement.getAttribute('dir') == 'rtl'
     fakeElem = document.createElement('input')
-    fakeElem.type = "textarea"
+    fakeElem.type = 'textarea'
     // Prevent zooming on iOS
     fakeElem.style.fontSize = '12pt'
     // Reset box model
@@ -110,7 +116,7 @@ export function copy(text: string, options?: Record<string, any>): boolean {
     fakeElem.style.position = 'absolute'
     fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px'
     // Move element to the same position vertically
-    let yPosition = window.pageYOffset || document.documentElement.scrollTop
+    const yPosition = window.pageYOffset || document.documentElement.scrollTop
     fakeElem.style.top = `${yPosition}px`
     fakeElem.setAttribute('readonly', '')
     fakeElem.value = text
@@ -118,7 +124,7 @@ export function copy(text: string, options?: Record<string, any>): boolean {
 
     select(fakeElem)
 
-    var successful = document.execCommand('copy')
+    const successful = document.execCommand('copy')
 
     console.log('successful', successful)
     if (!successful) {
@@ -131,8 +137,8 @@ export function copy(text: string, options?: Record<string, any>): boolean {
     try {
       window.clipboardData.setData('text', text)
       success = true
-    } catch (err) {
-      debug && console.error('unable to copy using clipboardData: ', err)
+    } catch (e) {
+      debug && console.error('unable to copy using clipboardData: ', e)
     }
   } finally {
     fakeElem && document.body.removeChild(fakeElem)
@@ -157,7 +163,6 @@ export const showMask = (): void => {
   })
 }
 
-
-export const regTest = ({ reg, str }: { reg: RegExp, str: string }) => {
+export const regTest = ({ reg, str }: { reg: RegExp; str: string }) => {
   return reg.test(str)
 }

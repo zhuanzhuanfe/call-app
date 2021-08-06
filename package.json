@@ -4,6 +4,9 @@
   "description": "通用的唤起app的库",
   "scripts": {
     "ts-check": "tsc --noEmit",
+    "prettier": "prettier -c --write \"**/*\"",
+    "lint-staged:js": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx ./src",
+    "lint-check": "npm run ts-check && npm run lint-staged:js",
     "cz": "git cz -a",
     "test": "jest --coverage",
     "lint": "commander-tools run lint",
@@ -40,24 +43,34 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commander-tools run commitlint",
-      "pre-commit": "npm run ts-check"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commander-tools run commitlint"
     }
   },
+  "lint-staged": {
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-check"
+  },
   "devDependencies": {
+    "@types/node": "^14.14.34",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
     "@zz-common/commander-tools": "^3.1.2-beta.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
-    "eslint-plugin-html": "^6.0.2",
-    "husky": "^4.2.5",
-    "@types/node": "^14.14.34",
-    "@typescript-eslint/eslint-plugin": "^3.1.0",
-    "@typescript-eslint/parser": "^3.1.0",
-    "typescript": "^3.9.5",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-unicorn": "^20.1.0"
+    "eslint-plugin-unicorn": "^20.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2",
+    "typescript": "^3.9.5"
   },
   "peerDependencies": {},
   "dependencies": {

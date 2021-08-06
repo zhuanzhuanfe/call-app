@@ -5,58 +5,62 @@
  */
 
 import { getDownloadConfig } from './download'
-import { TargetAppNames, CallAppOptions, downloadConfig } from '../../types'
+import { TargetAppNames, CallAppOptions, DownloadConfig } from '../../types'
 
 // 获取 目标 app 类型
 export const getTargetInfo = (options: CallAppOptions) => {
   let { path, targetApp } = options
   // 从 path 解析 target-app
-  if(!path) {
-    console.error ?
-      console.error(`options.path '${options.path}' is Invalid， please check! \n`) :
-      console.log(`Error:\n options.path '${options.path}' is Invalid， please check! \n`);
+  if (!path) {
+    console.error
+      ? console.error(`options.path '${options.path}' is Invalid， please check! \n`)
+      : console.log(`Error:\n options.path '${options.path}' is Invalid， please check! \n`)
     return
   }
 
-  let { app } = handlePath2app(path)
+  const { app } = handlePath2app(path)
   // 优先取 options.targetApp // 默认 配置为 转转
   targetApp = targetApp || app || TargetAppNames.ZZ
 
-  if(!targetApp) {
-    console.error ?
-      console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`) :
-      console.log(`Error:\n options.targetApp '${options.targetApp}' is Invalid， please check! \n`);
+  if (!targetApp) {
+    console.error
+      ? console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
+      : console.log(
+          `Error:\n options.targetApp '${options.targetApp}' is Invalid， please check! \n`
+        )
     return
   }
 
   let name = TargetAppNames.ZZ
-  let flag = 0,
-    schemePrefix: string,
-    downloadConfig: downloadConfig,
-    universalPath: string;
+  let flag = 0
+  let schemePrefix: string
+  let downloadConfig: DownloadConfig
+  let universalPath: string
 
-  if(isZZ(targetApp)) {
+  if (isZZ(targetApp)) {
     name = TargetAppNames.ZZ
-  } else if(isZZSeller(targetApp)) {
-    name =  TargetAppNames.ZZSeller
-  } else if(isZZHunter(targetApp)) {
+  } else if (isZZSeller(targetApp)) {
+    name = TargetAppNames.ZZSeller
+  } else if (isZZHunter(targetApp)) {
     name = TargetAppNames.ZZHunter
-  } else if(isZZSeeker(targetApp)) {
+  } else if (isZZSeeker(targetApp)) {
     name = TargetAppNames.ZZSeeker
   } else {
-    console.error ?
-      console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`) :
-      console.log(`Error:\n options.targetApp '${options.targetApp}' is Invalid， please check! \n`);
+    console.error
+      ? console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
+      : console.log(
+          `Error:\n options.targetApp '${options.targetApp}' is Invalid， please check! \n`
+        )
   }
 
-  ;[flag, schemePrefix, universalPath, downloadConfig] = [
+  [flag, schemePrefix, universalPath, downloadConfig] = [
     targetAppFlag[name],
     targetAppSchemePrefix[name],
     targetAppUniversalPath[name],
     getDownloadConfig(name),
-  ];
+  ]
 
-  return { flag, name, schemePrefix, universalPath, downloadConfig };
+  return { flag, name, schemePrefix, universalPath, downloadConfig }
 }
 
 //  转转 app
@@ -69,17 +73,16 @@ const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
 
 // 从 options.path 中获取 target-app
-const isZZPath = (path:string) :boolean => /^zhuanzhuan:/.test(path)
-const isZZSeekerPath = (path:string) :boolean => /^zljgo:/i.test(path)
+const isZZPath = (path: string): boolean => /^zhuanzhuan:/.test(path)
+const isZZSeekerPath = (path: string): boolean => /^zljgo:/i.test(path)
 export const handlePath2app = (path: string): Record<string, any> => {
   let app = ''
 
-  if(isZZSeekerPath(path)) app = TargetAppNames.ZZSeeker
-  if(isZZPath(path)) app = TargetAppNames.ZZ
+  if (isZZSeekerPath(path)) app = TargetAppNames.ZZSeeker
+  if (isZZPath(path)) app = TargetAppNames.ZZ
 
   return { app }
 }
-
 
 export const targetAppFlag = {
   [TargetAppNames.ZZ]: 1,
