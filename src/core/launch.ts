@@ -19,7 +19,7 @@ import {
   isThan12Ios,
 } from '../libs/platform'
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from '../libs/evoke'
-import { CallAppInstance } from '../../types'
+import { CallAppInstance } from '../index'
 import { showMask } from '../libs/utils'
 /**
  * 普通 url-scheme 唤起， 不同平台对应不同的 evoke
@@ -95,7 +95,7 @@ export const launch = (instance: CallAppInstance) => {
   if (isIos) {
     console.log('isIos', isIos)
     // ios-version > v12.3.0
-    if (isThan12Ios) (delay = options.delay = 3000)
+    if (isThan12Ios) delay = options.delay = 3000
 
     console.log('isIos > 12.3.0', isThan12Ios)
 

@@ -10,3 +10,4 @@ config/
 src/
 tools/
 package-lock.json
+types/dist/*

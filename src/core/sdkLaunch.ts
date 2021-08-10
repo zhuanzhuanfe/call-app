@@ -1,215 +1,40 @@
-import {
-  isQQ,
-  isWeibo,
-  isZZ,
-  isZZHunter,
-  isZZSeller,
-  isZZSeeker,
-  isAndroid,
-  isIos,
-  isZZInner,
-  is58App,
-  isWechat,
-  getIOSVersion,
-  semverCompare,
-  IOSVersion,
-} from '../libs/platform'
-import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from '../libs/evoke'
-import { generateIntent, generateScheme, generateUniversalLink } from './generate'
-import { dependencies, zzAppInfo, wechatInfomation, domain } from '../libs/config'
-import { loadJSArr, showMask } from '../libs/utils'
-import { targetAppSchemePrefix } from './targetApp'
-import { CallAppInstance, WXJSTICKET } from '../../types'
-import { load58SDK, openZZIn58 } from '../libs/sdk'
+import { isZZ, isZZHunter, isZZSeller, isZZSeeker, is58App, isWechat } from '../libs/platform'
 
-declare let window: Window & {
-  __json_jsticket: any
-  WeixinJSBridge: any
-  wx: any
-  wxconfig: any
-}
+// import { generateIntent, generateScheme, generateUniversalLink } from './generate'
+import { zzAppInfo, SDKNames } from '../libs/config'
+import { CallAppInstance } from '../index'
+import { openZZIn58, openZZInWX, openZZInnerApp } from '../libs/sdk/index'
+
 /**
  * native-sdk 方式 唤起 (目前支持 58app/微信)
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance: CallAppInstance) => {
-  const { options, APP, targetInfo, download, urlScheme, downloadLink, universalLink } = instance
-  const {
-    universal = false,
-    callFailed = () => {},
-    callSuccess = () => {},
-    callError = () => {},
-    delay = 2500,
-  } = options
+  const { options, targetInfo, urlScheme } = instance
+  const { callFailed = () => {} } = options
 
-  // 打开转转app
-  const OpenZZAPP = (schemeURL: string, App: Record<string, any>, originApp?: string): void => {
-    const url = encodeURIComponent(schemeURL)
-    const schemaPerfix = targetAppSchemePrefix[originApp]
-    const schema = `${schemaPerfix}//jump/core/openZhuanZhuan/jump`
-    const unifiedUrl = `${schema}?url=${url}`
-    // 通过sdk唤起
-    App.enterUnifiedUrl({ unifiedUrl })
-  }
   try {
     if (is58App) {
       console.log('is58App', is58App)
       openZZIn58(instance, zzAppInfo)
     } else if (isWechat) {
-      // if(isAndroid){
-      //   return evokeByLocation(downloadLink)
-      // }
-      try {
-        const conf: WXJSTICKET = await loadWXSDK(APP)
-        const wxconfig = {
-          debug: false,
-          appId: conf.appId,
-          timestamp: conf.timestamp,
-          nonceStr: conf.noncestr,
-          signature: conf.signature,
-          beta: true,
-          jsApiList: ['launchApplication', 'getInstallState'],
-          openTagList: ['wx-open-launch-app'],
-        }
-        ;(window.wx && window.wx.config(wxconfig)) || (window.wxconfig = wxconfig)
-        window.wx.ready(() => {
-          // 实例化APP对象
-          Object.assign(instance, {
-            APP: window.WeixinJSBridge,
-          })
-          // __openApp(urlScheme, instance)
-          if (isAndroid) {
-            const packageName = zzAppInfo.ANDROID_PACKAGE_NAME
-            const packageUrl = urlScheme
-            __invoke('getInstallState', { packageName, packageUrl }, instance.APP)
-              .then(() => {
-                __openApp(urlScheme, instance)
-              })
-              .catch(() => {
-                callFailed()
-              })
-          } else {
-            // ios
-            __openApp(urlScheme, instance)
-          }
-        })
-      } catch (e) {
-        callFailed()
-      }
-    } else if (isZZInner) {
-      if (isZZ) {
-        // 转转app环境内, 可以唤起找靓机/采货侠/卖家版
-        // 加载zz的sdk
-        loadSkd('ZZ_SDK').then((res) => {
-          APP._name_ = res
-
-          if (targetInfo.name == 'zzHunter') {
-            // 采货侠app
-          }
-          if (targetInfo.name == 'zzSeller') {
-            // 商家版app
-          }
-          if (targetInfo.name == 'zzSeeker') {
-            // 找靓机app
-          }
-        })
-      } else if (isZZSeeker) {
-        // 找靓机app环境内, 可主动唤起转转/采货侠/卖家版
-      } else if (isZZHunter) {
-        // 命中采货侠  唤起转转app
-        loadSkd('ZZ_HUNTER_SDK')
-          .then((res) => {
-            const _originApp = 'zzHunter'
-            OpenZZAPP(urlScheme, APP, _originApp)
-          })
-          .catch(() => {
-            callFailed()
-          })
-      } else {
-        // 命中卖家版 唤起转转app
-        loadSkd('ZZ_SELLER_SDK')
-          .then((res) => {
-            APP._name_ = res
-            const _originApp = 'zzSeller'
-            OpenZZAPP(urlScheme, APP, _originApp)
-          })
-          .catch(() => {
-            callFailed()
-          })
-      }
+      openZZInWX(instance)
+    } else if (isZZ) {
+      // 转转app环境内, 可以唤起 找靓机/采货侠/卖家版
+      openZZInnerApp(SDKNames.ZZ_SDK, urlScheme, targetInfo)
+    } else if (isZZSeeker) {
+      // 找靓机app环境内, 可主动唤起 转转/采货侠/卖家版
+      openZZInnerApp(SDKNames.ZZ_SDK, urlScheme, targetInfo)
+    } else if (isZZHunter) {
+      // 命中采货侠  可唤起 转转
+      openZZInnerApp(SDKNames.ZZ_HUNTER_SDK, urlScheme, targetInfo)
+    } else if (isZZSeller) {
+      // 命中卖家版 可唤起 转转
+      openZZInnerApp(SDKNames.ZZ_SELLER_SDK, urlScheme, targetInfo)
     } else {
       console.error('')
     }
   } catch (error) {
     callFailed()
   }
-}
-
-const loadWXSDK = (app) => {
-  const _ = Object.create(null)
-  return new Promise<WXJSTICKET>((resolve, reject) => {
-    window.__json_jsticket = (resp) => {
-      _.WX_JSTICKET = (resp.respCode == 0 && resp.respData) || {}
-    }
-    loadJSArr([dependencies.WX_JWEIXIN.link, dependencies.WX_JSTICKET.link], () => {
-      resolve(_.WX_JSTICKET)
-    })
-  })
-}
-
-// 加载sdk 资源
-const loadSkd = (sdkName) => {
-  return new Promise((resolve, reject) => {
-    try {
-      loadJSArr([dependencies[sdkName].link], () => {
-        resolve(dependencies[sdkName].name)
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-// 微信skd回调
-const __invoke = (name, options, App) => {
-  return new Promise((resolve, reject) => {
-    App.invoke(name, options, (data) => {
-      const { err_msg } = data
-      const Regex = /(:ok)|(:yes)/g
-      if (Regex.test(err_msg)) {
-        resolve({
-          code: 0,
-          data: { err_msg },
-        })
-      } else {
-        reject({ code: -1, data: { err_msg } })
-      }
-    })
-  })
-}
-
-// 打开app
-const __openApp = (schemeURL, instance: CallAppInstance) => {
-  const { options, APP, downloadLink, universalLink } = instance
-  const { callFailed, callSuccess } = options
-  const { appID } = wechatInfomation
-  const parameter = schemeURL
-  const extInfo = schemeURL
-  // 如果是58域名的话
-  if (domain.is58Domain) {
-    const delay = 800
-    evokeByLocation(universalLink)
-    setTimeout(() => {
-      callFailed()
-      evokeByLocation(downloadLink)
-    }, delay)
-    return
-  }
-  return __invoke('launchApplication', { appID, parameter, extInfo }, APP)
-    .then((res) => {
-      callSuccess()
-    })
-    .catch(() => {
-      callFailed()
-      evokeByLocation(downloadLink)
-    })
 }

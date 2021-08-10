@@ -55,7 +55,7 @@ export const getCookie = (name: string): string =>
       .pop() || ''
   ).replace(/[^=]+=/, '')
 
-function select(element: HTMLInputElement) {
+const select = (element: HTMLInputElement) => {
   if (typeof window === 'undefined') {
     return {}
   }
@@ -161,8 +161,4 @@ export const showMask = (): void => {
   mask.addEventListener('click', function () {
     document.body.removeChild(mask)
   })
-}
-
-export const regTest = ({ reg, str }: { reg: RegExp; str: string }) => {
-  return reg.test(str)
 }

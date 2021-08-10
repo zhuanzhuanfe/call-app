@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "noEmit": true,
-    "outDir": "build/dist",
+    "noEmit": false,
+    "outDir": "build/",
     "baseUrl": ".",
     "module": "esnext",
     "target": "es2016",
@@ -20,6 +20,7 @@
     "allowJs": false,
     "strict": true,
     "declaration": true,
+    "declarationDir": "types/dist/",
     "paths": {}
   },
   "include": ["src", "types"],

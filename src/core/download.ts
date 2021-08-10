@@ -4,7 +4,27 @@
  */
 import { is58App, isAndroid, isIos, isQQ, isWechat } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
-import { CallAppInstance, DownloadConfig, TargetAppNames } from '../../types'
+import { DownloadConfig, CallAppOptions, TargetInfo } from '../index'
+
+export enum TargetAppNames {
+  ZZ = 'zz',
+  ZZHunter = 'zzHunter',
+  ZZSeller = 'zzSeller',
+  ZZSeeker = 'zzSeeker',
+  // ZZInner = 'zzInner'
+}
+export interface CallAppInstance {
+  options: CallAppOptions
+  start: () => void
+  download: () => void
+  targetInfo?: TargetInfo
+  downloadLink?: string
+  APP?: null | Record<string, any>
+  urlScheme?: string
+  universalLink?: string
+  intentLink?: string
+}
+
 // 目标app 各平台下载地址 配置
 export const allDownloadUrl = {
   [TargetAppNames.ZZ]: {

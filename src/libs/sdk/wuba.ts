@@ -1,7 +1,17 @@
-import { App58, CallAppInstance } from '../../types'
-import { AppInfo, dependencies } from './config'
-import { checkOpen } from './evoke'
-import { loadJSArr } from './utils'
+import { CallAppInstance } from '../../index'
+import { AppInfo, dependencies } from '../config'
+import { checkOpen } from '../evoke'
+import { loadJSArr } from '../utils'
+
+export type App58 = {
+  action?: {
+    openApp: (...res: any[]) => void
+    isInstallApp: (...res: any[]) => void
+  }
+  common?: {
+    appVersion?: string
+  }
+}
 
 export const load58SDK = () =>
   new Promise((resolve) => {
@@ -66,7 +76,7 @@ export const openZZIn58 = async (instance: CallAppInstance, appInfo: AppInfo) =>
         () => {
           callError()
         },
-        delay || 2500
+        delay
       )
 
     // sdk
@@ -82,4 +92,3 @@ export const openZZIn58 = async (instance: CallAppInstance, appInfo: AppInfo) =>
     console.error(error)
   }
 }
-

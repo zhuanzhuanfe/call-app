@@ -179,13 +179,13 @@ callApp.start()
 | ------------- | ------------------ | --------------------------- | ------------------ | ------------------- | -------------------- |
 | safari        | 支持 location 正常 | ulink 支持                  | 不支持             | 支持                | 不支持（跳 u-link）  |
 | qq 浏览器     | 支持 location 正常 | ulink 支持                  | 支持               | 支持                | 不支持（跳 u-link）  |
-| uc 浏览器     | 支持 location 正常 | ulink 支持 , scheme 不支持  | 支持               | 支持, scheme 不支持 | 不支持（跳 u-link）  |
+| uc 浏览器     | 支持 location 正常 | ulink 支持                  | 支持               | 支持, scheme 不支持 | 不支持（跳 u-link）  |
 | 百度浏览器    | 支持 location 正常 | ulink 支持, scheme 不支持   | 支持               | 支持 scheme 不支持  | 不支持（跳 u-link）  |
 | 夸克浏览器    | 支持 iFrame 正常   | 不支持 ulink，支持 scheme   | 支持               | 支持                | 支持                 |
 | 谷歌浏览器    | 支持 location 正常 | ulink 支持                  | 支持               | 支持                | 不支持（跳 u-link）  |
 | sougou 浏览器 | 不支持             | ulink 支持                  | 支持               | 支持                | 不支持（跳 u-link）  |
-| wx            | 支持，             | ulink 支持                  | 支持               | 支持                | 不支持（跳 u-link）  |
-| weibo         | 不支持 ulink       | 支持, scheme 不支持         | 支持               | 支持,scheme 不支持  | 不支持（跳 u-link）  |
+| wx            | 支持，应用宝       | ulink 支持                  | 支持               | 支持                | 不支持（跳 u-link）  |
+| weibo         | 不支持 ulink       | ulink 支持, scheme 不支持   | 支持               | 支持,scheme 不支持  | 不支持（跳 u-link）  |
 | qq            | 支持, 应用宝       | ulink 支持                  | 支持               | 支持                | 支持 (不会跳 u-link) |
 
 #### android: [huawei-p30]

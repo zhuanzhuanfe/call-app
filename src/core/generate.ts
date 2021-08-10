@@ -2,8 +2,33 @@
  * uri 生成 处理中心
  * generate uri center (include generate url-scheme && generate universal-link && generate Intent uri)
  */
-import { handlePath2app } from './targetApp'
-import { CallAppInstance, UrlSearch, Intent, SchemeMapKeys } from '../../types'
+import { handlePath2appName } from './targetApp'
+import { CallAppInstance } from '../index'
+
+export enum SchemeMapKeys {
+  HOME = 'home',
+  MSGCENTER = 'messagecenter',
+  MYBUY = 'mybuy',
+  PUBLISH = 'publish',
+  DETAIL = 'detail',
+  MYSELL = 'mysell',
+  ORDER = 'order',
+  PERSON = 'person',
+  VILLAGE = 'village',
+  WEB = 'web',
+}
+
+export interface UrlSearch {
+  openType: SchemeMapKeys
+  id?: string
+}
+export interface Intent {
+  package: string
+  scheme: string
+  action?: string
+  category?: string
+  component?: string
+}
 
 // universal-link-host
 const universalLinkHost = 'mjump.zhuanzhuan.com'
@@ -17,9 +42,9 @@ export const generateScheme = (instance: CallAppInstance): string => {
   path = path || (urlSearch ? getSchemeByUrlSearch(urlSearch) : '')
   // new Regexp(zzInnerSchemeReg).test(path)
   // 检验 path 中是否有 scheme-prefix
-  const { app } = handlePath2app(path)
+  const { appName } = handlePath2appName(path)
 
-  const uri = app ? path : `${targetInfo?.schemePrefix}//${path}`
+  const uri = appName ? path : `${targetInfo?.schemePrefix}//${path}`
 
   return uri
 }

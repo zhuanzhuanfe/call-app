@@ -4,8 +4,8 @@
  *
  */
 
-import { getDownloadConfig } from './download'
-import { TargetAppNames, CallAppOptions, DownloadConfig } from '../../types'
+import { getDownloadConfig, TargetAppNames } from './download'
+import { CallAppOptions, DownloadConfig } from '../index'
 
 // 获取 目标 app 类型
 export const getTargetInfo = (options: CallAppOptions) => {
@@ -18,9 +18,9 @@ export const getTargetInfo = (options: CallAppOptions) => {
     return
   }
 
-  const { app } = handlePath2app(path)
+  const { appName } = handlePath2appName(path)
   // 优先取 options.targetApp // 默认 配置为 转转
-  targetApp = targetApp || app || TargetAppNames.ZZ
+  targetApp = targetApp || appName || TargetAppNames.ZZ
 
   if (!targetApp) {
     console.error
@@ -39,12 +39,12 @@ export const getTargetInfo = (options: CallAppOptions) => {
 
   if (isZZ(targetApp)) {
     name = TargetAppNames.ZZ
-  } else if (isZZSeller(targetApp)) {
-    name = TargetAppNames.ZZSeller
-  } else if (isZZHunter(targetApp)) {
-    name = TargetAppNames.ZZHunter
   } else if (isZZSeeker(targetApp)) {
     name = TargetAppNames.ZZSeeker
+  } else if (isZZHunter(targetApp)) {
+    name = TargetAppNames.ZZHunter
+  } else if (isZZSeller(targetApp)) {
+    name = TargetAppNames.ZZSeller
   } else {
     console.error
       ? console.error(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
@@ -74,14 +74,16 @@ const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
 
 // 从 options.path 中获取 target-app
 const isZZPath = (path: string): boolean => /^zhuanzhuan:/.test(path)
+
 const isZZSeekerPath = (path: string): boolean => /^zljgo:/i.test(path)
-export const handlePath2app = (path: string): Record<string, any> => {
-  let app = ''
 
-  if (isZZSeekerPath(path)) app = TargetAppNames.ZZSeeker
-  if (isZZPath(path)) app = TargetAppNames.ZZ
+export const handlePath2appName = (path: string): { appName?: TargetAppNames } => {
+  let appName
 
-  return { app }
+  if (isZZSeekerPath(path)) appName = TargetAppNames.ZZSeeker
+  if (isZZPath(path)) appName = TargetAppNames.ZZ
+
+  return { appName }
 }
 
 export const targetAppFlag = {
@@ -94,7 +96,7 @@ export const targetAppFlag = {
 
 export const targetAppSchemePrefix = {
   [TargetAppNames.ZZ]: 'zhuanzhuan:',
-  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:',
+  [TargetAppNames.ZZSeller]: 'zhuanzhuanseller:', // 商家版app已下架, 服务停掉后考虑移除该app逻辑
   [TargetAppNames.ZZHunter]: 'zzhunter:',
   [TargetAppNames.ZZSeeker]: 'zljgo:',
 }
@@ -103,5 +105,5 @@ export const targetAppUniversalPath = {
   [TargetAppNames.ZZ]: 'zhuanzhuan',
   [TargetAppNames.ZZSeller]: 'zhuanzhuanseller', // 目前不支持
   [TargetAppNames.ZZHunter]: 'zzhunter', // 目前不支持
-  [TargetAppNames.ZZSeeker]: 'zljgo',
+  [TargetAppNames.ZZSeeker]: 'zljgo', // 目前不支持
 }

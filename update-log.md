@@ -18,7 +18,7 @@
 
 (cover-cases)
 
-5. 支持 ts, 完善代码注释，完善 demo
+5. 支持 ts, 体积优化, 完善代码注释，完善 demo
 
 (截图)
 
@@ -26,4 +26,4 @@
 
 (callStart / callSuccess / callFailed)
 
-7. 唤起中间页兼容转转和找靓机
+7. 唤起中间页兼容找靓机
