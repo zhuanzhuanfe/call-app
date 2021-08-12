@@ -3,6 +3,8 @@
  * web evoke methods && check evoke-status
  */
 
+import { logError, logInfo } from './utils'
+
 type Hidden = 'hidden' | 'msHidden' | 'webkitHidden'
 type VisibilityChange = 'visibilitychange' | 'msvisibilitychange' | 'webkitvisibilitychange'
 
@@ -75,10 +77,11 @@ export function evokeByIFrame(uri: string) {
 }
 
 /**
- * 检测是否唤端成功
+ * hack 检测是否唤端成功
  * @param failure - 唤端失败回调函数
  * @param success - 唤端成功回调函数
- * @param timeout
+ * @param error - 唤端异常函数
+ * @param timeout - hack 失败检测延时 - 一般会触发下载
  */
 
 export function checkOpen(
@@ -88,20 +91,16 @@ export function checkOpen(
   timeout: number
 ) {
   let haveChanged = false
-  console.log('trigger -- checkOpen')
+  logInfo('trigger -- checkOpen')
 
   const pageChange = function (e: any) {
     haveChanged = true
 
     if (document?.hidden || e?.hidden || document?.visibilityState == 'hidden') {
-      console.log('checkOpen pagehide -- success')
+      logInfo('checkOpen pagehide -- success')
       success()
     } else {
-      console.log('checkOpen pagehide -- error')
-      console.error
-        ? console.error('unknown error when check pagehide')
-        : console.log('Error: \n unknown error when check pagehide')
-
+      logError('unknown error when check pagehide')
       error()
     }
 
@@ -121,15 +120,15 @@ export function checkOpen(
     document.removeEventListener(visibilityChange, pageChange, false)
     document.removeEventListener('baiduboxappvisibilitychange', pageChange, false)
 
-    console.log('checkOpen timeout', timeout)
-    console.log('checkOpen isPageHidden', isPageHidden())
+    logInfo('checkOpen timeout', timeout)
+    logInfo('checkOpen isPageHidden', isPageHidden())
     // 判断页面是否隐藏（进入后台）
     const pageHidden = isPageHidden()
     if (!pageHidden) {
       failure()
-      console.log('checkOpen hasFailed-failure')
+      logInfo('checkOpen hasFailed-failure')
     } else {
-      console.error ? console.error('unknown error') : console.log('Error: \n unknown error')
+      logError('pageHidden: unknown error')
 
       error()
     }

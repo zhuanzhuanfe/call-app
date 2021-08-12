@@ -4,7 +4,7 @@
  *
  */
 
-import { generateDownloadUrl, TargetAppNames } from './core/download'
+import { generateDownloadUrl, AppNames } from './core/download'
 import { launch } from './core/launch'
 import { sdkLaunch } from './core/sdkLaunch'
 import {
@@ -21,7 +21,7 @@ import {
   isZZSeeker,
   isZZSeller,
 } from './libs/platform'
-import { getTargetInfo } from './core/targetApp'
+import { AppFlags, getTargetInfo } from './core/targetApp'
 import { evokeByIFrame, evokeByLocation, evokeByTagA } from './libs/evoke'
 import {
   generateScheme,
@@ -30,7 +30,7 @@ import {
   Intent,
   UrlSearch,
 } from './core/generate'
-import { copy, showMask } from './libs/utils'
+import { copy, logError, logInfo, showMask } from './libs/utils'
 
 const defaultOptions: CallAppOptions = {
   path: '', // 唤起的页面 path
@@ -89,7 +89,7 @@ export default class CallApp {
     this.options = { ...defaultOptions, ...options }
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options)
-    console.log(this.targetInfo)
+    logInfo('targetInfo', this.targetInfo)
     // 根据平台 初始化 下载链接
     this.downloadLink = generateDownloadUrl(this)
     // 初始化 deep-link url-scheme
@@ -121,12 +121,12 @@ export default class CallApp {
       isZZHunter ||
       isZZSeller ||
       isZZSeeker ||
-      (isWechat && targetApp == TargetAppNames.ZZ)
+      (isWechat && targetApp == AppNames.ZZ)
     ) {
       // by native-app launch
       sdkLaunch(this)
     } else {
-      // by url-scheme launch
+      // by uri/url launch
       launch(this)
     }
   }
@@ -142,7 +142,7 @@ export default class CallApp {
 
     callDownload && callDownload()
 
-    console.log('downloadLink', this.downloadLink)
+    logInfo('downloadLink', this.downloadLink)
 
     if (!customConfig) copy(`1.0$$${this.urlScheme}`)
 
@@ -163,7 +163,7 @@ export default class CallApp {
       return evokeByLocation(this.downloadLink)
     }
 
-    console.warn('please check options.download is true')
+    logError('please check options.download is true')
   }
 }
 
@@ -180,8 +180,8 @@ export interface DownloadConfig {
 }
 
 export interface TargetInfo {
-  flag: number
-  name: string
+  flag: AppFlags
+  name: AppNames
   schemePrefix: string
   universalPath: string
   downloadConfig: DownloadConfig
@@ -191,7 +191,7 @@ export interface CallAppOptions {
   // 唤起的页面 path
   path?: string
   // 唤起的目标app
-  targetApp?: TargetAppNames
+  targetApp?: AppNames
   // 是否开启 universal-link, 默认 true
   universal?: boolean
   // 是否开启 app-links, 默认 false
@@ -201,13 +201,13 @@ export interface CallAppOptions {
   // 触发下载 延迟检测时间, 默认 2500
   delay?: number
   // 下载渠道 id
-  channelId?: string | number | undefined
+  channelId?: string | number
   // 微信端初始化检测安装后的回调函数
   wechatCheckInstallState?: () => void
   // 蒙层样式， 默认 微信吊起失败后，提示右上角打开, // 1表示浮层右上角，2表示浮层按钮, 默认 1
-  wechatStyle?: number | string | undefined
+  wechatStyle?: number | string
   // deeplink 接口支持的id配置
-  deeplinkId?: number | string | undefined
+  deeplinkId?: number | string
   // 下载中间页 url
   middleWareUrl?: string
   // 兼容 旧版本 scheme 生成规则

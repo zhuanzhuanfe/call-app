@@ -1,6 +1,8 @@
+import { logInfo } from './utils'
+
 //  获取平台类型
 const ua: string = (window.navigator && window.navigator.userAgent) || ''
-console.log('ua', ua)
+
 /**
  *
  * native-webview 相关
@@ -134,7 +136,7 @@ export const IOSVersion = (): string => {
     const m = str.match(/cpu iphone os (.*?) like mac os/)
     if (m) ver = m[1].replace(/_/g, '.')
   } catch (error) {
-    console.log('IOSVersion', error)
+    logInfo('IOSVersion', error)
   }
   return ver
 }

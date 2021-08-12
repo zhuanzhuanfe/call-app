@@ -1,7 +1,7 @@
 import { CallAppInstance } from '../../index'
 import { AppInfo, dependencies } from '../config'
 import { checkOpen } from '../evoke'
-import { loadJSArr } from '../utils'
+import { loadJSArr, logError, logInfo } from '../utils'
 
 export type App58 = {
   action?: {
@@ -13,7 +13,7 @@ export type App58 = {
   }
 }
 
-export const load58SDK = () =>
+export const load58SDK = (): Promise<any> =>
   new Promise((resolve) => {
     loadJSArr([dependencies.WB_SDK.link], () => {
       resolve(window.WBAPP)
@@ -41,54 +41,50 @@ export const sdk58 = {
  * @param app
  * @param appInfo
  */
-export const openZZIn58 = async (instance: CallAppInstance, appInfo: AppInfo) => {
-  console.log('openZZIn58')
+export const openZZIn58 = (instance: CallAppInstance, appInfo: AppInfo) => {
+  logInfo('openZZIn58')
 
-  try {
-    const {
-      options: {
-        delay = 2500,
-        callError = () => {},
-        callSuccess = () => {},
-        callFailed = () => {},
-      },
-      urlScheme,
-    } = instance
+  const {
+    options: { delay = 2500, callError = () => {}, callSuccess = () => {}, callFailed = () => {} },
+    urlScheme,
+  } = instance
 
-    if (!urlScheme) {
-      console.error
-        ? console.error(`schemeUrl is invalid`)
-        : console.log(`Error: \n schemeUrl is invalid`)
-      return
-    }
-    // load sdk
-    const app: any = await load58SDK()
-    // hack 检测 open状态
-    const handleCheck = () =>
-      checkOpen(
-        () => {
-          callFailed()
-          instance.download()
-        },
-        () => {
-          callSuccess()
-        },
-        () => {
-          callError()
-        },
-        delay
-      )
-
-    // sdk
-    sdk58.openApp(app, {
-      urlschema: urlScheme || appInfo.SCHEMA,
-      package: appInfo.ANDROID_PACKAGE_NAME,
-      maincls: appInfo.ANDROID_MAINCLS,
-    })
-
-    handleCheck()
-  } catch (error) {
-    instance.download()
-    console.error(error)
+  if (!urlScheme) {
+    logError(`scheme-uri is invalid`)
+    return
   }
+
+  // load sdk
+  load58SDK()
+    .then((app) => {
+      // hack 检测 open状态
+      const handleCheck = () =>
+        checkOpen(
+          () => {
+            callFailed()
+            instance.download()
+          },
+          () => {
+            callSuccess()
+          },
+          () => {
+            callError()
+          },
+          delay
+        )
+
+      // sdk
+      sdk58.openApp(app, {
+        urlschema: urlScheme || appInfo.SCHEMA,
+        package: appInfo.ANDROID_PACKAGE_NAME,
+        maincls: appInfo.ANDROID_MAINCLS,
+      })
+
+      handleCheck()
+    })
+    .catch((error) => {
+      instance.download()
+      callFailed()
+      logError(error)
+    })
 }

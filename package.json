@@ -7,7 +7,7 @@
     "declare-type": "tsc --emitDeclarationOnly",
     "prettier": "prettier -c --write \"**/*\"",
     "lint-staged:js": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx ./src",
-    "lint-check": "npm run lint-staged:js & npm run ts-check",
+    "lint-check": "npm run ts-check && npm run lint-staged:js",
     "cz": "git cz -a",
     "test": "jest --coverage",
     "lint": "commander-tools run lint",
@@ -28,7 +28,7 @@
   },
   "main": "lib/index.js",
   "module": "es/index.js",
-  "typings": "types/dist/",
+  "typings": "types/dist/index.d.ts",
   "keywords": [
     "vue",
     "react",
@@ -51,7 +51,7 @@
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write",
-      "git add"
+      "git add ."
     ],
     "**/*.{js,jsx,ts,tsx}": "npm run lint-check"
   },

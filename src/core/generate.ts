@@ -4,6 +4,7 @@
  */
 import { handlePath2appName } from './targetApp'
 import { CallAppInstance } from '../index'
+import { logError } from '../libs/utils'
 
 export enum SchemeMapKeys {
   HOME = 'home',
@@ -61,11 +62,10 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   const host = universalLinkHost
   const path = targetInfo?.universalPath
   // const scheme = generateScheme(instance)
-  const scheme = urlScheme
   const channel = channelId ? `&channelId=${channelId}` : ''
 
   const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(
-    scheme || ''
+    urlScheme || ''
   )}${channel}`
 
   return universalLink
@@ -77,10 +77,7 @@ export const generateIntent = (instance: CallAppInstance): string => {
   const { intent, intentParams } = options
 
   if (intent && !intentParams) {
-    console.error
-      ? console.error(`Error: options.intentParams is not found, please check`)
-      : console.log(`Error: \n options.intentParams is not found, please check`)
-
+    logError(`options.intentParams is not found, please check`)
     return ''
   }
 

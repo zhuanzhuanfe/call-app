@@ -21,7 +21,7 @@ module.exports = {
     '@typescript-eslint/semi': 0,
     // 箭头函数需要有括号 (a) => {}
     'arrow-parens': 0,
-    "no-use-before-define": 0,
+    'no-use-before-define': 0,
     // 关闭不允许回调未定义的变量
     'standard/no-callback-literal': 0,
     // 关闭副作用的 new
@@ -48,27 +48,27 @@ module.exports = {
     // 强制使用一致的换行符风格 (linebreak-style)
     'linebreak-style': ['error', 'unix'],
     // 关闭全等 === 校验
-    "eqeqeq": 0,
+    eqeqeq: 0,
     // 禁止使用拖尾逗号（即末尾不加逗号）
     'comma-dangle': 0,
     // 关闭强制使用骆驼拼写法命名约定
-    "camelcase": 1,
-    "import/extensions": 0,
-    "import/no-unresolved": 0,
-    "consistent-return": 0,
-    "no-plusplus": 0,
-    "no-restricted-globals": 0,
-    "prefer-promise-reject-errors": 0,
-    "prefer-destructuring": 0,
-    "prefer-const": 0,
-    "no-unused-expressions": 1,
-    "space-before-function-paren": 1,
-    "@typescript-eslint/no-empty-function": 0,
-    "no-shadow": 1,
-    "no-underscore-dangle": 0,
-    "no-bitwise": 0,
-    "import/prefer-default-export": 1,
-    "@typescript-eslint/no-extra-semi": 1,
-    "no-multi-assign": 1
+    camelcase: 1,
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
+    'consistent-return': 0,
+    'no-plusplus': 0,
+    'no-restricted-globals': 0,
+    'prefer-promise-reject-errors': 0,
+    'prefer-destructuring': 0,
+    'prefer-const': 0,
+    'no-unused-expressions': 1,
+    'space-before-function-paren': 1,
+    '@typescript-eslint/no-empty-function': 0,
+    'no-shadow': 1,
+    'no-underscore-dangle': 0,
+    'no-bitwise': 0,
+    'import/prefer-default-export': 1,
+    '@typescript-eslint/no-extra-semi': 1,
+    'no-multi-assign': 1,
   },
 }

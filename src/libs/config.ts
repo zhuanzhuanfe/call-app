@@ -23,10 +23,7 @@ const getWxPublicId = (): string | undefined => {
  * 第三方依赖, 外链js
  * */
 export enum SDKNames {
-  ZZ_SELLER_SDK = 'ZZ_SELLER_SDK',
-  ZZ_HUNTER_SDK = 'ZZ_HUNTER_SDK',
   ZZ_SDK = 'ZZ_SDK',
-  ZZ_ZLJ_SDK = 'ZZ_SEEKER_SDK',
   WB_SDK = 'WB_SDK',
   WX_JWEIXIN = 'WX_JWEIXIN',
   WX_JSTICKET = 'WX_JSTICKET',
@@ -34,16 +31,7 @@ export enum SDKNames {
 }
 
 export const dependencies = {
-  [SDKNames.ZZ_SELLER_SDK]: {
-    link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/v1.0.14/zzseller-jssdk.min.js',
-  },
-  [SDKNames.ZZ_HUNTER_SDK]: {
-    link: 'https://s1.zhuanstatic.com/common/hunterapp/static/js/1.1.1/index.min.js',
-  },
   [SDKNames.ZZ_SDK]: {
-    link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
-  },
-  [SDKNames.ZZ_ZLJ_SDK]: {
     link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
   },
   [SDKNames.WB_SDK]: {
@@ -65,12 +53,6 @@ export const dependencies = {
 /**
  * 转转App, native相关信息
  * */
-export const AppInfomation = {
-  SCHEMA: 'zhuanzhuan://', // 转转App跳转协议(Android & IOS)
-  ANDROID_PACKAGE_NAME: 'com.wuba.zhuanzhuan', // Android客户端包名
-  ANDROID_MAINCLS: 'com.wuba.zhuanzhuan.presentation.view.activity.LaunchActivity', // Android客户端启动页主类名
-}
-
 export interface AppInfo {
   SCHEMA: string
   ANDROID_PACKAGE_NAME: string

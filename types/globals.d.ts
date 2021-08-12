@@ -2,7 +2,6 @@ interface Document {
   webkitHidden?: boolean
   msHidden?: boolean
 }
-
 interface Window {
   ZZAPP: Record<string, any>
   ZZSELLER: Record<string, any>
@@ -13,5 +12,6 @@ interface Window {
   wx: any
   nativeAdapterConfig: any
   wxconfig: any
+  clipboardData: Record<string, any>
   [key: string]: any
 }

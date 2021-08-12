@@ -1,5 +1,7 @@
 import CallApp from '../src'
 
+window.__callAppDev__ = true
+
 try {
   // 第三方配置， 唤起支付宝
   // initCustomPage()
@@ -93,6 +95,7 @@ function initVuePage() {
                 <option value="">请选择目标app</option>
                 <option value="zz">转转</option>
                 <option value="zzSeeker">找靓机</option>
+                <option value="zzHunter">采货侠</option>
               </select>
             </div>
             <div class="config-item">
@@ -171,6 +174,8 @@ function initVuePage() {
               ? 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D'
               : opts.targetApp == 'zz'
               ? 'jump/shortVideo/videoHome/jump'
+              : opts.targetApp == 'zzHunter'
+              ? 'jump/core/web/jump'
               : ''
 
           callApp = new CallApp({

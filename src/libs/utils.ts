@@ -1,7 +1,3 @@
-declare let window: Window & {
-  clipboardData: Record<string, any>
-}
-
 // 加载 js 资源
 export const loadJS = (url: string, cb: () => void) => {
   const head = window.document.getElementsByTagName('head')[0]
@@ -126,19 +122,18 @@ export function copy(text: string, options?: Record<string, any>): boolean {
 
     const successful = document.execCommand('copy')
 
-    console.log('successful', successful)
+    logInfo('successful', successful)
     if (!successful) {
       throw new Error('copy command was unsuccessful')
     }
     success = true
   } catch (err) {
-    debug && console.error('unable to copy using execCommand: ', err)
-    debug && console.warn('trying IE specific stuff')
+    debug && logError('unable to copy using execCommand: ', err)
     try {
       window.clipboardData.setData('text', text)
       success = true
     } catch (e) {
-      debug && console.error('unable to copy using clipboardData: ', e)
+      debug && logError('unable to copy using clipboardData: ', e)
     }
   } finally {
     fakeElem && document.body.removeChild(fakeElem)
@@ -161,4 +156,21 @@ export const showMask = (): void => {
   mask.addEventListener('click', function () {
     document.body.removeChild(mask)
   })
+}
+
+window.__callAppDev__ = false
+window.__callAppError__ = true
+
+export const logError = (...args: any[]): void => {
+  if (window.__callAppError__) {
+    console.error
+      ? console.error.call(undefined, ...args)
+      : console.log.call(undefined, [`Error: \n `, ...args])
+  }
+}
+
+export const logInfo = (...args: any[]) => {
+  if (window.__callAppDev__) {
+    console.log.call(undefined, ...args)
+  }
 }

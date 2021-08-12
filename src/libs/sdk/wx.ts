@@ -3,7 +3,7 @@ import { wxInfo, dependencies, zzAppInfo } from '../config'
 import { evokeByLocation } from '../evoke'
 import { is58Host } from '../hostname'
 import { isAndroid } from '../platform'
-import { loadJSArr } from '../utils'
+import { loadJSArr, logError } from '../utils'
 
 export interface WXJSTICKET {
   appId?: string
@@ -20,9 +20,7 @@ export const loadWXSDK = () => {
       if (resp) {
         _.WX_JSTICKET = (resp.respCode == 0 && resp.respData) || {}
       } else {
-        console.error
-          ? console.error('load wx-sdk error')
-          : console.log('Error: \n load wx-sdk error')
+        logError('load wx-sdk error')
       }
     }
 
@@ -45,10 +43,9 @@ export const invokeInWX = (
       if (Regex.test(err_msg)) {
         resolve({
           code: 0,
-          data: { err_msg },
         })
       } else {
-        reject({ code: -1, data: { err_msg } })
+        reject({ code: -1 })
       }
     })
   })

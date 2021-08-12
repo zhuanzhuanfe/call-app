@@ -20,7 +20,7 @@ import {
 } from '../libs/platform'
 import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from '../libs/evoke'
 import { CallAppInstance } from '../index'
-import { showMask } from '../libs/utils'
+import { logError, logInfo, showMask } from '../libs/utils'
 /**
  * 普通 url-scheme 唤起， 不同平台对应不同的 evoke
  * @param {Object} instance
@@ -46,15 +46,15 @@ export const launch = (instance: CallAppInstance) => {
     // 唤端 执行 checkOpen(failedCb, successCb, errorCb, time) , hack by setTimeout
     return _checkOpen(
       () => {
-        callFailed && callFailed()
+        callFailed()
         failure && failure()
       },
       () => {
-        callSuccess && callSuccess()
+        callSuccess()
         success && success()
       },
       () => {
-        callError && callError()
+        callError()
         error && error()
       },
       delay || 2500
@@ -65,14 +65,14 @@ export const launch = (instance: CallAppInstance) => {
     checkOpen(
       () => {
         // 触发下载 或者 跳指定页面
-        console.log('处理 失败 逻辑')
+        logInfo('处理 失败 逻辑')
         download.call(instance)
       },
       () => {
-        console.log('处理 成功 逻辑')
+        logInfo('处理 成功 逻辑')
       },
       () => {
-        console.log('处理 异常 逻辑')
+        logInfo('处理 异常 逻辑')
       }
     )
   }
@@ -81,45 +81,45 @@ export const launch = (instance: CallAppInstance) => {
     checkOpen(
       () => {
         download.call(instance)
-        console.log('处理 失败 逻辑')
+        logInfo('处理 失败 逻辑')
       },
       () => {
-        console.log('处理 成功 逻辑')
+        logInfo('处理 成功 逻辑')
       },
       () => {
-        console.log('处理 异常 逻辑')
+        logInfo('处理 异常 逻辑')
       }
     )
   }
 
   if (isIos) {
-    console.log('isIos', isIos)
+    logInfo('isIos', isIos)
     // ios-version > v12.3.0
     if (isThan12Ios) delay = options.delay = 3000
 
-    console.log('isIos > 12.3.0', isThan12Ios)
+    logInfo('isIos > 12.3.0', isThan12Ios)
 
     if (isWechat && isLow7WX) {
       // 显示遮罩 在浏览器打开
-      console.log('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
+      logInfo('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
 
       showMask()
     } else if (isLow9Ios) {
-      console.log('isIos - version < 9', isIos, isLow9Ios)
+      logInfo('isIos - version < 9', isIos, isLow9Ios)
 
       schemeURL && evokeByIFrame(schemeURL)
       checkOpenFall = handleFall
     } else if (!supportUniversal && isBaidu) {
-      console.log('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
+      logInfo('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
 
       showMask()
       checkOpenFall = handleFall
     } else if (!supportUniversal && isWeibo) {
-      console.log('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
+      logInfo('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
 
       showMask()
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
-      console.log(
+      logInfo(
         'isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
         !supportUniversal || isQQ || isQQBrowser || isQzone
       )
@@ -127,7 +127,7 @@ export const launch = (instance: CallAppInstance) => {
       schemeURL && evokeByTagA(schemeURL)
       checkOpenFall = handleFall
     } else if (isQuark) {
-      console.log('isQuark', isQuark)
+      logInfo('isQuark', isQuark)
 
       schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleFall
@@ -135,9 +135,9 @@ export const launch = (instance: CallAppInstance) => {
       // universalLink 唤起, 不支持 失败回调处理。
       // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。
       // 更新app 时候，universalLink 可能会失效, u-link 自身的坑。
-      console.log('isIos - support universalLink')
+      logInfo('isIos - support universalLink')
 
-      console.log('universalLink', universalLink)
+      logInfo('universalLink', universalLink)
       // ？？？？
       universalLink && evokeByLocation(universalLink)
       checkOpenFall = xLinkHandleFall
@@ -151,21 +151,21 @@ export const launch = (instance: CallAppInstance) => {
     }
   } else if (isAndroid) {
     //
-    console.log('isAndroid', isAndroid)
+    logInfo('isAndroid', isAndroid)
     if (isOriginalChrome) {
       if (supportIntent) {
-        console.log('isAndroid - supportIntent', isAndroid && supportIntent)
+        logInfo('isAndroid - supportIntent', isAndroid && supportIntent)
         intentLink && evokeByLocation(intentLink)
         // app-links 无法处理 失败回调， 原因同 universal-link
         checkOpenFall = xLinkHandleFall
       } else {
-        console.log('isAndroid - !supportIntent', isAndroid && !supportIntent)
+        logInfo('isAndroid - !supportIntent', isAndroid && !supportIntent)
         // scheme 在 andriod chrome 25+ 版本上 iframe 无法正常拉起
         schemeURL && evokeByLocation(schemeURL)
         checkOpenFall = handleFall
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
-      console.log(
+      logInfo(
         'isAndroid -- showMask， isBaidu || isWeibo || isQzone',
         isBaidu || isWeibo || isQzone
       )
@@ -173,22 +173,21 @@ export const launch = (instance: CallAppInstance) => {
       showMask()
     } else {
       // 其他浏览器 通过 scheme 唤起，失败则下载
-      console.log('isAndroid - schemeURL')
+      logInfo('isAndroid - schemeURL')
 
       schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleFall
     }
   } else {
-    console.error
-      ? console.error('your platform is not considered, please contact developer')
-      : console.log('your platform is not considered, please contact developer')
+    callError()
+    logError('your platform is not support, please contact developer')
   }
 
-  console.log('checkOpenFall', checkOpenFall)
+  logInfo('checkOpenFall', checkOpenFall)
 
   if (checkOpenFall) {
     return checkOpenFall()
   }
 
-  callFailed && callFailed()
+  callFailed()
 }

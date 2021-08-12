@@ -5,8 +5,9 @@
 import { is58App, isAndroid, isIos, isQQ, isWechat } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
 import { DownloadConfig, CallAppOptions, TargetInfo } from '../index'
+import { logError } from '../libs/utils'
 
-export enum TargetAppNames {
+export enum AppNames {
   ZZ = 'zz',
   ZZHunter = 'zzHunter',
   ZZSeller = 'zzSeller',
@@ -26,8 +27,8 @@ export interface CallAppInstance {
 }
 
 // 目标app 各平台下载地址 配置
-export const allDownloadUrl = {
-  [TargetAppNames.ZZ]: {
+export const allDownloadUrls = {
+  [AppNames.ZZ]: {
     // ios 商店 下载
     // ios: 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8', // 这种格式链接qq内无法触发下载
     ios: 'https://itunes.apple.com/cn/app/id1002355194?pt=118679317&ct=923&mt=8',
@@ -39,7 +40,7 @@ export const allDownloadUrl = {
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
   // 找靓机
-  [TargetAppNames.ZZSeeker]: {
+  [AppNames.ZZSeeker]: {
     ios: 'https://itunes.apple.com/cn/app/id1060362098',
     android: 'market://details?id=com.huodao.hdphone',
     android_api: 'https://dlapk.zhaoliangji.com/zlj_zhaoliangji.apk',
@@ -47,7 +48,7 @@ export const allDownloadUrl = {
     api: '',
   },
   // 采货侠
-  [TargetAppNames.ZZHunter]: {
+  [AppNames.ZZHunter]: {
     ios: '',
     android: '',
     android_api: '',
@@ -55,7 +56,7 @@ export const allDownloadUrl = {
     api: '',
   },
   // 卖家版
-  [TargetAppNames.ZZSeller]: {
+  [AppNames.ZZSeller]: {
     ios: '',
     android: '',
     android_api: '',
@@ -94,7 +95,7 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 
   let downloadUrl: string | undefined = ''
   // 下载配置
-  if (name == TargetAppNames.ZZ) {
+  if (name == AppNames.ZZ) {
     // 目标app 是转转
     if (isWechat && is58Host) {
       // plat 如果 wx + hostname 58.com， downloadConfig[api] + '?channelId=' + channelId
@@ -117,7 +118,7 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 
       downloadUrl = `${downloadConfig?.api}?channelId=${channelId}${deeplink}`
     }
-  } else if (name == TargetAppNames.ZZSeeker || name) {
+  } else if (name == AppNames.ZZSeeker || name) {
     // 目标app 是找靓机
     if (isIos) {
       downloadUrl = downloadConfig?.ios
@@ -128,16 +129,14 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
     }
   } else {
     // 不存在 name
-    console.error
-      ? console.error('generate downloadUrl error')
-      : console.log('Error: \n generate downloadUrl error')
+    logError(`generate downloadUrl error`)
   }
 
   return middleWareUrl || downloadUrl || ''
 }
 
 // 根据目标app 获取下载链接 配置
-export const getDownloadConfig = (name: TargetAppNames): DownloadConfig => {
+export const getDownloadConfig = (name: AppNames): DownloadConfig => {
   // 根据需要唤起的 目标 app ，获取 downloadUrl
-  return allDownloadUrl[name]
+  return allDownloadUrls[name]
 }

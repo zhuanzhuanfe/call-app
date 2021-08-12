@@ -9,4 +9,4 @@ lib/*
 .idea/*
 docs/*
 build/*
-types/dist
+types/dist/
