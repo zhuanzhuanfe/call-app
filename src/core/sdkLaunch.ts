@@ -22,6 +22,7 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       // wx-js-sdk
       openZZInWX(instance)
     } else if (isZZ) {
+      // zz-js-sdk
       // 转转app环境内, 可以唤起 找靓机/采货侠/卖家版
       if (targetInfo.flag & AppFlags.ZZ) {
         openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)

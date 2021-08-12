@@ -18,7 +18,7 @@ import {
   isLow7WX,
   isThan12Ios,
 } from '../libs/platform'
-import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen as _checkOpen } from '../libs/evoke'
+import { evokeByTagA, evokeByIFrame, evokeByLocation, checkOpen } from '../libs/evoke'
 import { CallAppInstance } from '../index'
 import { logError, logInfo, showMask } from '../libs/utils'
 /**
@@ -41,56 +41,21 @@ export const launch = (instance: CallAppInstance) => {
   const supportUniversal = universal
   const supportIntent = intent
 
-  // 唤端成功/失败检测 才执行 checkOpen(cb)
-  const checkOpen = (failure?: () => void, success?: () => void, error?: () => void) => {
-    // 唤端 执行 checkOpen(failedCb, successCb, errorCb, time) , hack by setTimeout
-    return _checkOpen(
+  // hack 检测唤起状态
+  const handleCheck = (delay = 2500, shouldDownload = true) =>
+    checkOpen(
       () => {
         callFailed()
-        failure && failure()
+        shouldDownload && download.call(instance)
       },
       () => {
         callSuccess()
-        success && success()
       },
       () => {
         callError()
-        error && error()
       },
-      delay || 2500
+      delay
     )
-  }
-  // scheme 处理落地状态
-  const handleFall = () => {
-    checkOpen(
-      () => {
-        // 触发下载 或者 跳指定页面
-        logInfo('处理 失败 逻辑')
-        download.call(instance)
-      },
-      () => {
-        logInfo('处理 成功 逻辑')
-      },
-      () => {
-        logInfo('处理 异常 逻辑')
-      }
-    )
-  }
-  // uLink/appLink 处理落地状态
-  const xLinkHandleFall = () => {
-    checkOpen(
-      () => {
-        download.call(instance)
-        logInfo('处理 失败 逻辑')
-      },
-      () => {
-        logInfo('处理 成功 逻辑')
-      },
-      () => {
-        logInfo('处理 异常 逻辑')
-      }
-    )
-  }
 
   if (isIos) {
     logInfo('isIos', isIos)
@@ -105,15 +70,15 @@ export const launch = (instance: CallAppInstance) => {
 
       showMask()
     } else if (isLow9Ios) {
-      logInfo('isIos - version < 9', isIos, isLow9Ios)
+      logInfo('isIos - version < 9', isIos, isLow9Ios, schemeURL)
 
       schemeURL && evokeByIFrame(schemeURL)
-      checkOpenFall = handleFall
+      checkOpenFall = handleCheck(delay)
     } else if (!supportUniversal && isBaidu) {
       logInfo('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
 
       showMask()
-      checkOpenFall = handleFall
+      checkOpenFall = handleCheck(delay)
     } else if (!supportUniversal && isWeibo) {
       logInfo('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
 
@@ -121,26 +86,25 @@ export const launch = (instance: CallAppInstance) => {
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
       logInfo(
         'isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
-        !supportUniversal || isQQ || isQQBrowser || isQzone
+        !supportUniversal || isQQ || isQQBrowser || isQzone,
+        schemeURL
       )
 
       schemeURL && evokeByTagA(schemeURL)
-      checkOpenFall = handleFall
+      checkOpenFall = handleCheck(delay)
     } else if (isQuark) {
-      logInfo('isQuark', isQuark)
+      logInfo('isQuark', isQuark, schemeURL)
 
       schemeURL && evokeByLocation(schemeURL)
-      checkOpenFall = handleFall
+      checkOpenFall = handleCheck(delay)
     } else {
       // universalLink 唤起, 不支持 失败回调处理。
       // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。
       // 更新app 时候，universalLink 可能会失效, u-link 自身的坑。
-      logInfo('isIos - support universalLink')
+      logInfo('isIos - support universalLink', universalLink)
 
-      logInfo('universalLink', universalLink)
-      // ？？？？
       universalLink && evokeByLocation(universalLink)
-      checkOpenFall = xLinkHandleFall
+      checkOpenFall = handleCheck(delay)
 
       // 有必要的话, 降级采用 schemeURL 处理
       // 测试过程中发现： schemeURL 比 universalLink 稳定，但缺点是需要用户二次确认
@@ -157,12 +121,12 @@ export const launch = (instance: CallAppInstance) => {
         logInfo('isAndroid - supportIntent', isAndroid && supportIntent)
         intentLink && evokeByLocation(intentLink)
         // app-links 无法处理 失败回调， 原因同 universal-link
-        checkOpenFall = xLinkHandleFall
+        checkOpenFall = handleCheck(delay)
       } else {
         logInfo('isAndroid - !supportIntent', isAndroid && !supportIntent)
         // scheme 在 andriod chrome 25+ 版本上 iframe 无法正常拉起
         schemeURL && evokeByLocation(schemeURL)
-        checkOpenFall = handleFall
+        checkOpenFall = handleCheck(delay)
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
       logInfo(
@@ -176,8 +140,10 @@ export const launch = (instance: CallAppInstance) => {
       logInfo('isAndroid - schemeURL')
 
       schemeURL && evokeByLocation(schemeURL)
-      checkOpenFall = handleFall
+      checkOpenFall = handleCheck(delay)
     }
+
+    logInfo('schemeURL', schemeURL)
   } else {
     callError()
     logError('your platform is not support, please contact developer')

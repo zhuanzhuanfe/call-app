@@ -58,13 +58,13 @@ export const getTargetInfo = (options: CallAppOptions) => {
     flag = AppFlags.ZZ
   } else if (isZZSeeker(targetApp)) {
     name = AppNames.ZZSeeker
-    flag = AppFlags.ZZ
+    flag = AppFlags.ZZSeeker
   } else if (isZZHunter(targetApp)) {
     name = AppNames.ZZHunter
-    flag = AppFlags.ZZ
+    flag = AppFlags.ZZHunter
   } else if (isZZSeller(targetApp)) {
     name = AppNames.ZZSeller
-    flag = AppFlags.ZZ
+    flag = AppFlags.ZZSeller
   } else {
     logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
   }
