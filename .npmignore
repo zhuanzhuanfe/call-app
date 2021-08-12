@@ -10,3 +10,8 @@ config/
 src/
 tools/
 package-lock.json
+.eslintcache
+.browserlistrc
+.eslintrc.js
+.prettierignore
+babel.config.js
