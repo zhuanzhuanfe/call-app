@@ -9,5 +9,5 @@ lib/*
 .idea/*
 docs/*
 build/*
-.eslintcache
 types/dist/
+.eslintcache

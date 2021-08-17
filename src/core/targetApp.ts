@@ -46,7 +46,7 @@ export const getTargetInfo = (options: CallAppOptions) => {
     logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
     return
   }
-
+  // 默认是 转转
   let name = AppNames.ZZ
   let flag = AppFlags.ZZ
   let schemePrefix: string

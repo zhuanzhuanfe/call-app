@@ -54,7 +54,7 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   const {
     targetInfo,
     options: { universal, channelId },
-    urlScheme,
+    urlScheme = '',
   } = instance
 
   if (!universal) return ''
@@ -65,13 +65,13 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   const channel = channelId ? `&channelId=${channelId}` : ''
 
   const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(
-    urlScheme || ''
+    urlScheme
   )}${channel}`
 
   return universalLink
 }
 
-// 生成 appLinks 链接
+// 生成 appLinks 链接 // 目前客户端app 都还不支持该协议
 export const generateIntent = (instance: CallAppInstance): string => {
   const { options, downloadLink } = instance
   const { intent, intentParams } = options

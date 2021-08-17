@@ -87,15 +87,19 @@ export default class CallApp {
     }
     //
     this.options = { ...defaultOptions, ...options }
+    // 下面配置，提取预处理 减少后续逻辑处理代价
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options)
     logInfo('targetInfo', this.targetInfo)
     // 根据平台 初始化 下载链接
     this.downloadLink = generateDownloadUrl(this)
+    logInfo('downloadLink', this.downloadLink)
     // 初始化 deep-link url-scheme
     this.urlScheme = generateScheme(this)
+    logInfo('urlScheme', this.urlScheme)
     // 初始化 app-links universalLink
     this.universalLink = generateUniversalLink(this)
+    logInfo('universalLink', this.universalLink)
     // 初始化 app-links intentLink // 目前zz不支持 兼容性较差
     this.intentLink = generateIntent(this)
   }
@@ -121,7 +125,7 @@ export default class CallApp {
       isZZHunter ||
       isZZSeller ||
       isZZSeeker ||
-      (isWechat && targetApp == AppNames.ZZ)
+      (isWechat && targetApp === AppNames.ZZ)
     ) {
       // by native-app launch
       sdkLaunch(this)
@@ -176,7 +180,7 @@ export interface DownloadConfig {
   // 应用宝
   android_yyb: string
   // api
-  api: string
+  api?: string
 }
 
 export interface TargetInfo {

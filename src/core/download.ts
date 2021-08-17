@@ -6,13 +6,13 @@ import { is58App, isAndroid, isIos, isQQ, isWechat } from '../libs/platform'
 import { is58Host } from '../libs/hostname'
 import { DownloadConfig, CallAppOptions, TargetInfo } from '../index'
 import { logError } from '../libs/utils'
+import { AppFlags } from './targetApp'
 
 export enum AppNames {
   ZZ = 'zz',
   ZZHunter = 'zzHunter',
   ZZSeller = 'zzSeller',
   ZZSeeker = 'zzSeeker',
-  // ZZInner = 'zzInner'
 }
 export interface CallAppInstance {
   options: CallAppOptions
@@ -36,7 +36,7 @@ export const allDownloadUrls = {
     android: 'market://details?id=com.wuba.zhuanzhuan',
     // 腾讯 应用宝 下载
     android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.wuba.zhuanzhuan',
-    // download-api 下载
+    // download-api 下载 / 转转特殊的处理方式 安卓ios 统一下载 会更改下载配置文件
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
   // 找靓机
@@ -45,15 +45,14 @@ export const allDownloadUrls = {
     android: 'market://details?id=com.huodao.hdphone',
     android_api: 'https://dlapk.zhaoliangji.com/zlj_zhaoliangji.apk',
     android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.huodao.hdphone',
-    api: '',
   },
   // 采货侠
   [AppNames.ZZHunter]: {
-    ios: '',
-    android: '',
-    android_api: '',
-    android_yyb: '',
-    api: '',
+    ios: 'https://itunes.apple.com/cn/app/id1491125379',
+    android: 'market://details?id=com.zhuanzhuan.hunter',
+    android_api:
+      'https://app.zhuanzhuan.com/zzopredirect/ypofflinemart/downloadIosOrAndroid?channelId=923   ',
+    android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.zhuanzhuan.hunter',
   },
   // 卖家版
   [AppNames.ZZSeller]: {
@@ -61,7 +60,6 @@ export const allDownloadUrls = {
     android: '',
     android_api: '',
     android_yyb: '',
-    api: '',
   },
 }
 
@@ -88,14 +86,14 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
   }
 
   //
-  const { options, targetInfo: { downloadConfig, name } = {} } = instance
+  const { options, targetInfo: { downloadConfig, flag } = {} } = instance
   const { channelId, middleWareUrl, download, deeplinkId } = options
 
-  if (!download) return ''
+  if (!download || flag === undefined) return ''
 
   let downloadUrl: string | undefined = ''
   // 下载配置
-  if (name == AppNames.ZZ) {
+  if (flag & AppFlags.ZZ) {
     // 目标app 是转转
     if (isWechat && is58Host) {
       // plat 如果 wx + hostname 58.com， downloadConfig[api] + '?channelId=' + channelId
@@ -118,8 +116,8 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 
       downloadUrl = `${downloadConfig?.api}?channelId=${channelId}${deeplink}`
     }
-  } else if (name == AppNames.ZZSeeker || name) {
-    // 目标app 是找靓机
+  } else if (flag & AppFlags.ZZSeeker || flag & AppFlags.ZZHunter) {
+    // 目标app 是找靓机 (目前 h5 环境 只考虑 zz 和 zlj)
     if (isIos) {
       downloadUrl = downloadConfig?.ios
     } else if (isWechat && isAndroid) {
