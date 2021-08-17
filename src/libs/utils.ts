@@ -165,7 +165,7 @@ export const logError = (...args: any[]): void => {
   if (window.__callAppError__) {
     console.error
       ? console.error.call(undefined, ...args)
-      : console.log.call(undefined, [`Error: \n `, ...args])
+      : console.log.call(undefined, ...[`Error: \n `, ...args])
   }
 }
 
