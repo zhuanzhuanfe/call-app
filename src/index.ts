@@ -66,9 +66,9 @@ export default class CallApp {
   intentLink?: string
 
   // Create an instance of CallApp
-  constructor(options: CallAppOptions) {
+  constructor(options?: CallAppOptions) {
     // 原生app js-sdk 实例, 用于调用原生 app能力 (目前支持58app/wx平台)
-    this.init(options)
+    options && this.init(options)
   }
 
   init(options: CallAppOptions) {

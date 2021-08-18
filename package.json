@@ -1,12 +1,12 @@
 {
   "name": "@zz-common/call-app",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.4",
   "description": "通用的唤起app的库",
   "scripts": {
     "ts-check": "tsc --noEmit",
     "declare-type": "tsc --emitDeclarationOnly",
     "prettier": "prettier -c --write \"**/*\"",
-    "lint-staged:js": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx ./src",
+    "lint-staged:js": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "lint-check": "npm run ts-check && npm run lint-staged:js",
     "cz": "git cz -a",
     "test": "jest --coverage",
