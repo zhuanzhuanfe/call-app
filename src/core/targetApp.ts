@@ -16,17 +16,17 @@ export const enum AppFlags {
 }
 
 export const appSchemePrefix = {
-  [AppNames.ZZ]: 'zhuanzhuan:',
-  [AppNames.ZZSeller]: 'zhuanzhuanseller:', // 商家版app已下架, 服务停掉后考虑移除该app逻辑
-  [AppNames.ZZHunter]: 'zzhunter:',
-  [AppNames.ZZSeeker]: 'zljgo:',
+  [AppFlags.ZZ]: 'zhuanzhuan:',
+  [AppFlags.ZZSeller]: 'zhuanzhuanseller:', // 商家版app已下架, 服务停掉后考虑移除该app逻辑
+  [AppFlags.ZZHunter]: 'zzhunter:',
+  [AppFlags.ZZSeeker]: 'zljgo:',
 }
 
 export const appUniversalPath = {
-  [AppNames.ZZ]: 'zhuanzhuan',
-  [AppNames.ZZSeller]: 'seller', // 目前不支持
-  [AppNames.ZZHunter]: 'zzhunter', // 目前不支持
-  [AppNames.ZZSeeker]: 'zljgo', // 目前不支持
+  [AppFlags.ZZ]: 'zhuanzhuan',
+  [AppFlags.ZZSeller]: 'seller', // 目前不支持
+  [AppFlags.ZZHunter]: 'zzhunter', // 目前不支持
+  [AppFlags.ZZSeeker]: 'zljgo', // 目前不支持
 }
 
 // 获取 目标 app 类型
@@ -40,39 +40,39 @@ export const getTargetInfo = (options: CallAppOptions) => {
 
   const { appName } = handlePath2appName(path)
   // 优先取 options.targetApp // 默认 配置为 转转
-  targetApp = targetApp || appName || AppNames.ZZ
+  targetApp = targetApp || appName || AppNames[AppFlags.ZZ]
 
   if (!targetApp) {
     logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
     return
   }
   // 默认是 转转
-  let name = AppNames.ZZ
+  let name = AppNames[AppFlags.ZZ]
   let flag = AppFlags.ZZ
   let schemePrefix: string
   let downloadConfig: DownloadConfig
   let universalPath: string
 
   if (isZZ(targetApp)) {
-    name = AppNames.ZZ
+    name = AppNames[AppFlags.ZZ]
     flag = AppFlags.ZZ
   } else if (isZZSeeker(targetApp)) {
-    name = AppNames.ZZSeeker
+    name = AppNames[AppFlags.ZZSeeker]
     flag = AppFlags.ZZSeeker
   } else if (isZZHunter(targetApp)) {
-    name = AppNames.ZZHunter
+    name = AppNames[AppFlags.ZZHunter]
     flag = AppFlags.ZZHunter
   } else if (isZZSeller(targetApp)) {
-    name = AppNames.ZZSeller
+    name = AppNames[AppFlags.ZZSeller]
     flag = AppFlags.ZZSeller
   } else {
     logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
   }
 
   [schemePrefix, universalPath, downloadConfig] = [
-    appSchemePrefix[name],
-    appUniversalPath[name],
-    getDownloadConfig(name),
+    appSchemePrefix[flag],
+    appUniversalPath[flag],
+    getDownloadConfig(flag),
   ]
 
   return { flag, name, schemePrefix, universalPath, downloadConfig }
@@ -96,13 +96,13 @@ const isZZSellerPath = (path: string): boolean => /^zhuanzhuanseller:/i.test(pat
 
 const isZZHunterPath = (path: string): boolean => /^zzhunter:/i.test(path)
 
-export const handlePath2appName = (path: string): { appName?: AppNames } => {
+export const handlePath2appName = (path: string) => {
   let appName
 
-  if (isZZSeekerPath(path)) appName = AppNames.ZZSeeker
-  if (isZZPath(path)) appName = AppNames.ZZ
-  if (isZZSellerPath(path)) appName = AppNames.ZZSeller
-  if (isZZHunterPath(path)) appName = AppNames.ZZHunter
+  if (isZZSeekerPath(path)) appName = AppNames[AppFlags.ZZSeeker]
+  if (isZZPath(path)) appName = AppNames[AppFlags.ZZ]
+  if (isZZSellerPath(path)) appName = AppNames[AppFlags.ZZSeller]
+  if (isZZHunterPath(path)) appName = AppNames[AppFlags.ZZHunter]
 
   return { appName }
 }

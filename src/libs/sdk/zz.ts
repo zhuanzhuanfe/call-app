@@ -1,10 +1,10 @@
-import { AppNames } from '../../core/download'
 import { AppFlags, appSchemePrefix } from '../../core/targetApp'
 import { CallAppInstance } from '../../index'
 import { dependencies, SDKNames } from '../config'
 import { checkOpen } from '../evoke'
 import { loadJSArr, logError, logInfo } from '../utils'
 
+// logInfo('enum SDKNames', SDKNames)
 /*
 
 可主动唤起的场景(需求)：
@@ -63,7 +63,7 @@ const openAPP = (
 
   // 不同的目标app 加载相应的统跳地址 path
   let jumpPath = ''
-  let schemaPrefix = appSchemePrefix[AppNames.ZZ]
+  let schemaPrefix = appSchemePrefix[AppFlags.ZZ]
 
   switch (targetAppFlag) {
     case AppFlags.ZZ:
@@ -78,7 +78,7 @@ const openAPP = (
     // 目标是找靓机特殊处理 schemaPrefix
     case AppFlags.ZZSeeker:
       jumpPath = openZZSeekerJumpPath
-      schemaPrefix = appSchemePrefix[AppNames.ZZSeeker]
+      schemaPrefix = appSchemePrefix[AppFlags.ZZSeeker]
       break
     default:
       logError(`targetAppFlag is not found when call openZZInnerApp function`)
@@ -87,7 +87,7 @@ const openAPP = (
 
   // 如果运行app环境是 找靓机, 需要特殊处理 schemePrefix
   if (curAppFlag & AppFlags.ZZSeeker) {
-    schemaPrefix = appSchemePrefix[AppNames.ZZSeeker]
+    schemaPrefix = appSchemePrefix[AppFlags.ZZSeeker]
   }
 
   //

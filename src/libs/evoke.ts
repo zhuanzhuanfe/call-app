@@ -88,7 +88,7 @@ export function checkOpen(
   failure: () => void,
   success: () => void,
   error: () => void,
-  timeout: number
+  timeout = 2500
 ) {
   let haveChanged = false
   logInfo('trigger -- checkOpen')

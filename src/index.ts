@@ -125,7 +125,7 @@ export default class CallApp {
       isZZHunter ||
       isZZSeller ||
       isZZSeeker ||
-      (isWechat && targetApp === AppNames.ZZ)
+      (isWechat && targetApp === AppNames[AppFlags.ZZ])
     ) {
       // by native-app launch
       sdkLaunch(this)
@@ -185,17 +185,16 @@ export interface DownloadConfig {
 
 export interface TargetInfo {
   flag: AppFlags
-  name: AppNames
+  name: string
   schemePrefix: string
   universalPath: string
   downloadConfig: DownloadConfig
 }
-
 export interface CallAppOptions {
   // 唤起的页面 path
   path?: string
   // 唤起的目标app
-  targetApp?: AppNames
+  targetApp?: string
   // 是否开启 universal-link, 默认 true
   universal?: boolean
   // 是否开启 app-links, 默认 false

@@ -29,17 +29,61 @@ import CallApp from '@zz-common/call-app'
 ```javascript
 // 实例化
 const callApp = new CallApp({
-  path: '', // 要唤起目标 app 的路径，默认目标app是转转
+  path: '', // 要唤起目标 app 的 path ，默认目标app是转转
 })
 // 执行 唤起方法
 callApp.start()
 // 执行 下载
 callApp.download()
 ```
-
+或者
+```javascript
+// 实例化
+const callApp = new CallApp()
+// 执行 唤起方法
+callApp.start({
+  path: '', // 要唤起目标 app 的 path ，默认目标app是转转
+})
+// 执行 下载
+callApp.download()
+```
 #### 参数配置项
 
+- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址（选填）
+- **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
+- **targetApp** `String` 调起的目标 app，其中：zz(转转),zzseller(转转卖家版),zzSeeker(找靓机 app),zzHunter(采货侠 app) wxMini(微信小程序)，默认为`zz`
+- **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
+- **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
+- **middleWareUrl** 中转 url，如为空则默认跳转下载安装包或 appstore
+
+- **callStart** `Function` 发起调起请求时的回调
+- **callStart** `Function` 发起调起请求时的回调
+- **callStart** `Function` 发起调起请求时的回调
+- **callStart** `Function` 发起调起请求时的回调
+- **urlSearch** `Object` [已废弃] 指定页面调起方式，不推荐，直接设置 path 来跳转即可
+  - **openType** `String` 页面类型，可选值为 `home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面`
+  - **id** `String` 存放 id 或者 url，配合`openType` 的值来用
+
+
 #### api 方法
+
+- **start** `Function` 唤起功能
+
+```js
+// 挂在CallApp实例上的方法
+// options 可选 配置同上
+const callApp = new CallApp()
+callApp.download(options)
+```
+
+- **download** `Function`  下载功能
+
+```js
+// 挂在CallApp实例上的方法
+// options 可选 配置同上
+const callApp = new CallApp()
+callApp.download(options)
+```
 
 ## 示例用法
 
@@ -51,7 +95,7 @@ const callApp = new CallApp({
   path: 'jump/shortVideo/videoHome/jump', //
   channelId: '', //  渠道id
   deeplinkId: '', //
-  // targetApp 默认 转转, 优先级低于 path 参数的 schemePrefix
+  // targetApp 默认 转转, 优先级低于 path 的 prefix
   // zzSeeker 代表找靓机; zz 或者 zhuanzhuan 代表转转
   targetApp: 'zz',
   callStart: () => {
@@ -105,7 +149,7 @@ callApp.start()
 callApp.download()
 ```
 
-2. 方法中进行配置（高阶）
+2. 方法中进行配置
 
 该用法为高阶用法，仅仅实例化类一次，通过 api 来配置 options，进行执行。
 此一般用于较复杂业务场景下，避免多次实例化而造成内存浪费。

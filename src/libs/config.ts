@@ -22,7 +22,7 @@ const getWxPublicId = (): string | undefined => {
 /**
  * 第三方依赖, 外链js
  * */
-export enum SDKNames {
+export const enum SDKNames {
   ZZ_SDK = 'ZZ_SDK',
   WB_SDK = 'WB_SDK',
   WX_JWEIXIN = 'WX_JWEIXIN',

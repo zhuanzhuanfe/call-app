@@ -8,12 +8,13 @@ import { DownloadConfig, CallAppOptions, TargetInfo } from '../index'
 import { logError } from '../libs/utils'
 import { AppFlags } from './targetApp'
 
-export enum AppNames {
-  ZZ = 'zz',
-  ZZHunter = 'zzHunter',
-  ZZSeller = 'zzSeller',
-  ZZSeeker = 'zzSeeker',
+export const AppNames = {
+  [AppFlags.ZZ]: 'zz',
+  [AppFlags.ZZHunter]: 'zzHunter',
+  [AppFlags.ZZSeller]: 'zzSeller',
+  [AppFlags.ZZSeeker]: 'zzSeeker',
 }
+
 export interface CallAppInstance {
   options: CallAppOptions
   start: () => void
@@ -28,7 +29,7 @@ export interface CallAppInstance {
 
 // 目标app 各平台下载地址 配置
 export const allDownloadUrls = {
-  [AppNames.ZZ]: {
+  [AppFlags.ZZ]: {
     // ios 商店 下载
     // ios: 'https://apps.apple.com/app/apple-store/id1002355194?pt=118679317&ct=923&mt=8', // 这种格式链接qq内无法触发下载
     ios: 'https://itunes.apple.com/cn/app/id1002355194?pt=118679317&ct=923&mt=8',
@@ -40,14 +41,14 @@ export const allDownloadUrls = {
     api: 'https://app.zhuanzhuan.com/zz/redirect/download',
   },
   // 找靓机
-  [AppNames.ZZSeeker]: {
+  [AppFlags.ZZSeeker]: {
     ios: 'https://itunes.apple.com/cn/app/id1060362098',
     android: 'market://details?id=com.huodao.hdphone',
     android_api: 'https://dlapk.zhaoliangji.com/zlj_zhaoliangji.apk',
     android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.huodao.hdphone',
   },
   // 采货侠
-  [AppNames.ZZHunter]: {
+  [AppFlags.ZZHunter]: {
     ios: 'https://itunes.apple.com/cn/app/id1491125379',
     android: 'market://details?id=com.zhuanzhuan.hunter',
     android_api:
@@ -55,7 +56,7 @@ export const allDownloadUrls = {
     android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.zhuanzhuan.hunter',
   },
   // 卖家版
-  [AppNames.ZZSeller]: {
+  [AppFlags.ZZSeller]: {
     ios: '',
     android: '',
     android_api: '',
@@ -134,7 +135,7 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 }
 
 // 根据目标app 获取下载链接 配置
-export const getDownloadConfig = (name: AppNames): DownloadConfig => {
+export const getDownloadConfig = (name: AppFlags): DownloadConfig => {
   // 根据需要唤起的 目标 app ，获取 downloadUrl
   return allDownloadUrls[name]
 }

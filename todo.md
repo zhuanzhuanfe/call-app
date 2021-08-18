@@ -7,3 +7,4 @@
 - [ ] 支持 js-sdk
 - [ ] 支持 app-links
 - [ ] 中间页迁移，兼容找靓机
+- [ ] 支持 app 调起 zz 小程序 （appid: gh_c2980df66965）

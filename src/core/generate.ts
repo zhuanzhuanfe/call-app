@@ -6,7 +6,7 @@ import { handlePath2appName } from './targetApp'
 import { CallAppInstance } from '../index'
 import { logError } from '../libs/utils'
 
-export enum SchemeMapKeys {
+export const enum SchemeMapKeys {
   HOME = 'home',
   MSGCENTER = 'messagecenter',
   MYBUY = 'mybuy',
