@@ -8,7 +8,10 @@ v2/
 .babelrc.js
 config/
 src/
+src-old/
 tools/
+docs/
+demo/
 package-lock.json
 .eslintcache
 .browserlistrc
