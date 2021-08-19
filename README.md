@@ -1,6 +1,6 @@
 # 简介
 
-`@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
+`@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
 
 体验地址：
 
@@ -190,7 +190,7 @@ callApp.download({
 })
 ```
 
-1. 第三方配置（高阶）
+##### 3. 第三方配置（高阶）
 
 ⚠️ 注意：
 
@@ -225,22 +225,24 @@ callApp.start()
 
 ### H5
 #### ios: [iphoneXR]
-目标app: 转转
-| 环境          | 下载          | scheme/ulink 唤起(已装 app) | 失败回调(已装 app) | 成功回调(已装 app)       | 失败回调(未装 app)  |
-| ------------- | ------------- | --------------------------- | ------------------ | ------------------------ | ------------------- |
-| safari        | 支持 location | ulink 支持                  | 不支持             | 支持                     | 不支持（跳 ulink）  |
-| qq 浏览器     | 支持 location | ulink 支持                  | 支持               | 支持                     | 不支持（跳 ulink）  |
-| uc 浏览器     | 支持 location | ulink 支持                  | 支持               | ulink支持, scheme 不支持 | 不支持（跳 ulink）  |
-| 百度浏览器    | 支持 location | ulink 支持, scheme 不支持   | 支持               | ulink支持 scheme 不支持  | 不支持（跳 ulink）  |
-| 夸克浏览器    | 支持 iFrame   | 不支持 ulink，支持 scheme   | 支持               | 支持                     | 支持                |
-| 谷歌浏览器    | 支持 location | ulink 支持                  | 支持               | 支持                     | 不支持（跳 ulink）  |
-| sougou 浏览器 | 不支持        | ulink 支持                  | 支持               | 支持                     | 不支持（跳 ulink）  |
-| wx            | 支持，应用宝  | ulink 支持, scheme 不支持   | 支持               | 支持                     | 不支持（跳 ulink）  |
-| weibo         | 不支持        | ulink 支持, scheme 不支持   | 支持               | ulink支持,scheme 不支持  | 不支持（跳 ulink）  |
-| qq            | 支持, 应用宝  | ulink 支持                  | 支持               | 支持                     | 支持 (不会跳 ulink) |
+
+
+| 环境          | 下载          | scheme/ulink 唤起(已装 app) | 失败回调(已装 app) | 成功回调(已装 app)       | 失败回调(未装 app) |
+| ------------- | ------------- | --------------------------- | ------------------ | ------------------------ | ------------------ |
+| safari        | 支持 location | ulink 支持                  | 不支持             | 支持                     | ulink不支持        |
+| qq 浏览器     | 支持 location | ulink 支持                  | 支持               | 支持                     | ulink不支持        |
+| uc 浏览器     | 支持 location | ulink 支持                  | 支持               | ulink支持, scheme 不支持 | ulink不支持        |
+| 百度浏览器    | 支持 location | ulink 支持, scheme 不支持   | 支持               | ulink支持 scheme 不支持  | ulink不支持        |
+| 夸克浏览器    | 支持 iFrame   | 不支持 ulink，支持 scheme   | 支持               | 支持                     | 支持               |
+| 谷歌浏览器    | 支持 location | ulink 支持                  | 支持               | 支持                     | ulink不支持        |
+| sougou 浏览器 | 不支持        | ulink 支持                  | 支持               | 支持                     | ulink不支持        |
+| wx            | 支持，应用宝  | ulink 支持, scheme 不支持   | 支持               | 支持                     | ulink不支持        |
+| weibo         | 不支持        | ulink 支持, scheme 不支持   | 支持               | ulink支持,scheme 不支持  | ulink不支持        |
+| qq            | 支持, 应用宝  | ulink 支持                  | 支持               | 支持                     | 支持               |
 
 #### android: [huawei-p30]
-目标app: 转转
+
+
 | 环境          | 下载          | scheme 唤起(已装 app) | 失败回调(已装 app) | 成功回调(已装 app) | 失败回调(未装 app) |
 | ------------- | ------------- | --------------------- | ------------------ | ------------------ | ------------------ |
 | qq 浏览器     | 支持 location | 支持                  | 支持               | 支持               | 支持               |
@@ -255,7 +257,8 @@ callApp.start()
 | qq            | 支持, 应用宝  | 支持                  | 支持               | 支持               | 支持               |
 
 #### android: [mi-9]
-目标app: 转转
+
+
 | 环境       | 下载          | scheme 唤起(已装 app) | 失败回调(已装 app) | 成功回调(已装 app) | 失败回调(未装 app) |
 | ---------- | ------------- | --------------------- | ------------------ | ------------------ | ------------------ |
 | qq 浏览器  | 支持 location | 支持                  | 支持               | 支持               | 支持               |
@@ -272,12 +275,14 @@ callApp.start()
 
 #### ios / android
 
+
 |                 | 转转 | 采货侠 | 找靓机 | 卖家版 |
 | --------------- | ---- | ------ | ------ | ------ |
 | 目标app: 转转   | x    | ✅      | x      | ✅      |
 | 目标app: 采货侠 | ✅    | x      | x      | x      |
 | 目标app: 找靓机 | x    | x      | x      | x      |
 | 目标app: 采货侠 | ✅    | x      | x      | x      |
+
 
 ---
 
