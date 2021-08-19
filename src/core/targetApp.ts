@@ -85,7 +85,7 @@ const isZZSeller = (targetApp: string): boolean => /^zzSeller$/i.test(targetApp)
 //  转转采货侠 app
 const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 //  转转找靓机 app
-const isZZSeeker = (targetApp: string): boolean => /^zzSeeker$/i.test(targetApp)
+const isZZSeeker = (targetApp: string): boolean => /^zlj$/i.test(targetApp)
 
 // 从 options.path 中获取 target-app
 const isZZPath = (path: string): boolean => /^zhuanzhuan:/.test(path)

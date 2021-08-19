@@ -80,127 +80,558 @@
 
     <section class="readme-section">
         <article><h1>简介</h1>
-<p><code>@zz-common/call-app</code> 是一个通用的唤起app的库
-体验地址：https://m.zhuanzhuan.com/common/pro_together_run_cli/index.html#/callApp</p>
+<p><code>@zz-common/call-app</code> 是一个基于 <code>typescript</code> 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。</p>
+<p>体验地址：</p>
 <h2>快速上手</h2>
 <h3>Step1：安装</h3>
 <p>通过 <code>npm</code> 安装</p>
 <pre class="prettyprint source lang-bash"><code>npm i @zz-common/call-app -S
 </code></pre>
-<p>或者使用cdn直引，地址：<code>https://s1.zhuanstatic.com/common/call-app/static/js/3.3.0-beta.15/index.min.js</code>，其中版本号可以使用任意正式版本</p>
 <h3>Step2：引入</h3>
-<pre class="prettyprint source lang-js"><code>import CallApp from '@zz-common/call-app';
+<pre class="prettyprint source lang-js"><code>import CallApp from '@zz-common/call-app'
 </code></pre>
-<p>如果是通过外链引入，那么可以使用 <code>window.CallApp</code>得到<code>CallApp</code>类</p>
+<p>如果是通过外链 js 引入，那么可以使用 <code>window.CallApp</code> 得到 <code>CallApp</code> 类</p>
 <h3>Step3：使用</h3>
-<p>实例化<code>CallApp</code>后，使用start方法即可</p>
-<pre class="prettyprint source lang-js"><code>const callApp = new CallApp();
-callApp.start({
-  path:'jump/group/manage/jump', // 兼容app所有统跳地址
-  channelId: '777',
-});
+<p>实例化 <code>CallApp</code> 后，即可使用 <code>start</code> 和 <code>download</code> 方法.</p>
+<pre class="prettyprint source lang-javascript"><code>// 实例化
+const callApp = new CallApp({
+  path: '', // 要唤起目标 app 的 path ，默认目标app是转转
+})
+// 执行 唤起方法
+callApp.start()
+// 执行 下载
+callApp.download()
 </code></pre>
-<h2>文档地址</h2>
-<p>https://fe.zhuanspirit.com/common/@zz-common/call-app/</p>
-<h2>配置参数说明</h2>
+<p>或者</p>
+<pre class="prettyprint source lang-javascript"><code>// 实例化
+const callApp = new CallApp()
+// 执行 唤起方法
+callApp.start({
+  path: '', // 要唤起目标 app 的 path ，默认目标app是转转
+})
+// 执行 下载
+callApp.download()
+</code></pre>
+<h4>参数配置项</h4>
 <ul>
-<li><strong>path</strong> <code>String</code> 调起app时，默认打开的页面，类型为 app 的统跳地址（选填）</li>
-<li><strong>channelId</strong> <code>String</code> 渠道号，当用户没有安装app时，默认下载的渠道号，安卓支持，iOS不支持，默认<code>923</code>（选填）</li>
-<li><strong>targetApp</strong> <code>String</code> 调起的目标app，其中：zz(转转),zzseller(转转卖家版),check(切克app),yige(一格app)，默认为<code>zz</code></li>
-<li><strong>universal</strong> <code>Boolean</code> 是否开启通用链接调起模式，默认为<code>true</code></li>
-<li><strong>download</strong> <code>Boolean</code> 是否会自动跳转下载页面，默认为 <code>true</code></li>
-<li><strong>middleWareUrl</strong> 中转url，如空则直接跳转下载安装包或appstore</li>
-<li><strong>urlSearch</strong> <code>Object</code> [已废弃] 指定页面调起方式，不推荐，直接设置path来跳转即可
+<li>
+<p><strong>path</strong> <code>String</code> 调起 app 时，默认打开的页面，类型为 app 的统跳地址（选填）</p>
+</li>
+<li>
+<p><strong>channelId</strong> <code>String</code> 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认<code>923</code>（选填）</p>
+</li>
+<li>
+<p><strong>targetApp</strong> <code>String</code> 调起的目标 app，其中：zz(转转app), zlj(找靓机app), zzHunter(采货侠app), zzSeller(转转卖家版 已废弃), wxMini(微信小程序 未支持)，默认为<code>zz</code></p>
+</li>
+<li>
+<p><strong>universal</strong> <code>Boolean</code> 是否开启通用链接调起模式，默认为<code>true</code></p>
+</li>
+<li>
+<p><strong>download</strong> <code>Boolean</code> 是否会自动跳转下载页面，默认为 <code>true</code></p>
+</li>
+<li>
+<p><strong>middleWareUrl</strong> <code>String</code> 中转 url，如为空则默认跳转下载安装包或 appstore</p>
+</li>
+<li>
+<p><strong>delay</strong> <code>Number</code> 调起app失败后触发下载延迟, 默认 2500（毫秒）</p>
+</li>
+<li>
+<p><strong>callStart</strong> <code>Function</code> 开始执行调起时的hook</p>
+</li>
+<li>
+<p><strong>callSuccess</strong> <code>Function</code> 执行调起成功时的hook</p>
+</li>
+<li>
+<p><strong>callFailed</strong> <code>Function</code> 执行调起失败时的hook</p>
+</li>
+<li>
+<p><strong>callDownload</strong> <code>Function</code> 执行下载时的hook</p>
+</li>
+<li>
+<p><strong>callError</strong> <code>Function</code> 内部异常时的hook</p>
+</li>
+<li>
+<p><strong>urlSearch</strong> <code>Object</code> [已废弃] 指定页面调起方式，不推荐，直接设置 path 来跳转即可</p>
 <ul>
 <li><strong>openType</strong> <code>String</code> 页面类型，可选值为 <code>home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面</code></li>
-<li><strong>id</strong> <code>String</code> 存放id或者url，配合<code>openType</code> 的值来用</li>
+<li><strong>id</strong> <code>String</code> 存放 id 或者 url，配合<code>openType</code> 的值来用</li>
 </ul>
 </li>
-<li><strong>callback</strong> <code>Function</code> 发起调起请求时的回调</li>
+<li>
+<p><strong>onWechatReady</strong> <code>Function</code> 微信端初始化安装后的回调</p>
+</li>
 </ul>
-<h2>API</h2>
+<h4>api 方法</h4>
 <ul>
-<li><strong>download</strong> <code>Function</code> 独立的下载功能</li>
+<li><strong>start</strong> <code>Function</code> 唤起功能</li>
 </ul>
-<pre class="prettyprint source lang-js"><code>// 方法挂在CallApp类上，而非实例上
-// opts配置同上
-CallApp.download(opts)
+<pre class="prettyprint source lang-js"><code>// 挂在CallApp实例上的方法
+// options 可选 配置同上
+const callApp = new CallApp()
+callApp.download(options)
 </code></pre>
-<h2>兼容性</h2>
+<ul>
+<li><strong>download</strong> <code>Function</code>  下载功能</li>
+</ul>
+<pre class="prettyprint source lang-js"><code>// 挂在CallApp实例上的方法
+// options 可选 配置同上
+const callApp = new CallApp()
+callApp.download(options)
+</code></pre>
+<h2>示例用法</h2>
+<h5>1. 初始化实例时配置 options，唤起 转转/找靓机</h5>
+<pre class="prettyprint source lang-javascript"><code>// 唤起 转转
+const callApp = new CallApp({
+  path: 'jump/shortVideo/videoHome/jump', //
+  channelId: '', //  渠道id
+  deeplinkId: '', // 后台配置项
+  // targetApp 默认 转转, 优先级低于 path 的 prefix
+  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转
+  targetApp: 'zz',
+  callStart: () => {
+    console.log('触发 开始唤起钩子')
+  },
+  callSuccess: () => {
+    console.log('触发 唤起成功钩子')
+  },
+  callFailed: () => {
+    console.log('触发 唤起失败钩子')
+  },
+  callDownload: () => {
+    console.log('触发 下载钩子')
+  },
+  callError: () => {
+    console.log('内部异常')
+  },
+})
+
+// 执行唤起
+callApp.start()
+// 执行下载
+callApp.download()
+</code></pre>
+<pre class="prettyprint source lang-javascript"><code>// 唤起 找靓机
+const callApp = new CallApp({
+  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  targetApp: 'zzSeeker',
+  callStart: () => {
+    console.log('触发 开始唤起钩子')
+  },
+  callSuccess: () => {
+    console.log('触发 唤起成功钩子')
+  },
+  callFailed: () => {
+    console.log('触发 唤起失败钩子')
+  },
+  callDownload: () => {
+    console.log('触发 下载钩子')
+  },
+  callError: () => {
+    console.log('内部异常')
+  },
+})
+
+// 执行唤起
+callApp.start()
+// 执行下载
+callApp.download()
+</code></pre>
+<h5>2. 调用 api 时配置 options, 唤起 转转/找靓机</h5>
+<p>该用法为 实例化CallApp类一次，通过 api 来配置 options，进行执行。
+此一般用于较复杂业务场景下，避免多次实例化而造成内存浪费。</p>
+<pre class="prettyprint source lang-javascript"><code>// 实例化一次
+const callApp = new CallApp()
+// 在方法内进行参数配置
+
+// 唤起转转
+callApp.start({
+  path: 'jump/shortVideo/videoHome/jump',
+  channelId: '', //  渠道id
+  deeplinkId: '', //
+  targetApp: 'zz', // 默认 转转
+})
+
+// 唤起找靓机
+callApp.start({
+  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  // path: 'zljgo://native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  targetApp: 'zzSeeker', // 默认 转转
+})
+
+// 下载转转
+callApp.download({
+  targetApp: 'zz', // 默认 转转
+  channelId: '',
+  deeplinkId: ''
+})
+
+// 下载找靓机
+callApp.download({
+  targetApp: 'zlj',  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转;
+})
+</code></pre>
+<ol>
+<li>第三方配置（高阶）</li>
+</ol>
+<p>⚠️ 注意：</p>
+<p>3-1. 如果配置了 <code>customConfig</code> 参数，则非 hooks 参数（如 path，targetApp 等）的配置不再生效。</p>
+<p>3-2 <code>landingPage</code> 配置参数优先级大于 <code>downloadConfig</code></p>
+<p>3-3 如果没有配置 <code>universalLink</code> 则 ios 端降级为 <code>schemeUrl</code></p>
+<pre class="prettyprint source lang-javascript"><code>// 唤起支付宝
+const callApp = new CallApp({
+  customConfig: {
+    schemeUrl: 'alipay://platformapi/startapp?appId=20000056', // 支付宝转账
+    landingPage: 'https://render.alipay.com/p/s/i', // 支付宝落地页（下载页）
+  },
+  callStart: () => {
+    console.log('触发 开始唤起钩子')
+  },
+  callSuccess: () => {
+    console.log('触发 唤起成功钩子')
+  },
+  callFailed: () => {
+    console.log('触发 唤起失败钩子')
+  },
+})
+
+callApp.start()
+</code></pre>
+<h2>兼容性 😈</h2>
+<h3>H5</h3>
+<h4>ios: [iphoneXR]</h4>
+<p>目标app: 转转</p>
 <table>
 <thead>
 <tr>
-<th>场景</th>
-<th>ios</th>
-<th>安卓</th>
+<th>环境</th>
+<th>下载</th>
+<th>scheme/ulink 唤起(已装 app)</th>
+<th>失败回调(已装 app)</th>
+<th>成功回调(已装 app)</th>
+<th>失败回调(未装 app)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>微信</td>
-<td>✔️</td>
-<td>✔️</td>
+<td>safari</td>
+<td>支持 location</td>
+<td>ulink 支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>qq 浏览器</td>
+<td>支持 location</td>
+<td>ulink 支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>uc 浏览器</td>
+<td>支持 location</td>
+<td>ulink 支持</td>
+<td>支持</td>
+<td>ulink支持, scheme 不支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>百度浏览器</td>
+<td>支持 location</td>
+<td>ulink 支持, scheme 不支持</td>
+<td>支持</td>
+<td>ulink支持 scheme 不支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>夸克浏览器</td>
+<td>支持 iFrame</td>
+<td>不支持 ulink，支持 scheme</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>谷歌浏览器</td>
+<td>支持 location</td>
+<td>ulink 支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>sougou 浏览器</td>
+<td>不支持</td>
+<td>ulink 支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>wx</td>
+<td>支持，应用宝</td>
+<td>ulink 支持, scheme 不支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>不支持（跳 ulink）</td>
+</tr>
+<tr>
+<td>weibo</td>
+<td>不支持</td>
+<td>ulink 支持, scheme 不支持</td>
+<td>支持</td>
+<td>ulink支持,scheme 不支持</td>
+<td>不支持（跳 ulink）</td>
 </tr>
 <tr>
 <td>qq</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>chrome</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>小米 browser</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>uc</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>qq browser</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>360 browser</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>猎豹</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>sogou</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>baidu browser</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>safari</td>
-<td>✔️</td>
-<td>✔️</td>
-</tr>
-<tr>
-<td>微博</td>
-<td>X</td>
-<td>X</td>
+<td>支持, 应用宝</td>
+<td>ulink 支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持 (不会跳 ulink)</td>
 </tr>
 </tbody>
 </table>
-<h2>测试用例</h2>
-<p>1: 浏览器环境，安装转转后，可以唤起转转。未安装转转，可以进入下载流程（包括iOS和安卓）
-2: 微信环境，安装转转后，可以唤起转转。未安装转转，可以进入下载流程（包括iOS和安卓）</p></article>
+<h4>android: [huawei-p30]</h4>
+<p>目标app: 转转</p>
+<table>
+<thead>
+<tr>
+<th>环境</th>
+<th>下载</th>
+<th>scheme 唤起(已装 app)</th>
+<th>失败回调(已装 app)</th>
+<th>成功回调(已装 app)</th>
+<th>失败回调(未装 app)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qq 浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>uc 浏览器</td>
+<td>支持 tagA</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>百度浏览器</td>
+<td>支持 location</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>夸克浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>sougou 浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>360 浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>华为浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>wx</td>
+<td>支持，应用宝</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>weibo</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>qq</td>
+<td>支持, 应用宝</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody>
+</table>
+<h4>android: [mi-9]</h4>
+<p>目标app: 转转</p>
+<table>
+<thead>
+<tr>
+<th>环境</th>
+<th>下载</th>
+<th>scheme 唤起(已装 app)</th>
+<th>失败回调(已装 app)</th>
+<th>成功回调(已装 app)</th>
+<th>失败回调(未装 app)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>qq 浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>uc 浏览器</td>
+<td>支持 tagA</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>百度浏览器</td>
+<td>支持 location</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>夸克浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>360 浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>小米浏览器</td>
+<td>支持 location</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>wx</td>
+<td>支持，应用宝</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>weibo</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>qq</td>
+<td>支持，应用宝</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody>
+</table>
+<h3>native sdk [待完善]</h3>
+<h4>ios / android</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>转转</th>
+<th>采货侠</th>
+<th>找靓机</th>
+<th>卖家版</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标app: 转转</td>
+<td>x</td>
+<td>✅</td>
+<td>x</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>目标app: 采货侠</td>
+<td>✅</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>目标app: 找靓机</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>目标app: 采货侠</td>
+<td>✅</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3>Todo:</h3>
+<ul>
+<li>[] 支持找靓机app/转转app互相唤起</li>
+<li>[] 找靓机支持 ulink</li>
+<li>[] 支持转转app内唤起转转微信小程序</li>
+</ul>
+<hr>
+<h3>bug or PR</h3>
+<p><a href="https://gitlab.zhuanspirit.com/zz-fe-common/call-app/issues">提交 Issues</a></p>
+<p><a href="https://gitlab.zhuanspirit.com/zz-fe-common/call-app/merge_requests">提交 PR</a></p></article>
     </section>
 
 
@@ -246,7 +677,7 @@ CallApp.download(opts)
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on 2021-08-10T16:04:15+08:00
+		on 2021-08-19T17:53:02+08:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

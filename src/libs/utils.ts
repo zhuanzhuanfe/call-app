@@ -157,20 +157,23 @@ export const showMask = (): void => {
     document.body.removeChild(mask)
   })
 }
-
+// 默认关闭 调试信息
 window.__callAppDev__ = false
+// 默认打开 异常信息
 window.__callAppError__ = true
-
+//
 export const logError = (...args: any[]): void => {
   if (window.__callAppError__) {
+    //
     console.error
       ? console.error.call(undefined, ...args)
       : console.log.call(undefined, ...[`Error: \n `, ...args])
   }
 }
-
+//
 export const logInfo = (...args: any[]) => {
   if (window.__callAppDev__) {
+    //
     console.log.call(undefined, ...args)
   }
 }

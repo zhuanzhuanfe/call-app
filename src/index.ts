@@ -36,11 +36,11 @@ const defaultOptions: CallAppOptions = {
   path: '', // 唤起的页面 path
   targetApp: undefined, // 唤起的目标app
   universal: true, // 是否开启 universal-link
-  intent: false, // 是否开启 app-links
+  intent: false, // 是否开启 安卓 app-links / 目前不支持
   download: true, // 是否支持下载
   delay: 2500, // 触发下载 延迟检测时间
   channelId: '923', // 下载渠道 id
-  wechatCheckInstallState: () => {}, // 微信端初始化检测安装后的回调函数
+  onWechatReady: () => {}, // 微信端初始化检测安装后的回调函数
   wechatStyle: 1, // 蒙层样式， 默认 微信吊起失败后，提示右上角打开
   deeplinkId: '', // deeplink 接口支持的id配置
   middleWareUrl: '', // 下载中间页 url
@@ -206,7 +206,7 @@ export interface CallAppOptions {
   // 下载渠道 id
   channelId?: string | number
   // 微信端初始化检测安装后的回调函数
-  wechatCheckInstallState?: () => void
+  onWechatReady?: (...arg: any[]) => void
   // 蒙层样式， 默认 微信吊起失败后，提示右上角打开, // 1表示浮层右上角，2表示浮层按钮, 默认 1
   wechatStyle?: number | string
   // deeplink 接口支持的id配置

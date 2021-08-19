@@ -3,7 +3,7 @@ import { wxInfo, dependencies, zzAppInfo } from '../config'
 import { evokeByLocation } from '../evoke'
 import { is58Host } from '../hostname'
 import { isAndroid } from '../platform'
-import { loadJSArr, logError } from '../utils'
+import { loadJSArr, logError, logInfo } from '../utils'
 
 export interface WXJSTICKET {
   appId?: string
@@ -34,10 +34,10 @@ export const loadWXSDK = () => {
 export const invokeInWX = (
   name: string,
   options: Record<string, any>,
-  App: Record<string, any>
+  app: Record<string, any>
 ) => {
   return new Promise((resolve, reject) => {
-    App.invoke(name, options, (data: any) => {
+    app.invoke(name, options, (data: any) => {
       const { err_msg } = data
       const Regex = /(:ok)|(:yes)/g
       if (Regex.test(err_msg)) {
@@ -76,9 +76,11 @@ export const openAppInWX = (
 
   invokeInWX('launchApplication', { appID, parameter, extInfo }, app)
     .then((res) => {
+      logInfo('launchApplication', res)
       callSuccess()
     })
-    .catch(() => {
+    .catch((err) => {
+      logError('launchApplication', err)
       callFailed()
       evokeByLocation(downloadLink)
     })
@@ -86,7 +88,7 @@ export const openAppInWX = (
 
 export const openZZInWX = async (instance: CallAppInstance) => {
   const { options, urlScheme = '' } = instance
-  const { callFailed = () => {} } = options
+  const { callFailed = () => {}, onWechatReady = () => {} } = options
   // if(isAndroid){
   //   return evokeByLocation(downloadLink)
   // }
@@ -104,6 +106,7 @@ export const openZZInWX = async (instance: CallAppInstance) => {
     }
     window.wx && window.wx.config(wxconfig)
     window.wx.ready(() => {
+      onWechatReady(window.WeixinJSBridge)
       // 实例化APP对象
       let app = window.WeixinJSBridge
 

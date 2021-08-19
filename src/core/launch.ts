@@ -79,8 +79,8 @@ export const launch = (instance: CallAppInstance) => {
 
       showMask()
       checkOpenFall = handleCheck(delay)
-    } else if (!supportUniversal && isWeibo) {
-      logInfo('!supportUniversal && isWeibo', !supportUniversal && isWeibo)
+    } else if (!supportUniversal && (isWeibo || isWechat)) {
+      logInfo('!supportUniversal && isWeibo', !supportUniversal && (isWeibo || isWechat))
 
       showMask()
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
