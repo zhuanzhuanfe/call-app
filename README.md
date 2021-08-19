@@ -128,7 +128,7 @@ callApp.download()
 // 唤起 找靓机
 const callApp = new CallApp({
   path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  targetApp: 'zzSeeker',
+  targetApp: 'zlj',
   callStart: () => {
     console.log('触发 开始唤起钩子')
   },
@@ -174,7 +174,7 @@ callApp.start({
 callApp.start({
   path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
   // path: 'zljgo://native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  targetApp: 'zzSeeker', // 默认 转转
+  targetApp: 'zlj', // 默认 转转
 })
 
 // 下载转转
