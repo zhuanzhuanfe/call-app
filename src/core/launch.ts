@@ -69,20 +69,29 @@ export const launch = (instance: CallAppInstance) => {
       logInfo('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
 
       showMask()
+
+      callFailed()
     } else if (isLow9Ios) {
       logInfo('isIos - version < 9', isIos, isLow9Ios, schemeURL)
 
-      schemeURL && evokeByIFrame(schemeURL)
       checkOpenFall = handleCheck(delay)
+
+      schemeURL && evokeByIFrame(schemeURL)
     } else if (!supportUniversal && isBaidu) {
       logInfo('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
 
-      showMask()
       checkOpenFall = handleCheck(delay)
-    } else if (!supportUniversal && (isWeibo || isWechat)) {
-      logInfo('!supportUniversal && isWeibo', !supportUniversal && (isWeibo || isWechat))
 
       showMask()
+    } else if (!supportUniversal && (isWeibo || isWechat)) {
+      logInfo(
+        '!supportUniversal && (isWeibo || isWechat)',
+        !supportUniversal && (isWeibo || isWechat)
+      )
+
+      showMask()
+
+      callFailed()
     } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
       logInfo(
         'isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
@@ -90,21 +99,24 @@ export const launch = (instance: CallAppInstance) => {
         schemeURL
       )
 
-      schemeURL && evokeByTagA(schemeURL)
       checkOpenFall = handleCheck(delay)
+
+      schemeURL && evokeByTagA(schemeURL)
     } else if (isQuark) {
       logInfo('isQuark', isQuark, schemeURL)
 
-      schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleCheck(delay)
+
+      schemeURL && evokeByLocation(schemeURL)
     } else {
       // universalLink 唤起, 不支持 失败回调处理。
       // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。
       // 更新app 时候，universalLink 可能会失效, u-link 自身的坑。
       logInfo('isIos - support universalLink', universalLink)
 
-      universalLink && evokeByLocation(universalLink)
       checkOpenFall = handleCheck(delay)
+
+      universalLink && evokeByLocation(universalLink)
 
       // 有必要的话, 降级采用 schemeURL 处理
       // 测试过程中发现： schemeURL 比 universalLink 稳定，但缺点是需要用户二次确认
@@ -119,14 +131,14 @@ export const launch = (instance: CallAppInstance) => {
     if (isOriginalChrome) {
       if (supportIntent) {
         logInfo('isAndroid - supportIntent', isAndroid && supportIntent)
-        intentLink && evokeByLocation(intentLink)
-        // app-links 无法处理 失败回调， 原因同 universal-link
         checkOpenFall = handleCheck(delay)
+        // app-links 无法处理 失败回调， 原因同 universal-link
+        intentLink && evokeByLocation(intentLink)
       } else {
         logInfo('isAndroid - !supportIntent', isAndroid && !supportIntent)
+        checkOpenFall = handleCheck(delay)
         // scheme 在 andriod chrome 25+ 版本上 iframe 无法正常拉起
         schemeURL && evokeByLocation(schemeURL)
-        checkOpenFall = handleCheck(delay)
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
       logInfo(
@@ -135,12 +147,15 @@ export const launch = (instance: CallAppInstance) => {
       )
       // 不支持 scheme, 显示遮罩 请在浏览器打开
       showMask()
+
+      callFailed()
     } else {
       // 其他浏览器 通过 scheme 唤起，失败则下载
       logInfo('isAndroid - schemeURL')
 
-      schemeURL && evokeByLocation(schemeURL)
       checkOpenFall = handleCheck(delay)
+
+      schemeURL && evokeByLocation(schemeURL)
     }
 
     logInfo('schemeURL', schemeURL)
@@ -152,8 +167,6 @@ export const launch = (instance: CallAppInstance) => {
   logInfo('checkOpenFall', checkOpenFall)
 
   if (checkOpenFall) {
-    return checkOpenFall()
+    checkOpenFall()
   }
-
-  callFailed()
 }

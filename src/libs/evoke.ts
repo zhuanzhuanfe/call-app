@@ -129,7 +129,6 @@ export function checkOpen(
       logInfo('checkOpen hasFailed-failure')
     } else {
       logError('pageHidden: unknown error')
-
       error()
     }
 

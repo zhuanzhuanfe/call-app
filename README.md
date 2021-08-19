@@ -51,7 +51,7 @@ callApp.download()
 
 - **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址（选填）
 - **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
-- **targetApp** `String` 调起的目标 app，其中：zz(转转app), zlj(找靓机app), zzHunter(采货侠app), zzSeller(转转卖家版 已废弃), wxMini(微信小程序 未支持)，默认为`zz`
+- **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
 - **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
 - **middleWareUrl** `String` 中转 url，如为空则默认跳转下载安装包或 appstore

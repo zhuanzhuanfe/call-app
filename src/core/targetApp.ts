@@ -6,7 +6,7 @@
 
 import { getDownloadConfig, AppNames } from './download'
 import { CallAppOptions, DownloadConfig } from '../index'
-import { logError } from '../libs/utils'
+import { logError, logInfo } from '../libs/utils'
 
 export const enum AppFlags {
   ZZ = 1,
@@ -98,11 +98,12 @@ const isZZHunterPath = (path: string): boolean => /^zzhunter:/i.test(path)
 
 export const handlePath2appName = (path: string) => {
   let appName
-
+  path = path && decodeURIComponent(path)
   if (isZZSeekerPath(path)) appName = AppNames[AppFlags.ZZSeeker]
   if (isZZPath(path)) appName = AppNames[AppFlags.ZZ]
   if (isZZSellerPath(path)) appName = AppNames[AppFlags.ZZSeller]
   if (isZZHunterPath(path)) appName = AppNames[AppFlags.ZZHunter]
 
+  logInfo('handlePath2appName', appName, path)
   return { appName }
 }
