@@ -10,9 +10,9 @@ import { AppFlags } from './targetApp'
 
 export const AppNames = {
   [AppFlags.ZZ]: 'zz',
+  [AppFlags.ZZSeeker]: 'zlj',
   [AppFlags.ZZHunter]: 'zzHunter',
   [AppFlags.ZZSeller]: 'zzSeller',
-  [AppFlags.ZZSeeker]: 'zzSeeker',
 }
 
 export interface CallAppInstance {

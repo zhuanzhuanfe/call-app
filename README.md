@@ -2,8 +2,6 @@
 
 `@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
 
-体验地址：
-
 ## 快速上手
 
 ### Step1：安装
@@ -68,6 +66,15 @@ callApp.download()
 
 - **onWechatReady** `Function` 微信端初始化安装后的回调
 
+- **customConfig** `Object` 用户定义配置项, 高阶配置，用法可参考下面示例
+  - **schemeUrl** `String`  scheme uri 地址
+  - **downloadConfig** `Object`  下载配置，可选，不传则采用 landingPage
+    -**ios**-  `String`  app-store 链接
+    -**android**- `String`  apk下载链接
+    -**android_yyb**- `String` 应用宝 下载链接
+  -**universalLink**- `String` universal-link链接，可选，ios 会优先采用 universal-link
+  -**landingPage**- `String` 唤起失败落地页，一般是下载中间页，优先级高于 `downloadConfig`
+
 #### api 方法
 
 - **start** `Function` 唤起功能
@@ -95,11 +102,12 @@ callApp.download(options)
 ```javascript
 // 唤起 转转
 const callApp = new CallApp({
-  path: 'jump/shortVideo/videoHome/jump', //
+  path: 'jump/shortVideo/videoHome/jump',
+  // path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix 的亦可
   channelId: '', //  渠道id
   deeplinkId: '', // 后台配置项
-  // targetApp 默认 转转, 优先级低于 path 的 prefix
-  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转
+  // targetApp 参数优先级低于 path 的 prefix
+  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转， zzHunter 代表采货侠，默认 zz
   targetApp: 'zz',
   callStart: () => {
     console.log('触发 开始唤起钩子')
@@ -127,7 +135,8 @@ callApp.download()
 ```javascript
 // 唤起 找靓机
 const callApp = new CallApp({
-  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  path: 'native_api?type=132',
+  // path: 'zljgo://native_api?type=132'
   targetApp: 'zlj',
   callStart: () => {
     console.log('触发 开始唤起钩子')
@@ -172,21 +181,21 @@ callApp.start({
 
 // 唤起找靓机
 callApp.start({
-  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  // path: 'zljgo://native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
+  path: 'native_api?type=132',
+  // path: 'zljgo://native_api?type=132',
   targetApp: 'zlj', // 默认 转转
 })
 
 // 下载转转
 callApp.download({
-  targetApp: 'zz', // 默认 转转
+  targetApp: 'zz',
   channelId: '',
   deeplinkId: ''
 })
 
 // 下载找靓机
 callApp.download({
-  targetApp: 'zlj',  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转;
+  targetApp: 'zlj',
 })
 ```
 
@@ -295,8 +304,17 @@ callApp.start()
 
 ---
 
-### bug or PR
+### Bug or PR
 
 [提交 Issues](https://gitlab.zhuanspirit.com/zz-fe-common/call-app/issues)
 
 [提交 PR](https://gitlab.zhuanspirit.com/zz-fe-common/call-app/merge_requests)
+
+
+
+### Feature
+
+- [] 支持配置中心
+  - 未来有需要可以引入配置中心的概念，方便对目标app进行统一配置管理，方便新增/移除目标app逻辑
+- [] 支持android intent 协议，以及面向未来的 deferAppLinks
+  - 目前此方案兼容性差（只有chrome支持)，暂且舍弃

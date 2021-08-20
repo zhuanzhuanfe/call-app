@@ -127,10 +127,10 @@ export default class CallApp {
       isZZSeeker ||
       (isWechat && targetApp === AppNames[AppFlags.ZZ])
     ) {
-      // by native-app launch
+      // by native-app js-sdk launch
       sdkLaunch(this)
     } else {
-      // by uri/url launch
+      // by deepLinks/appLinks launch
       launch(this)
     }
   }
