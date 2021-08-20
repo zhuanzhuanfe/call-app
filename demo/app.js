@@ -37,27 +37,32 @@ function initMiniPage(opts) {
     },
   }
 
-  var callApp = (window.callApp = new CallApp({
-    path: opts.path || 'jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
-    channelId: opts.channelId || 'BM_GJ618XC',
-    targetApp: opts.targetApp || 'zz',
-    wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
-    customConfig: opts.customConfig,
-    // deeplinkId: getQuery('channelId')
-    callStart: hooks.callStart,
-    callSuccess: hooks.callSuccess,
-    callFailed: hooks.callFailed,
-    callDownload: hooks.callDownload,
-    callError: hooks.callError,
-  }))
+  var callApp = (window.callApp = new CallApp(opts))
   //
   btn_open.onclick = function () {
     console.log(window.navigator.userAgent)
-    callApp.start()
+    callApp.start({
+      // path: opts.path || 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
+      // path: 'zljgo%3A%2F%2Fnative_api%3Ftype%3D132',
+      path: 'zzhunter%3A%2F%2Fjump%2Fcore%2FmainPage%2Fjump',
+      universal: false,
+      channelId: opts.channelId || 'BM_GJ618XC',
+      // targetApp: opts.targetApp || 'zz',
+      wechatStyle: 1, // 1表示浮层右上角，2表示浮层按钮
+      customConfig: opts.customConfig,
+      // deeplinkId: getQuery('channelId')
+      callStart: hooks.callStart,
+      callSuccess: hooks.callSuccess,
+      callFailed: hooks.callFailed,
+      callDownload: hooks.callDownload,
+      callError: hooks.callError,
+    })
   }
 
   btn_download.onclick = function () {
-    callApp.download()
+    callApp.download({
+      targetApp: 'zzHunter',
+    })
   }
 
   app.style.cssText = 'display: flex;flex-direction: column;margin-top: 100px'

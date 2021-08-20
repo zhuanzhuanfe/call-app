@@ -37,7 +37,6 @@ export const launch = (instance: CallAppInstance) => {
   } = options
 
   // 唤端失败时落地处理
-  let checkOpenFall: any
   const supportUniversal = universal
   const supportIntent = intent
 
@@ -74,13 +73,13 @@ export const launch = (instance: CallAppInstance) => {
     } else if (isLow9Ios) {
       logInfo('isIos - version < 9', isIos, isLow9Ios, schemeURL)
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       schemeURL && evokeByIFrame(schemeURL)
     } else if (!supportUniversal && isBaidu) {
       logInfo('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       showMask()
     } else if (!supportUniversal && (isWeibo || isWechat)) {
@@ -99,13 +98,13 @@ export const launch = (instance: CallAppInstance) => {
         schemeURL
       )
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       schemeURL && evokeByTagA(schemeURL)
     } else if (isQuark) {
       logInfo('isQuark', isQuark, schemeURL)
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       schemeURL && evokeByLocation(schemeURL)
     } else {
@@ -114,7 +113,7 @@ export const launch = (instance: CallAppInstance) => {
       // 更新app 时候，universalLink 可能会失效, u-link 自身的坑。
       logInfo('isIos - support universalLink', universalLink)
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       universalLink && evokeByLocation(universalLink)
 
@@ -122,7 +121,7 @@ export const launch = (instance: CallAppInstance) => {
       // 测试过程中发现： schemeURL 比 universalLink 稳定，但缺点是需要用户二次确认
       // setTimeout(() => {
       //   evokeByLocation(schemeURL)
-      //   checkOpenFall = handleFall
+      //   handleFall
       // });
     }
   } else if (isAndroid) {
@@ -131,12 +130,12 @@ export const launch = (instance: CallAppInstance) => {
     if (isOriginalChrome) {
       if (supportIntent) {
         logInfo('isAndroid - supportIntent', isAndroid && supportIntent)
-        checkOpenFall = handleCheck(delay)
+        handleCheck(delay)
         // app-links 无法处理 失败回调， 原因同 universal-link
         intentLink && evokeByLocation(intentLink)
       } else {
         logInfo('isAndroid - !supportIntent', isAndroid && !supportIntent)
-        checkOpenFall = handleCheck(delay)
+        handleCheck(delay)
         // scheme 在 andriod chrome 25+ 版本上 iframe 无法正常拉起
         schemeURL && evokeByLocation(schemeURL)
       }
@@ -153,7 +152,7 @@ export const launch = (instance: CallAppInstance) => {
       // 其他浏览器 通过 scheme 唤起，失败则下载
       logInfo('isAndroid - schemeURL')
 
-      checkOpenFall = handleCheck(delay)
+      handleCheck(delay)
 
       schemeURL && evokeByLocation(schemeURL)
     }
@@ -162,11 +161,5 @@ export const launch = (instance: CallAppInstance) => {
   } else {
     callError()
     logError('your platform is not support, please contact developer')
-  }
-
-  logInfo('checkOpenFall', checkOpenFall)
-
-  if (checkOpenFall) {
-    checkOpenFall()
   }
 }

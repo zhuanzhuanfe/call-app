@@ -33,12 +33,14 @@ export const appUniversalPath = {
 export const getTargetInfo = (options: CallAppOptions) => {
   let { path, targetApp } = options
   // 从 path 解析 target-app
-  if (!path) {
-    logError(`options.path '${options.path}' is Invalid， please check! \n`)
+  if (!path && !targetApp) {
+    logError(
+      `options.path '${options.path}' or options.targetApp '${options.targetApp}' is Invalid， please check! \n`
+    )
     return
   }
 
-  const { appName } = handlePath2appName(path)
+  const { appName } = handlePath2appName(path || '')
   // 优先取 options.targetApp // 默认 配置为 转转
   targetApp = targetApp || appName || AppNames[AppFlags.ZZ]
 

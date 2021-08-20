@@ -47,9 +47,9 @@ callApp.download()
 ```
 #### 参数配置项
 
-- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址（选填）
+- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址
 - **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
-- **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`
+- **targetApp** `String` 调起的目标 app，优先级高于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`  （选填）
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
 - **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
 - **middleWareUrl** `String` 中转 url，如为空则默认跳转下载安装包或 appstore
@@ -64,7 +64,7 @@ callApp.download()
   - **openType** `String` 页面类型，可选值为 `home首页（默认），detail详情页，order订单，mysell我卖出的，person个人中心，village小区，web页面`
   - **id** `String` 存放 id 或者 url，配合`openType` 的值来用
 
-- **onWechatReady** `Function` 微信端初始化安装后的回调
+- **onWechatReady** `Function` 微信端sdk初始化成功后的回调
 
 - **customConfig** `Object` 用户定义配置项, 高阶配置，用法可参考下面示例
   - **schemeUrl** `String`  scheme uri 地址
@@ -106,7 +106,7 @@ const callApp = new CallApp({
   // path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix 的亦可
   channelId: '', //  渠道id
   deeplinkId: '', // 后台配置项
-  // targetApp 参数优先级低于 path 的 prefix
+  // targetApp 参数优先级高于 path 的 prefix
   // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转， zzHunter 代表采货侠，默认 zz
   targetApp: 'zz',
   callStart: () => {
@@ -138,6 +138,7 @@ const callApp = new CallApp({
   path: 'native_api?type=132',
   // path: 'zljgo://native_api?type=132'
   targetApp: 'zlj',
+  universal: false, // 找靓机目前还不支持 universalLink
   callStart: () => {
     console.log('触发 开始唤起钩子')
   },
@@ -174,16 +175,16 @@ const callApp = new CallApp()
 // 唤起转转
 callApp.start({
   path: 'jump/shortVideo/videoHome/jump',
-  channelId: '', //  渠道id
-  deeplinkId: '', //
-  targetApp: 'zz', // 默认 转转
+  channelId: '',
+  deeplinkId: '',
 })
 
 // 唤起找靓机
 callApp.start({
   path: 'native_api?type=132',
   // path: 'zljgo://native_api?type=132',
-  targetApp: 'zlj', // 默认 转转
+  targetApp: 'zlj',
+  universal: false, // 找靓机目前还不支持 universalLink
 })
 
 // 下载转转
@@ -280,25 +281,25 @@ callApp.start()
 | weibo      | 不支持        | 不支持                | 支持               | 不支持             | 支持               |
 | qq         | 支持，应用宝  | 支持                  | 支持               | 支持               | 支持               |
 
-### native sdk [待完善]
+### native sdk
 
 #### ios / android
 
 
-|                 | 转转 | 采货侠 | 找靓机 | 卖家版 |
-| --------------- | ---- | ------ | ------ | ------ |
-| 目标app: 转转   | x    | ✅      | x      | ✅      |
-| 目标app: 采货侠 | ✅    | x      | x      | x      |
-| 目标app: 找靓机 | x    | x      | x      | x      |
-| 目标app: 采货侠 | ✅    | x      | x      | x      |
+|                 | 转转 | 采货侠 | 找靓机 | 卖家版 | 58app | 微信 |
+| --------------- | ---- | ------ | ------ | ------ | ----- | ---- |
+| 目标app: 转转   | x    | ✅      | -      | ✅      | ✅     | ✅    |
+| 目标app: 采货侠 | ✅    | x      | x      | x      | x     | x    |
+| 目标app: 找靓机 | -    | x      | x      | x      | x     | x    |
+| 目标app: 采货侠 | ✅    | x      | x      | x      | x     | x    |
 
 
 ---
 
 ### Todo:
 
-- [] 支持找靓机app/转转app互相唤起
-- [] 找靓机支持 ulink
+- [] 支持找靓机app、转转app 内互相调起
+- [] 找靓机支持 universalLink
 - [] 支持转转app内唤起转转微信小程序
 
 
