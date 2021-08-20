@@ -9,11 +9,11 @@
 
 新的架构:
 
-<img style="max-width:600px;" src="./img/new-arch.png" alt="pic">
+<img width="600" src="./img/new-arch.png" alt="pic">
 
 新旧目录 diff:
 
-<img style="max-width:500px;" src="./img/files-diff.png" alt="pic">
+<img width="500" src="./img/files-diff.png" alt="pic">
 
 #### 2. 无用代码剔除，代码逻辑优化，缺陷修复，添加 log 提示信息
 
@@ -40,11 +40,11 @@
 
 体积:
 
-<img style="max-width:500px;" src="./img/size-diff.png">
+<img width="500" src="./img/size-diff.png">
 
 测试 demo:
 
-<img style="max-width:500px;" src="./img/demo-diff.png">
+<img width="500" src="./img/demo-diff.png">
 
 #### 6. 添加调试信息，异常信息，方便定位问题
 
@@ -53,7 +53,7 @@
 
 log 统一捕获:
 
-<img style="max-width:500px;" src="./img/loginfo.png">
+<img width="500" src="./img/loginfo.png">
 
 #### 7. 新增 hooks，方便数据埋点
 
@@ -62,4 +62,4 @@ log 统一捕获:
 
 #### 8. 唤起中间页兼容找靓机/采货侠
 
-<img style="max-width:500px;" src="./img/mid-page.png">
+<img width="500" src="./img/mid-page.png">
