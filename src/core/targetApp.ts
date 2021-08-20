@@ -45,7 +45,7 @@ export const getTargetInfo = (options: CallAppOptions) => {
   targetApp = targetApp || appName || AppNames[AppFlags.ZZ]
 
   if (!targetApp) {
-    logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
+    logError(`(targetApp || appName) '${targetApp}' is Invalid， please check! \n`)
     return
   }
   // 默认是 转转
