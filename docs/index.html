@@ -81,7 +81,6 @@
     <section class="readme-section">
         <article><h1>简介</h1>
 <p><code>@zz-common/call-app</code> 是一个基于 <code>typescript</code> 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。</p>
-<p>体验地址：</p>
 <h2>快速上手</h2>
 <h3>Step1：安装</h3>
 <p>通过 <code>npm</code> 安装</p>
@@ -115,13 +114,13 @@ callApp.download()
 <h4>参数配置项</h4>
 <ul>
 <li>
-<p><strong>path</strong> <code>String</code> 调起 app 时，默认打开的页面，类型为 app 的统跳地址（选填）</p>
+<p><strong>path</strong> <code>String</code> 调起 app 时，默认打开的页面，类型为 app 的统跳地址</p>
 </li>
 <li>
 <p><strong>channelId</strong> <code>String</code> 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认<code>923</code>（选填）</p>
 </li>
 <li>
-<p><strong>targetApp</strong> <code>String</code> 调起的目标 app，其中：zz(转转app), zlj(找靓机app), zzHunter(采货侠app), zzSeller(转转卖家版 已废弃), wxMini(微信小程序 未支持)，默认为<code>zz</code></p>
+<p><strong>targetApp</strong> <code>String</code> 调起的目标 app，优先级高于 path 的 prefix，其中：<code>zz</code>(代表转转app), <code>zlj</code>(代表找靓机app), <code>zzHunter</code>(代表采货侠app), <code>zzSeller</code>(代表转转卖家版、已废弃), <code>wxMini</code>(代表微信小程序、未支持)，默认为<code>zz</code>  （选填）</p>
 </li>
 <li>
 <p><strong>universal</strong> <code>Boolean</code> 是否开启通用链接调起模式，默认为<code>true</code></p>
@@ -158,7 +157,22 @@ callApp.download()
 </ul>
 </li>
 <li>
-<p><strong>onWechatReady</strong> <code>Function</code> 微信端初始化安装后的回调</p>
+<p><strong>onWechatReady</strong> <code>Function</code> 微信端sdk初始化成功后的回调</p>
+</li>
+<li>
+<p><strong>customConfig</strong> <code>Object</code> 用户定义配置项, 高阶配置，用法可参考下面示例</p>
+<ul>
+<li><strong>schemeUrl</strong> <code>String</code>  scheme uri 地址</li>
+<li><strong>downloadConfig</strong> <code>Object</code>  下载配置，可选，不传则采用 landingPage
+<ul>
+<li><strong>ios</strong>  <code>String</code>  app-store 链接</li>
+<li><strong>android</strong> <code>String</code>  apk下载链接</li>
+<li><strong>android_yyb</strong> <code>String</code> 应用宝 下载链接</li>
+</ul>
+</li>
+<li><strong>universalLink</strong> <code>String</code> universal-link链接，可选，ios 会优先采用 universal-link</li>
+<li><strong>landingPage</strong> <code>String</code> 唤起失败落地页，一般是下载中间页，优先级高于 <code>downloadConfig</code></li>
+</ul>
 </li>
 </ul>
 <h4>api 方法</h4>
@@ -182,11 +196,12 @@ callApp.download(options)
 <h5>1. 初始化实例时配置 options，唤起 转转/找靓机</h5>
 <pre class="prettyprint source lang-javascript"><code>// 唤起 转转
 const callApp = new CallApp({
-  path: 'jump/shortVideo/videoHome/jump', //
+  path: 'jump/shortVideo/videoHome/jump',
+  // path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix 的亦可
   channelId: '', //  渠道id
   deeplinkId: '', // 后台配置项
-  // targetApp 默认 转转, 优先级低于 path 的 prefix
-  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转
+  // targetApp 参数优先级高于 path 的 prefix
+  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转， zzHunter 代表采货侠，默认 zz
   targetApp: 'zz',
   callStart: () => {
     console.log('触发 开始唤起钩子')
@@ -212,8 +227,10 @@ callApp.download()
 </code></pre>
 <pre class="prettyprint source lang-javascript"><code>// 唤起 找靓机
 const callApp = new CallApp({
-  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  targetApp: 'zzSeeker',
+  path: 'native_api?type=132',
+  // path: 'zljgo://native_api?type=132'
+  targetApp: 'zlj',
+  universal: false, // 找靓机目前还不支持 universalLink
   callStart: () => {
     console.log('触发 开始唤起钩子')
   },
@@ -246,33 +263,31 @@ const callApp = new CallApp()
 // 唤起转转
 callApp.start({
   path: 'jump/shortVideo/videoHome/jump',
-  channelId: '', //  渠道id
-  deeplinkId: '', //
-  targetApp: 'zz', // 默认 转转
+  channelId: '',
+  deeplinkId: '',
 })
 
 // 唤起找靓机
 callApp.start({
-  path: 'native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  // path: 'zljgo://native_api?type=132&content=%7B%22extra_tab_index%22%3A%220%22%7D',
-  targetApp: 'zzSeeker', // 默认 转转
+  path: 'native_api?type=132',
+  // path: 'zljgo://native_api?type=132',
+  targetApp: 'zlj',
+  universal: false, // 找靓机目前还不支持 universalLink
 })
 
 // 下载转转
 callApp.download({
-  targetApp: 'zz', // 默认 转转
+  targetApp: 'zz',
   channelId: '',
   deeplinkId: ''
 })
 
 // 下载找靓机
 callApp.download({
-  targetApp: 'zlj',  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转;
+  targetApp: 'zlj',
 })
 </code></pre>
-<ol>
-<li>第三方配置（高阶）</li>
-</ol>
+<h5>3. 第三方配置（高阶）</h5>
 <p>⚠️ 注意：</p>
 <p>3-1. 如果配置了 <code>customConfig</code> 参数，则非 hooks 参数（如 path，targetApp 等）的配置不再生效。</p>
 <p>3-2 <code>landingPage</code> 配置参数优先级大于 <code>downloadConfig</code></p>
@@ -299,7 +314,6 @@ callApp.start()
 <h2>兼容性 😈</h2>
 <h3>H5</h3>
 <h4>ios: [iphoneXR]</h4>
-<p>目标app: 转转</p>
 <table>
 <thead>
 <tr>
@@ -318,7 +332,7 @@ callApp.start()
 <td>ulink 支持</td>
 <td>不支持</td>
 <td>支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>qq 浏览器</td>
@@ -326,7 +340,7 @@ callApp.start()
 <td>ulink 支持</td>
 <td>支持</td>
 <td>支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>uc 浏览器</td>
@@ -334,7 +348,7 @@ callApp.start()
 <td>ulink 支持</td>
 <td>支持</td>
 <td>ulink支持, scheme 不支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>百度浏览器</td>
@@ -342,7 +356,7 @@ callApp.start()
 <td>ulink 支持, scheme 不支持</td>
 <td>支持</td>
 <td>ulink支持 scheme 不支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>夸克浏览器</td>
@@ -358,7 +372,7 @@ callApp.start()
 <td>ulink 支持</td>
 <td>支持</td>
 <td>支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>sougou 浏览器</td>
@@ -366,7 +380,7 @@ callApp.start()
 <td>ulink 支持</td>
 <td>支持</td>
 <td>支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>wx</td>
@@ -374,7 +388,7 @@ callApp.start()
 <td>ulink 支持, scheme 不支持</td>
 <td>支持</td>
 <td>支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>weibo</td>
@@ -382,7 +396,7 @@ callApp.start()
 <td>ulink 支持, scheme 不支持</td>
 <td>支持</td>
 <td>ulink支持,scheme 不支持</td>
-<td>不支持（跳 ulink）</td>
+<td>ulink不支持</td>
 </tr>
 <tr>
 <td>qq</td>
@@ -390,12 +404,11 @@ callApp.start()
 <td>ulink 支持</td>
 <td>支持</td>
 <td>支持</td>
-<td>支持 (不会跳 ulink)</td>
+<td>支持</td>
 </tr>
 </tbody>
 </table>
 <h4>android: [huawei-p30]</h4>
-<p>目标app: 转转</p>
 <table>
 <thead>
 <tr>
@@ -491,7 +504,6 @@ callApp.start()
 </tbody>
 </table>
 <h4>android: [mi-9]</h4>
-<p>目标app: 转转</p>
 <table>
 <thead>
 <tr>
@@ -578,7 +590,7 @@ callApp.start()
 </tr>
 </tbody>
 </table>
-<h3>native sdk [待完善]</h3>
+<h3>native sdk</h3>
 <h4>ios / android</h4>
 <table>
 <thead>
@@ -588,6 +600,8 @@ callApp.start()
 <th>采货侠</th>
 <th>找靓机</th>
 <th>卖家版</th>
+<th>58app</th>
+<th>微信</th>
 </tr>
 </thead>
 <tbody>
@@ -595,18 +609,24 @@ callApp.start()
 <td>目标app: 转转</td>
 <td>x</td>
 <td>✅</td>
-<td>x</td>
+<td>-</td>
+<td>✅</td>
+<td>✅</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>目标app: 采货侠</td>
 <td>✅</td>
+<td>x</td>
+<td>x</td>
 <td>x</td>
 <td>x</td>
 <td>x</td>
 </tr>
 <tr>
 <td>目标app: 找靓机</td>
+<td>-</td>
+<td>x</td>
 <td>x</td>
 <td>x</td>
 <td>x</td>
@@ -615,6 +635,8 @@ callApp.start()
 <tr>
 <td>目标app: 采货侠</td>
 <td>✅</td>
+<td>x</td>
+<td>x</td>
 <td>x</td>
 <td>x</td>
 <td>x</td>
@@ -624,14 +646,27 @@ callApp.start()
 <hr>
 <h3>Todo:</h3>
 <ul>
-<li>[] 支持找靓机app/转转app互相唤起</li>
-<li>[] 找靓机支持 ulink</li>
+<li>[] 支持找靓机app、转转app 内互相调起</li>
+<li>[] 找靓机支持 universalLink</li>
 <li>[] 支持转转app内唤起转转微信小程序</li>
 </ul>
 <hr>
-<h3>bug or PR</h3>
+<h3>Bug or PR</h3>
 <p><a href="https://gitlab.zhuanspirit.com/zz-fe-common/call-app/issues">提交 Issues</a></p>
-<p><a href="https://gitlab.zhuanspirit.com/zz-fe-common/call-app/merge_requests">提交 PR</a></p></article>
+<p><a href="https://gitlab.zhuanspirit.com/zz-fe-common/call-app/merge_requests">提交 PR</a></p>
+<h3>Feature</h3>
+<ul>
+<li>[] 支持配置中心
+<ul>
+<li>未来有需要可以引入配置中心的概念，方便对目标app进行统一配置管理，方便新增/移除目标app逻辑</li>
+</ul>
+</li>
+<li>[] 支持android intent 协议，以及面向未来的 deferAppLinks
+<ul>
+<li>目前此方案兼容性差（只有chrome支持)，暂且舍弃</li>
+</ul>
+</li>
+</ul></article>
     </section>
 
 
@@ -677,7 +712,7 @@ callApp.start()
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
 	
-		on 2021-08-19T19:59:33+08:00
+		on 2021-08-20T11:32:33+08:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -69,11 +69,11 @@ callApp.download()
 - **customConfig** `Object` 用户定义配置项, 高阶配置，用法可参考下面示例
   - **schemeUrl** `String`  scheme uri 地址
   - **downloadConfig** `Object`  下载配置，可选，不传则采用 landingPage
-    -**ios**-  `String`  app-store 链接
-    -**android**- `String`  apk下载链接
-    -**android_yyb**- `String` 应用宝 下载链接
-  -**universalLink**- `String` universal-link链接，可选，ios 会优先采用 universal-link
-  -**landingPage**- `String` 唤起失败落地页，一般是下载中间页，优先级高于 `downloadConfig`
+    - **ios**  `String`  app-store 链接
+    - **android** `String`  apk下载链接
+    - **android_yyb** `String` 应用宝 下载链接
+  - **universalLink** `String` universal-link链接，可选，ios 会优先采用 universal-link
+  - **landingPage** `String` 唤起失败落地页，一般是下载中间页，优先级高于 `downloadConfig`
 
 #### api 方法
 
