@@ -21,7 +21,6 @@ export interface CallAppInstance {
   download: () => void
   targetInfo?: TargetInfo
   downloadLink?: string
-  APP?: null | Record<string, any>
   urlScheme?: string
   universalLink?: string
   intentLink?: string

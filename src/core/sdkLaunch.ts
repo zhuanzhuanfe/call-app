@@ -6,7 +6,7 @@ import { logError, logInfo } from '../libs/utils'
 import { AppFlags } from './targetApp'
 
 /**
- * native-sdk 方式 唤起 (目前支持 58app/微信)
+ * native-sdk 方式 唤起, 根据不同运行时环境和目标app, 加载对应的 sdk
  * @param {Object} instance
  */
 export const sdkLaunch = async (instance: CallAppInstance) => {
@@ -20,6 +20,7 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       openZZIn58(instance, zzAppInfo)
     } else if (isWechat) {
       // wx-js-sdk
+      logInfo('isWXSDK', isWechat)
       openZZInWX(instance)
     } else if (isZZ) {
       // zz-js-sdk

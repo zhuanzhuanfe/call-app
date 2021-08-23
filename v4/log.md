@@ -59,6 +59,7 @@ log 统一捕获:
 
 - 7-1. 新增三个钩子函数 `callStart / callSuccess / callFailed`
 - 7-2. 新增内部异常钩子 `callError`
+- 7-2. 新增触发下载钩子 `callDownload`
 
 #### 8. 唤起中间页兼容找靓机/采货侠
 

@@ -171,7 +171,7 @@ export const logError = (...args: any[]): void => {
   }
 }
 //
-export const logInfo = (...args: any[]) => {
+export const logInfo = (...args: any[]): void => {
   if (window.__callAppDev__) {
     //
     console.log.call(undefined, ...args)

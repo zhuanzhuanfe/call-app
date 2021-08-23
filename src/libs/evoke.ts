@@ -78,6 +78,7 @@ export function evokeByIFrame(uri: string) {
 
 /**
  * hack 检测是否唤端成功
+ * 原理见： https://developer.mozilla.org/zh-CN/docs/Web/API/Page_Visibility_API
  * @param failure - 唤端失败回调函数
  * @param success - 唤端成功回调函数
  * @param error - 唤端异常函数
