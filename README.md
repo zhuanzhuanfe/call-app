@@ -49,7 +49,7 @@ callApp.download()
 
 - **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址
 - **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
-- **targetApp** `String` 调起的目标 app，优先级高于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`  （选填）
+- **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`  （选填）
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
 - **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
 - **middleWareUrl** `String` 中转 url，如为空则默认跳转下载安装包或 appstore
@@ -106,7 +106,6 @@ const callApp = new CallApp({
   // path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix 的亦可
   channelId: '', //  渠道id
   deeplinkId: '', // 后台配置项
-  // targetApp 参数优先级高于 path 的 prefix
   // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转， zzHunter 代表采货侠，默认 zz
   targetApp: 'zz',
   callStart: () => {
@@ -184,7 +183,7 @@ callApp.start({
   path: 'native_api?type=132',
   // path: 'zljgo://native_api?type=132',
   targetApp: 'zlj',
-  universal: false, // 找靓机目前还不支持 universalLink
+  universal: false, // 找靓机、采货侠 目前还不支持 universalLink
 })
 
 // 下载转转
@@ -316,6 +315,6 @@ callApp.start()
 <!-- ### Feature
 
 - [] 支持配置中心
-  - 未来有需要可以引入配置中心的概念，方便对目标app进行统一配置管理，方便新增/移除目标app逻辑
+  - 未来可以引入配置中心的概念，方便对目标app进行统一配置管理、app平台相关逻辑的平滑处理，方便新增/移除目标app逻辑
 - [] 支持android intent 协议，以及面向未来的 deferAppLinks
   - 目前此方案兼容性差（只有chrome支持)，暂且舍弃 -->
