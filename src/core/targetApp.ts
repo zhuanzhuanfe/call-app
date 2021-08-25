@@ -100,7 +100,6 @@ const isZZHunterPath = (path: string): boolean => /^zzhunter:/i.test(path)
 
 export const handlePath2appName = (path: string) => {
   let appName
-  path = path && decodeURIComponent(path)
   if (isZZSeekerPath(path)) appName = AppNames[AppFlags.ZZSeeker]
   if (isZZPath(path)) appName = AppNames[AppFlags.ZZ]
   if (isZZSellerPath(path)) appName = AppNames[AppFlags.ZZSeller]

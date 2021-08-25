@@ -40,7 +40,6 @@ export const generateScheme = (instance: CallAppInstance): string => {
   const { options, targetInfo } = instance
   let { path, urlSearch } = options
 
-  path = path && decodeURIComponent(path)
   path = path || (urlSearch ? getSchemeByUrlSearch(urlSearch) : '')
   // new Regexp(zzInnerSchemeReg).test(path)
   // 检验 path 中是否有 scheme-prefix

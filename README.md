@@ -47,7 +47,7 @@ callApp.download()
 ```
 #### 参数配置项
 
-- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址
+- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址 [统跳协议格式](#协议格式)
 - **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
 - **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序、未支持)，默认为`zz`  （选填）
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
@@ -294,6 +294,14 @@ callApp.start()
 
 
 ---
+
+
+### 相关资料
+#### 协议格式
+
+转转/采货侠 统跳协议地址 [统跳平台](https://jump.zhuanspirit.com/#/zhuanzhuan)
+
+找靓机 统跳协议地址 [统跳文档](https://dashen.zhuanspirit.com/pages/viewpage.action?pageId=73875098)
 
 ### Todo:
 
