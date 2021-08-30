@@ -67,7 +67,6 @@ export default class CallApp {
 
   // Create an instance of CallApp
   constructor(options?: CallAppOptions) {
-    // 原生app js-sdk 实例, 用于调用原生 app能力 (目前支持58app/wx平台)
     options && this.init(options)
   }
 

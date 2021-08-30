@@ -93,6 +93,7 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 
   let downloadUrl: string | undefined = ''
   // 下载配置
+  // (目前 h5 环境 只考虑 zz、zlj、zzHunter)
   if (flag & AppFlags.ZZ) {
     // 目标app 是转转
     if (isWechat && is58Host) {
@@ -117,7 +118,7 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
       downloadUrl = `${downloadConfig?.api}?channelId=${channelId}${deeplink}`
     }
   } else if (flag & AppFlags.ZZSeeker || flag & AppFlags.ZZHunter) {
-    // 目标app 是找靓机 (目前 h5 环境 只考虑 zz 和 zlj)
+    // 目标app 是找靓机、采货侠
     if (isIos) {
       downloadUrl = downloadConfig?.ios
     } else if (isWechat && isAndroid) {

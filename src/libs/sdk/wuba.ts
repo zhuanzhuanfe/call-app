@@ -37,8 +37,7 @@ export const sdk58 = {
 }
 /**
  * 58app内打开转转
- * @param schemeUrl
- * @param app
+ * @param instance
  * @param appInfo
  */
 export const openZZIn58 = (instance: CallAppInstance, appInfo: AppInfo) => {
