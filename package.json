@@ -1,6 +1,6 @@
 {
   "name": "@zz-common/call-app",
-  "version": "4.0.0",
+  "version": "4.0.0-beta.13",
   "description": "通用的唤起app的库",
   "scripts": {
     "ts-check": "tsc --noEmit",
@@ -51,7 +51,7 @@
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write",
-      "git add ."
+      "git add"
     ],
     "**/*.{js,jsx,ts,tsx}": "npm run lint-check"
   },

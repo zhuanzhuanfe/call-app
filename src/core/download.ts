@@ -13,6 +13,7 @@ export const AppNames = {
   [AppFlags.ZZSeeker]: 'zlj',
   [AppFlags.ZZHunter]: 'zzHunter',
   [AppFlags.ZZSeller]: 'zzSeller',
+  [AppFlags.WXMini]: 'wxMini',
 }
 
 export interface CallAppInstance {
@@ -60,6 +61,13 @@ export const allDownloadUrls = {
     android: '',
     android_api: '',
     android_yyb: '',
+  },
+  // 唤起微信小程序 目前走 native-sdk
+  [AppFlags.WXMini]: {
+    ios: 'https://itunes.apple.com/cn/app/id414478124',
+    android: 'market://details?id=com.tencent.mm',
+    android_api: 'https://dldir1.qq.com/weixin/android/weixin8011android1980.apk',
+    android_yyb: 'https://sj.qq.com/myapp/detail.htm?apkName=com.tencent.mm',
   },
 }
 
@@ -117,8 +125,8 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
 
       downloadUrl = `${downloadConfig?.api}?channelId=${channelId}${deeplink}`
     }
-  } else if (flag & AppFlags.ZZSeeker || flag & AppFlags.ZZHunter) {
-    // 目标app 是找靓机、采货侠
+  } else if (flag & AppFlags.ZZSeeker || flag & AppFlags.ZZHunter || flag & AppFlags.WXMini) {
+    // 目标app 是找靓机、采货侠、微信小程序
     if (isIos) {
       downloadUrl = downloadConfig?.ios
     } else if (isWechat && isAndroid) {

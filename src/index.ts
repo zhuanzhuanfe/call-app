@@ -189,11 +189,13 @@ export interface TargetInfo {
   universalPath: string
   downloadConfig: DownloadConfig
 }
+// 目前是硬编码  需要优化
+export type TargetApp = 'zz' | 'zlj' | 'zzHunter' | 'wxMini' | undefined
 export interface CallAppOptions {
   // 唤起的页面 path
   path?: string
   // 唤起的目标app
-  targetApp?: string
+  targetApp?: TargetApp
   // 是否开启 universal-link, 默认 true
   universal?: boolean
   // 是否开启 app-links, 默认 false

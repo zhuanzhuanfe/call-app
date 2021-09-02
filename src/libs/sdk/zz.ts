@@ -1,6 +1,6 @@
 import { AppFlags, appSchemePrefix } from '../../core/targetApp'
 import { CallAppInstance } from '../../index'
-import { dependencies, SDKNames } from '../config'
+import { dependencies, SDKNames, wxInfo } from '../config'
 import { checkOpen } from '../evoke'
 import { loadJSArr, logError, logInfo } from '../utils'
 
@@ -9,21 +9,32 @@ import { loadJSArr, logError, logInfo } from '../utils'
 
 可主动唤起的场景(需求)：
 
-｜ 目标app｜ 转转  ｜ 找靓机 ｜ 采货侠  ｜ 卖家版 ｜
-｜ 转转   ｜      ｜  -    ｜   ✅   ｜  ✅   ｜
-｜ 找靓机 ｜  -    ｜       ｜        ｜       ｜
-｜ 采货侠 ｜  ✅   ｜       ｜        ｜       ｜
-｜ 卖家版 ｜  ✅   ｜       ｜        ｜       ｜
-
+｜ 目标app   ｜ 转转  ｜ 找靓机 ｜ 采货侠  ｜ 卖家版 ｜
+｜ 转转      ｜       ｜  -   ｜   ✅    ｜  ✅   ｜
+｜ 找靓机    ｜  -    ｜       ｜        ｜       ｜
+｜ 采货侠    ｜  ✅   ｜       ｜        ｜       ｜
+｜ 卖家版    ｜  ✅   ｜       ｜        ｜       ｜
+| zz-wx小程序|  ✅    |       ｜        ｜       ｜
 */
 
 // 打开 转转内部 app
 // zz  zzSeller zzHunter 都走 zz-js-sdk + 统跳地址
 // 统跳地址平台： https://jump.zhuanspirit.com/#/zhuanzhuan?page=1&search=open
 
+// 目前业务只需调起转转 wx-mini
+const miniprogramType = 0 // 默认小程序 0 正式版 / 1 开发版 2 体验版
+const zzWXMiniAppId = wxInfo.miniID //转转小程序 appid
+//
 const openZZJumpPath = `jump/core/openZhuanZhuan/jump`
 const openZZHunterJumpPath = `jump/core/openHunter/jump`
 const openZZSellerJumpPath = `jump/core/openZhuanZhuanSeller/jump`
+
+// 如果 targetAPP 是 wx小程序 并且 path 是页面地址，需要特殊处理(根据统跳协议地址自动拼接)
+export const genWXminiJumpPath = (path: string) =>
+  `zhuanzhuan://jump/core/miniProgram/jump?miniprogramType=${
+    miniprogramType || 0
+  }&path=${encodeURIComponent(path)}&userName=${zzWXMiniAppId}`
+
 // 找靓机 目前不支持 统跳，特殊处理
 const openZZSeekerJumpPath = `jump/core/openZlj/jump`
 
@@ -75,6 +86,9 @@ const openAPP = (
     case AppFlags.ZZSeller:
       jumpPath = openZZSellerJumpPath
       break
+    case AppFlags.WXMini:
+      jumpPath = ''
+      break
     // 目标是找靓机特殊处理 schemaPrefix
     case AppFlags.ZZSeeker:
       jumpPath = openZZSeekerJumpPath
@@ -94,6 +108,11 @@ const openAPP = (
   const url = encodeURIComponent(urlScheme)
   const schema = `${schemaPrefix}//${jumpPath}`
   let unifiedUrl = `${schema}?url=${url}`
+
+  // 目标是 微信小程序 直接调处理后的 urlScheme
+  if (targetAppFlag & AppFlags.WXMini) {
+    unifiedUrl = urlScheme
+  }
 
   logInfo('unifiedUrl', unifiedUrl)
   logInfo('app.enterUnifiedUrl', app.enterUnifiedUrl)

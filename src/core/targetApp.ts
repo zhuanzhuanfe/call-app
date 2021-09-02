@@ -5,7 +5,7 @@
  */
 
 import { getDownloadConfig, AppNames } from './download'
-import { CallAppOptions, DownloadConfig } from '../index'
+import { CallAppOptions, DownloadConfig, TargetApp } from '../index'
 import { logError, logInfo } from '../libs/utils'
 
 export const enum AppFlags {
@@ -13,6 +13,7 @@ export const enum AppFlags {
   ZZSeller = 1 << 1,
   ZZHunter = 1 << 2,
   ZZSeeker = 1 << 3,
+  WXMini = 1 << 4,
 }
 
 export const appSchemePrefix = {
@@ -42,7 +43,7 @@ export const getTargetInfo = (options: CallAppOptions) => {
 
   const { appName } = handlePath2appName(path || '')
   // 优先取 options.targetApp // 默认 配置为 转转
-  targetApp = targetApp || appName || AppNames[AppFlags.ZZ]
+  targetApp = (targetApp || appName || AppNames[AppFlags.ZZ]) as TargetApp
 
   if (!targetApp) {
     logError(`(targetApp || appName) '${targetApp}' is Invalid， please check! \n`)
@@ -67,6 +68,17 @@ export const getTargetInfo = (options: CallAppOptions) => {
   } else if (isZZSeller(targetApp)) {
     name = AppNames[AppFlags.ZZSeller]
     flag = AppFlags.ZZSeller
+  } else if (isWXMini(targetApp)) {
+    name = AppNames[AppFlags.WXMini]
+    flag = AppFlags.WXMini
+
+    return {
+      flag,
+      name,
+      downloadConfig: getDownloadConfig(flag),
+      schemePrefix: appSchemePrefix[AppFlags.ZZ],
+      universalPath: appUniversalPath[AppFlags.ZZ],
+    }
   } else {
     logError(`options.targetApp '${options.targetApp}' is Invalid， please check! \n`)
   }
@@ -88,22 +100,23 @@ const isZZSeller = (targetApp: string): boolean => /^zzSeller$/i.test(targetApp)
 const isZZHunter = (targetApp: string): boolean => /^zzHunter$/i.test(targetApp)
 //  转转找靓机 app
 const isZZSeeker = (targetApp: string): boolean => /^zlj$/i.test(targetApp)
-
+//
+const isWXMini = (targetApp: string): boolean => /^wxMini$/i.test(targetApp)
 // 从 options.path 中获取 target-app
-const isZZPath = (path: string): boolean => /^zhuanzhuan:/.test(path)
+const isZZPrefixPath = (path: string): boolean => /^zhuanzhuan:/.test(path)
 
-const isZZSeekerPath = (path: string): boolean => /^zljgo:/i.test(path)
+const isZZSeekerPrefixPath = (path: string): boolean => /^zljgo:/i.test(path)
 
-const isZZSellerPath = (path: string): boolean => /^zhuanzhuanseller:/i.test(path)
+const isZZSellerPrefixPath = (path: string): boolean => /^zhuanzhuanseller:/i.test(path)
 
-const isZZHunterPath = (path: string): boolean => /^zzhunter:/i.test(path)
+const isZZHunterPrefixPath = (path: string): boolean => /^zzhunter:/i.test(path)
 
 export const handlePath2appName = (path: string) => {
   let appName
-  if (isZZSeekerPath(path)) appName = AppNames[AppFlags.ZZSeeker]
-  if (isZZPath(path)) appName = AppNames[AppFlags.ZZ]
-  if (isZZSellerPath(path)) appName = AppNames[AppFlags.ZZSeller]
-  if (isZZHunterPath(path)) appName = AppNames[AppFlags.ZZHunter]
+  if (isZZSeekerPrefixPath(path)) appName = AppNames[AppFlags.ZZSeeker]
+  if (isZZPrefixPath(path)) appName = AppNames[AppFlags.ZZ]
+  if (isZZSellerPrefixPath(path)) appName = AppNames[AppFlags.ZZSeller]
+  if (isZZHunterPrefixPath(path)) appName = AppNames[AppFlags.ZZHunter]
 
   logInfo('handlePath2appName', appName, path)
   return { appName }

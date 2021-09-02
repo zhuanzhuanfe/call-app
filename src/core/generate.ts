@@ -2,9 +2,10 @@
  * uri 生成 处理中心
  * generate uri center (include generate url-scheme && generate universal-link && generate Intent uri)
  */
-import { handlePath2appName } from './targetApp'
+import { AppFlags, handlePath2appName } from './targetApp'
 import { CallAppInstance } from '../index'
 import { logError } from '../libs/utils'
+import { genWXminiJumpPath } from '../libs/sdk'
 
 export const enum SchemeMapKeys {
   HOME = 'home',
@@ -42,10 +43,17 @@ export const generateScheme = (instance: CallAppInstance): string => {
 
   path = path || (urlSearch ? getSchemeByUrlSearch(urlSearch) : '')
   // new Regexp(zzInnerSchemeReg).test(path)
-  // 检验 path 中是否有 scheme-prefix
+  // 检验 path 中是否有 scheme-prefix  // 旧版本逻辑迁移
+
+  // todo: 兼容逻辑, path 中是否 [https?://] - prefix, 唤起对应目标app的path页面
+  // 需要根据各app统跳协议规范 帮业务拼接好 scheme-uri
   const { appName } = handlePath2appName(path)
 
-  const uri = appName ? path : `${targetInfo?.schemePrefix}//${path}`
+  let uri = appName ? path : `${targetInfo?.schemePrefix}//${path}`
+
+  if (targetInfo && targetInfo.flag & AppFlags.WXMini) {
+    uri = appName ? path : genWXminiJumpPath(path)
+  }
 
   return uri
 }

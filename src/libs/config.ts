@@ -70,8 +70,10 @@ export const zzAppInfo: AppInfo = {
  * */
 export interface WXInfo {
   appID: string
+  miniID: string
 }
 
 export const wxInfo: WXInfo = {
   appID: 'wx6f1a8464fa672b11', // 转转app在微信绑定的appid
+  miniID: 'gh_c2980df66965', // zz小程序id
 }
