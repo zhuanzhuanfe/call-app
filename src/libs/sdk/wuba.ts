@@ -63,12 +63,8 @@ export const openZZIn58 = (instance: CallAppInstance, appInfo: AppInfo) => {
             callFailed()
             instance.download()
           },
-          () => {
-            callSuccess()
-          },
-          () => {
-            callError()
-          },
+          callSuccess,
+          callError,
           delay
         )
 

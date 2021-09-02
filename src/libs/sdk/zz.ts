@@ -47,7 +47,9 @@ const openAPP = (
 ): void => {
   const { urlScheme, download } = ctx
   if (!urlScheme)
-    return logError('openZZLikeAPP failed, please check options.path or options.targetApp is legal')
+    return logError(
+      'openZZInnerAPP failed, please check options.path or options.targetApp is legal'
+    )
 
   const {
     callFailed = () => {},
@@ -63,12 +65,8 @@ const openAPP = (
         callFailed()
         download.call(ctx)
       },
-      () => {
-        callSuccess()
-      },
-      () => {
-        callError()
-      },
+      callSuccess,
+      callError,
       delay
     )
 
@@ -118,7 +116,7 @@ const openAPP = (
   logInfo('app.enterUnifiedUrl', app.enterUnifiedUrl)
   // 通过sdk唤起 , 失败成功 回调
   app.enterUnifiedUrl({ unifiedUrl }, (res1: any, res2: any) => {
-    // 需要确认 native端回调函数 支持情况
+    // 需要确认 native端回调函数 支持情况 (目前 js-sdk回调无效)
 
     logInfo('app.enterUnifiedUrl callback', res1, res2)
   })

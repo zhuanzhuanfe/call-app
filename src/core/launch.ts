@@ -47,12 +47,8 @@ export const launch = (instance: CallAppInstance) => {
         callFailed()
         shouldDownload && download.call(instance)
       },
-      () => {
-        callSuccess()
-      },
-      () => {
-        callError()
-      },
+      callSuccess,
+      callError,
       delay
     )
 

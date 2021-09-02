@@ -32,9 +32,6 @@ export interface Intent {
   component?: string
 }
 
-// universal-link-host
-const universalLinkHost = 'mjump.zhuanzhuan.com'
-
 // 生成 scheme 链接
 export const generateScheme = (instance: CallAppInstance): string => {
   // 生成  path || urlSearch || targetApp
@@ -57,6 +54,10 @@ export const generateScheme = (instance: CallAppInstance): string => {
 
   return uri
 }
+
+// universal-link-host
+const universalLinkHost = 'mjump.zhuanzhuan.com'
+
 // 生成 universalLink 链接
 export const generateUniversalLink = (instance: CallAppInstance) => {
   const {
