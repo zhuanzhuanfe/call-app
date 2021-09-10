@@ -17,7 +17,7 @@ export const isZZHunter: boolean = /zzHunter/i.test(ua)
 // zz卖家版 app
 export const isZZSeller: boolean = /zhuanzhuanSeller/i.test(ua)
 // zz找靓机 app
-export const isZZSeeker: boolean = /zljgo/i.test(ua)
+export const isZZSeeker: boolean = /zhaoliangji-v2/i.test(ua)
 
 export const isWechat: boolean = /micromessenger\/([\d.]+)/i.test(ua)
 

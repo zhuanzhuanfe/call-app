@@ -23,7 +23,7 @@
     "declarationDir": "types/dist/",
     "paths": {}
   },
-  "include": ["src", "types"],
+  "include": ["src", "types/globals.d.ts"],
   "exclude": ["node_modules"]
 }
 // https://www.tslang.cn/docs/handbook/compiler-options.html
