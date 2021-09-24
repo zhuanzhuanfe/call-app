@@ -27,7 +27,7 @@ export const appUniversalPath = {
   [AppFlags.ZZ]: 'zhuanzhuan',
   [AppFlags.ZZSeller]: 'seller', // 目前不支持
   [AppFlags.ZZHunter]: 'zzhunter', // 目前不支持
-  [AppFlags.ZZSeeker]: 'zljgo', // 目前不支持
+  [AppFlags.ZZSeeker]: 'zhaoliangji',
 }
 
 // 获取 目标 app 类型

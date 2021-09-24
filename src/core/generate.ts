@@ -70,12 +70,25 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
 
   const host = universalLinkHost
   const path = targetInfo?.universalPath
-  // const scheme = generateScheme(instance)
   const channel = channelId ? `&channelId=${channelId}` : ''
+
+  // 中间下载页 标记位 // 目前只有 转转 找靓机支持 universal-link
+  // https://gitlab.zhuanspirit.com/zz-fe-common/app_download/-/blob/master/README.md
+  // app=zz 代表转转中间下载页
+  // app=zlj 代表找靓机中间下载页
+  // app=hunter 代表采货侠中间下载页
+  let app = '&app=zz'
+  if (targetInfo) {
+    if (targetInfo.flag & AppFlags.ZZSeeker) {
+      app = '&app=zlj'
+    } else if (targetInfo.flag & AppFlags.ZZHunter) {
+      app = '&app=hunter'
+    }
+  }
 
   const universalLink = `https://${host}/${path}/index.html?path=${encodeURIComponent(
     urlScheme
-  )}${channel}`
+  )}${channel}${app}`
 
   return universalLink
 }
