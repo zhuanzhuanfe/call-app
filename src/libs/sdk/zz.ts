@@ -1,7 +1,7 @@
 import { AppFlags, appSchemePrefix } from '../../core/targetApp'
 import { CallAppInstance } from '../../index'
 import { dependencies, SDKNames, wxInfo } from '../config'
-import { checkOpen } from '../evoke'
+// import { checkOpen } from '../evoke'
 import { loadJSArr, logError, logInfo } from '../utils'
 
 // logInfo('enum SDKNames', SDKNames)
@@ -55,20 +55,20 @@ const openAPP = (
     callFailed = () => {},
     callSuccess = () => {},
     callError = () => {},
-    delay = 2500,
+    //delay = 2500,
   } = ctx.options
 
   // hack 检测 open状态
-  const handleCheck = () =>
-    checkOpen(
-      () => {
-        callFailed()
-        download.call(ctx)
-      },
-      callSuccess,
-      callError,
-      delay
-    )
+  // const handleCheck = () =>
+  //   checkOpen(
+  //     () => {
+  //       callFailed()
+  //       download.call(ctx)
+  //     },
+  //     callSuccess,
+  //     callError,
+  //     delay
+  //   )
 
   // 不同的目标app 加载相应的统跳地址 path
   let jumpPath = ''
@@ -112,16 +112,26 @@ const openAPP = (
     unifiedUrl = urlScheme
   }
 
-  logInfo('unifiedUrl', unifiedUrl)
-  logInfo('app.enterUnifiedUrl', app.enterUnifiedUrl)
+  logInfo('unifiedUrl ==', unifiedUrl)
+  logInfo('call APP ==', app.callApp)
   // 通过sdk唤起 , 失败成功 回调
-  app.enterUnifiedUrl({ unifiedUrl }, (res1: any, res2: any) => {
-    // 需要确认 native端回调函数 支持情况 (目前 js-sdk回调无效)
-
-    logInfo('app.enterUnifiedUrl callback', res1, res2)
-  })
-  //
-  handleCheck()
+  app
+    .callApp({ url: unifiedUrl }, (res: any) => {
+      // 需要确认 native端回调函数 支持情况 (目前 js-sdk回调无效)
+      if (res && res.code == 0) {
+        //必须要有code 返回 才处理回调逻辑
+        callSuccess()
+      } else if (Object.keys(res).length > 0 && res.code != 0) {
+        callFailed()
+        download.call(ctx)
+      }
+      logInfo('app.enterUnifiedUrl callback', res)
+    })
+    .catch((_: any) => {
+      callError()
+      logError(_)
+    })
+  //handleCheck()
 }
 
 // 加载sdk 资源
@@ -131,8 +141,8 @@ export const loadZZSkd = (sdkName: SDKNames): Promise<Record<string, any>> => {
       loadJSArr([dependencies[sdkName].link], () => {
         //  确认 是否需要判断 找靓机 加载单独的 js-sdk
         if (sdkName === SDKNames.ZZ_SDK) {
-          logInfo('window.ZZAPP', window.ZZAPP)
-          resolve(window.ZZAPP)
+          logInfo('window.ZZAPP ==', window['@zz-common/zz-jssdk'].default)
+          resolve(window['@zz-common/zz-jssdk'].default)
         }
       })
     } catch (error) {
@@ -153,6 +163,6 @@ export const openZZInnerApp = (
     })
     .catch((_) => {
       callError()
-      logError(_)
+      logError('err', _)
     })
 }

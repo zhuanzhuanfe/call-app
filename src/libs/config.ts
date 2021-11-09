@@ -32,7 +32,7 @@ export const enum SDKNames {
 
 export const dependencies = {
   [SDKNames.ZZ_SDK]: {
-    link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.14.0/zzapp.min.js',
+    link: 'https://s1.zhuanstatic.com/common/zzapp/static/js/1.27.14/index.js',
   },
   [SDKNames.WB_SDK]: {
     link: 'https://a.58cdn.com.cn/app58/rms/app/js/app_30805.js?cachevers=670',

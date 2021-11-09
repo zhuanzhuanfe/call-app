@@ -23,6 +23,7 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       logInfo('isWXSDK', isWechat)
       openZZInWX(instance)
     } else if (isZZ) {
+      logInfo('转转环境')
       // zz-js-sdk
       // 转转app环境内, 可以唤起 找靓机/采货侠/卖家版 / wx小程序
       if (targetInfo.flag & AppFlags.WXMini) {
@@ -38,16 +39,19 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
         openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
       }
     } else if (isZZSeeker) {
+      logInfo('找靓机环境')
       // 找靓机app环境内, 可主动唤起 转转    ？? 采货侠/卖家版
       if (targetInfo.flag & AppFlags.ZZ) {
         openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
       }
     } else if (isZZHunter) {
+      logInfo('采货侠环境')
       // 命中采货侠  可唤起 转转
       if (targetInfo.flag & AppFlags.ZZ) {
         openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
       }
     } else if (isZZSeller) {
+      logInfo('卖家版环境')
       // 命中卖家版 可唤起 转转
       if (targetInfo.flag & AppFlags.ZZ) {
         openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
