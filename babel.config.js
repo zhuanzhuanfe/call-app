@@ -13,11 +13,19 @@ module.exports = (api) => {
     presets: [
       [
         require.resolve('@babel/preset-env'),
-        {
-          modules: useESModules ? false : 'commonjs',
-          useBuiltIns: false,
-          // corejs: 3
-        },
+        Object.assign(
+          {},
+          useESModules
+            ? {
+                modules: false,
+                useBuiltIns: false,
+              }
+            : {
+                modules: 'commonjs',
+                useBuiltIns: 'usage',
+                corejs: 3,
+              }
+        ),
       ],
       ['@babel/typescript'],
     ],
