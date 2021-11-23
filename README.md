@@ -100,16 +100,14 @@ callApp.download(options)
 ##### 1. 初始化实例时配置 options，唤起 转转/找靓机
 
 ```javascript
-// 唤起 转转
+// 引入 lego 埋点 (使用callApp基础库 务必引入埋点上报)
 import { lego } from '@zz-common/lego'
-
+// 唤起 转转
 const callApp = new CallApp({
   path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix
-  // path: 'jump/shortVideo/videoHome/jump',
   channelId: '', //  渠道id ，下载渠道包
   deeplinkId: '', // 后台配置项
-  // zlj 代表找靓机; zz 代表转转， zzHunter 代表采货侠，默认 zz
-  targetApp: 'zz',
+  targetApp: 'zz', // zz 代表转转，zlj 代表找靓机，zzHunter 代表采货侠；默认 zz
   callStart() {
     lego.send({
       actiontype: 'DOWNLOADAPP-START',
