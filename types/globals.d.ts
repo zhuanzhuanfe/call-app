@@ -15,3 +15,6 @@ interface Window {
   clipboardData: Record<string, any>
   [key: string]: any
 }
+
+declare var __DEV__: boolean
+declare var __VERSION__: string

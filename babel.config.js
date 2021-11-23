@@ -1,3 +1,7 @@
+const { replaceVersionPlugin } = require('./babel.plugin.js')
+const masterVersion = require('./package.json').version
+console.log(['masterVersion'], masterVersion)
+
 module.exports = (api) => {
   const { BABEL_MODULE, RUN_ENV, NODE_ENV } = process.env
   const useESModules =
@@ -17,6 +21,19 @@ module.exports = (api) => {
       ],
       ['@babel/typescript'],
     ],
-    plugins: [[require.resolve('@babel/plugin-transform-runtime'), { useESModules }]],
+    plugins: [
+      [
+        require.resolve('@babel/plugin-transform-runtime'),
+        {
+          useESModules,
+        },
+      ],
+      [
+        replaceVersionPlugin,
+        {
+          __VERSION__: masterVersion,
+        },
+      ],
+    ],
   }
 }

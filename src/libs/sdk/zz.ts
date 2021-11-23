@@ -10,8 +10,8 @@ import { loadJSArr, logError, logInfo } from '../utils'
 可主动唤起的场景(需求)：
 
 ｜ 目标app   ｜ 转转  ｜ 找靓机 ｜ 采货侠  ｜ 卖家版 ｜
-｜ 转转      ｜       ｜  -   ｜   ✅    ｜  ✅   ｜
-｜ 找靓机    ｜  -    ｜       ｜        ｜       ｜
+｜ 转转      ｜      ｜  ✅   ｜   ✅    ｜  ✅   ｜
+｜ 找靓机    ｜  ✅   ｜       ｜        ｜       ｜
 ｜ 采货侠    ｜  ✅   ｜       ｜        ｜       ｜
 ｜ 卖家版    ｜  ✅   ｜       ｜        ｜       ｜
 | zz-wx小程序|  ✅    |       ｜        ｜       ｜
@@ -22,7 +22,7 @@ import { loadJSArr, logError, logInfo } from '../utils'
 // 统跳地址平台： https://jump.zhuanspirit.com/#/zhuanzhuan?page=1&search=open
 
 // 目前业务只需调起转转 wx-mini
-const miniprogramType = 0 // 默认小程序 0 正式版 / 1 开发版 2 体验版
+const miniprogramType = 0 // 默认小程序 0 正式版 / 1 开发版 / 2 体验版
 const zzWXMiniAppId = wxInfo.miniID //转转小程序 appid
 //
 const openZZJumpPath = `jump/core/openZhuanZhuan/jump`

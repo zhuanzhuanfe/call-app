@@ -4,3 +4,4 @@ es/
 lib/
 docs/
 types/
+*.js

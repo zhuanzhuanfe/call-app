@@ -71,7 +71,7 @@ export const allDownloadUrls = {
   },
 }
 
-// 构造 下载链接
+// 构造 下载链接 (不同平台环境  需要兼容处理)
 export const generateDownloadUrl = (instance: CallAppInstance): string => {
   // 第三方配置
   const {
@@ -118,14 +118,14 @@ export const generateDownloadUrl = (instance: CallAppInstance): string => {
       downloadUrl = downloadConfig?.android
     } else {
       //  其他 走 download-api 下载 channelId deeplinkId,
-      // channelId 统计下载来源/渠道， deeplinkId App 后台配置默认打开页
+      // channelId 下载来源/渠道， deeplinkId App 后台配置默认打开页
       // wx 特殊处理 deepLinkId
       const wechat = isWechat ? '#mp.weixin.qq.com' : ''
       const deeplink = deeplinkId ? `&deeplinkId=${deeplinkId}${wechat}` : ''
 
       downloadUrl = `${downloadConfig?.api}?channelId=${channelId}${deeplink}`
     }
-  } else if (flag & AppFlags.ZZSeeker || flag & AppFlags.ZZHunter || flag & AppFlags.WXMini) {
+  } else if (flag & AppFlags.NoZZ) {
     // 目标app 是找靓机、采货侠、微信小程序
     if (isIos) {
       downloadUrl = downloadConfig?.ios

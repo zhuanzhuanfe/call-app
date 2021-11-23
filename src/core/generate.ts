@@ -93,7 +93,7 @@ export const generateUniversalLink = (instance: CallAppInstance) => {
   return universalLink
 }
 
-// 生成 appLinks 链接 // 目前客户端app 都还不支持该协议
+// 生成 appLinks Intent 链接 // 目前客户端app 都还不支持该协议
 export const generateIntent = (instance: CallAppInstance): string => {
   const { options, downloadLink } = instance
   const { intent, intentParams } = options

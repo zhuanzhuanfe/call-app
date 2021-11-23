@@ -47,7 +47,7 @@ callApp.download()
 ```
 #### 参数配置项
 
-- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址 [统跳协议格式](#协议格式)
+- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址. [统跳协议格式见下方相关资料]
 - **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
 - **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序,目前只支持转转wx小程序)，默认为`zz`  （选填）
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
@@ -101,25 +101,47 @@ callApp.download(options)
 
 ```javascript
 // 唤起 转转
+import { lego } from '@zz-common/lego'
+
 const callApp = new CallApp({
-  path: 'jump/shortVideo/videoHome/jump',
-  // path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix 的亦可
-  channelId: '', //  渠道id
+  path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix
+  // path: 'jump/shortVideo/videoHome/jump',
+  channelId: '', //  渠道id ，下载渠道包
   deeplinkId: '', // 后台配置项
-  // zlj 代表找靓机; zz 或者 zhuanzhuan 代表转转， zzHunter 代表采货侠，默认 zz
+  // zlj 代表找靓机; zz 代表转转， zzHunter 代表采货侠，默认 zz
   targetApp: 'zz',
-  callStart: () => {
-    console.log('触发 开始唤起钩子')
+  callStart() {
+    lego.send({
+      actiontype: 'DOWNLOADAPP-START',
+      pagetype: 'ZZDOWNLOADH5',
+      backup: { channelId },
+    })
+    console.log('ZZDOWNLOADH5 callStart')
   },
-  callSuccess: () => {
-    console.log('触发 唤起成功钩子')
+  callSuccess() {
+    lego.send({
+      actiontype: 'DOWNLOADAPP-SUCCESS',
+      pagetype: 'ZZDOWNLOADH5',
+      backup: { channelId },
+    })
+    console.log('ZZDOWNLOADH5 callSuccess')
   },
-  callFailed: () => {
-    console.log('触发 唤起失败钩子')
+  callFailed() {
+    lego.send({
+      actiontype: 'DOWNLOADAPP-FAILED',
+      pagetype: 'ZZDOWNLOADH5',
+      backup: { channelId },
+    })
+    console.log('ZZDOWNLOADH5 callFailed')
   },
-  callDownload: () => {
-    console.log('触发 下载钩子')
-  },
+  callDownload() {
+    lego.send({
+      actiontype: 'DOWNLOADAPP-DOWNLOAD',
+      pagetype: 'ZZDOWNLOADH5',
+      backup: { channelId },
+    })
+    console.log('ZZDOWNLOADH5 callDownload')
+  }
   callError: () => {
     console.log('内部异常')
   },
@@ -230,6 +252,26 @@ const callApp = new CallApp({
 callApp.start()
 ```
 
+##### 4. 插件配置（高阶）
+提供 use 方法, 方便用户插入 js 或者 自定义 CallApp 实例内部方法。并支持链式调用。
+
+使用示例：
+```javascript
+const callApp = new CallApp(options)
+
+callApp.use(function PluginA(app, optsA) {
+  const old = app.start
+
+  app.start = function() {
+    //
+    old.call(app) // 或者 old.call(app, options)
+  }
+}).use(function PluginB(app, optsB) {
+  //
+
+})
+```
+
 ## 兼容性 😈
 
 ### H5
@@ -287,9 +329,9 @@ callApp.start()
 
 |                         | 转转 | 采货侠 | 找靓机 | 卖家版 | 58app | 微信 |
 | ----------------------- | ---- | ------ | ------ | ------ | ----- | ---- |
-| 目标app: 转转           | x    | ✅      | -      | ✅      | ✅     | ✅    |
+| 目标app: 转转           | x    | ✅      | ✅      | ✅      | ✅     | ✅    |
 | 目标app: 采货侠         | ✅    | x      | x      | x      | x     | x    |
-| 目标app: 找靓机         | -    | x      | x      | x      | x     | x    |
+| 目标app: 找靓机         | ✅    | x      | x      | x      | x     | x    |
 | 目标app: 卖家版(已下架) | ✅    | x      | x      | x      | x     | x    |
 
 
@@ -299,16 +341,8 @@ callApp.start()
 ### 相关资料
 #### 协议格式
 
-转转/采货侠 统跳协议地址 [统跳平台](https://jump.zhuanspirit.com/#/zhuanzhuan)
-转转中唤起微信小程序 [统跳平台-唤起微信小程序](https://jump.zhuanspirit.com/#/zhuanzhuan/test?id=5f366c742dddd7593f559ded)
-找靓机 统跳协议地址 [统跳文档](https://dashen.zhuanspirit.com/pages/viewpage.action?pageId=73875098)
-
-### Todo:
-
-- [] 支持找靓机app、转转app 内互相调起
-- [] 找靓机支持 universalLink
-- [] 支持转转app内唤起转转微信小程序
-
+统跳协议地址 [统跳平台](https://jump.zhuanspirit.com/#/zhuanzhuan)
+转转中唤起微信小程序 [统跳平台-唤起微信小程序](https://jump.zhuanspirit.com/#/app/zhuanzhuan?page=1&search=%E5%B0%8F%E7%A8%8B%E5%BA%8F)
 
 ---
 
@@ -320,9 +354,8 @@ callApp.start()
 
 
 
-<!-- ### Feature
-
-- [] 支持配置中心
+### Feature
+<!-- - [ ] 支持配置中心
   - 未来可以引入配置中心的概念，方便对目标app进行统一配置管理、app平台相关逻辑的平滑处理，方便新增/移除目标app逻辑
-- [] 支持android intent 协议，以及面向未来的 deferAppLinks
+- [ ] 支持 android app-links(intent) 协议，以及面向未来的 deferAppLinks
   - 目前此方案兼容性差（只有chrome支持)，暂且舍弃 -->

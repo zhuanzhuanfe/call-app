@@ -14,6 +14,7 @@ export const enum AppFlags {
   ZZHunter = 1 << 2,
   ZZSeeker = 1 << 3,
   WXMini = 1 << 4,
+  NoZZ = (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4),
 }
 
 export const appSchemePrefix = {

@@ -61,7 +61,6 @@ export const openZZIn58 = (instance: CallAppInstance, appInfo: AppInfo) => {
         checkOpen(
           () => {
             callFailed()
-            instance.download()
           },
           callSuccess,
           callError,
@@ -78,7 +77,6 @@ export const openZZIn58 = (instance: CallAppInstance, appInfo: AppInfo) => {
       handleCheck()
     })
     .catch((error) => {
-      instance.download()
       callFailed()
       logError(error)
     })

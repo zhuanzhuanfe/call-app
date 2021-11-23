@@ -6,6 +6,7 @@ try {
   // 第三方配置， 唤起支付宝
   // initCustomPage()
   // 检测 m 端是否支持 vue/es6 // 后面考虑 升级脚手架支持vue/react
+  // throw Error('')
   initVuePage()
 } catch (error) {
   console.error(error)
@@ -40,11 +41,10 @@ function initMiniPage(opts) {
   var callApp = (window.callApp = new CallApp(opts))
   //
   btn_open.onclick = function () {
-    console.log(window.navigator.userAgent)
+    console.log('window.CallApp', window.CallApp)
     callApp.start({
-      // path: opts.path || 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
-      // path: 'zljgo%3A%2F%2Fnative_api%3Ftype%3D132',
-      path: 'zzhunter%3A%2F%2Fjump%2Fcore%2FmainPage%2Fjump',
+      path: opts.path || 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 兼容app所有统跳地址
+      // path: 'zzhunter%3A%2F%2Fjump%2Fcore%2FmainPage%2Fjump',
       universal: false,
       channelId: opts.channelId || 'BM_GJ618XC',
       // targetApp: opts.targetApp || 'zz',
@@ -182,8 +182,8 @@ function initVuePage() {
               ? 'jump/core/web/jump'
               : ''
 
-          callApp = new CallApp({
-            path: opts.path || p, // 兼容app所有统跳地址
+          callApp = window.callApp = new CallApp({
+            path: 'zhuanzhuan://jump/shortVideo/videoHome/jump' || opts.path || p, // 兼容app所有统跳地址
             channelId: opts.channelId,
             targetApp: opts.targetApp,
             wechatStyle: 1, // 1表示浮层右上角

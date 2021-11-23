@@ -3,7 +3,6 @@
  * CallApp 类
  *
  */
-
 import { generateDownloadUrl, AppNames } from './core/download'
 import { launch } from './core/launch'
 import { sdkLaunch } from './core/sdkLaunch'
@@ -31,6 +30,8 @@ import {
   UrlSearch,
 } from './core/generate'
 import { copy, logError, logInfo, showMask } from './libs/utils'
+
+const version = __VERSION__
 
 const defaultOptions: CallAppOptions = {
   path: '', // 唤起的页面 path
@@ -65,6 +66,10 @@ export default class CallApp {
 
   intentLink?: string
 
+  version?: string
+
+  installedPlugins?: any
+
   // Create an instance of CallApp
   constructor(options?: CallAppOptions) {
     options && this.init(options)
@@ -73,6 +78,10 @@ export default class CallApp {
   init(options: CallAppOptions) {
     // 第三方 配置
     const { customConfig } = options
+    const callFailed = options.callFailed
+    //
+    this.installedPlugins = new Set()
+    this.version = version
 
     if (customConfig) {
       this.options = options
@@ -86,7 +95,7 @@ export default class CallApp {
     }
     //
     this.options = { ...defaultOptions, ...options }
-    // 下面配置，提取预处理 减少后续逻辑处理代价
+    // 配置提前预处理 减少后续逻辑判断处理代价
     // 待唤起目标 app 信息
     this.targetInfo = getTargetInfo(this.options)
     logInfo('targetInfo', this.targetInfo)
@@ -101,6 +110,11 @@ export default class CallApp {
     logInfo('universalLink', this.universalLink)
     // 初始化 app-links intentLink // 目前zz不支持 兼容性较差
     this.intentLink = generateIntent(this)
+    // 装饰器
+    this.options.callFailed = () => {
+      this.urlScheme && copy(`1.0$$${this.urlScheme}`)
+      callFailed && callFailed()
+    }
   }
 
   /**
@@ -112,7 +126,7 @@ export default class CallApp {
 
     const { callStart, customConfig } = this.options
 
-    callStart && callStart()
+    callStart && callStart(this)
     // 第三方 配置
     if (customConfig?.schemeUrl) return launch(this)
 
@@ -124,7 +138,7 @@ export default class CallApp {
       isZZHunter ||
       isZZSeller ||
       isZZSeeker ||
-      (isWechat && targetApp === AppNames[AppFlags.ZZ])
+      (isIos && isWechat && targetApp === AppNames[AppFlags.ZZ])
     ) {
       // by native-app js-sdk launch
       sdkLaunch(this)
@@ -168,8 +182,25 @@ export default class CallApp {
 
     logError('please check options.download is true')
   }
+
+  /**
+   * plugins
+   */
+  use(plugin: Plugin, ...options: any[]): this {
+    const { installedPlugins } = this
+
+    if (installedPlugins.has(plugin)) {
+      logError(`Plugin has already been applied`)
+    } else if (typeof plugin === 'function') {
+      installedPlugins.add(plugin)
+      plugin(this, ...options)
+    }
+
+    return this
+  }
 }
 
+export type Plugin = (app: CallAppInstance, ...options: any[]) => any
 export interface DownloadConfig {
   // 苹果市场
   ios: string
@@ -221,7 +252,7 @@ export interface CallAppOptions {
   // 成功 hook
   callSuccess?: () => void
   // 开始唤起 hook
-  callStart?: () => void
+  callStart?: (ctx: CallAppInstance) => void
   // 开始下载 hook
   callDownload?: () => void
   intentParams?: Intent
