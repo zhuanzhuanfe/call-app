@@ -10,6 +10,7 @@ import {
   is58App,
   isAndroid,
   isIos,
+  isQQBrowser,
   isQuark,
   isSougou,
   isUC,
@@ -79,8 +80,6 @@ export default class CallApp {
     // 第三方 配置
     const { customConfig } = options
     const callFailed = options.callFailed
-    //
-    this.installedPlugins = new Set()
     this.version = version
 
     if (customConfig) {
@@ -139,6 +138,7 @@ export default class CallApp {
       isZZSeller ||
       isZZSeeker ||
       (isIos && isWechat && targetApp === AppNames[AppFlags.ZZ])
+      // 2021.11.24 安卓微信内 通过微信白名单js-sdk唤起转转出现异常 // 改为显示mask
     ) {
       // by native-app js-sdk launch
       sdkLaunch(this)
@@ -165,7 +165,7 @@ export default class CallApp {
 
     if (this.downloadLink) {
       // 个别浏览器 evoke方式 需要单独处理, 防止页面跳转到下载链接 展示异常
-      if (isAndroid && isUC) {
+      if (isAndroid && isUC && isQQBrowser) {
         return evokeByTagA(this.downloadLink)
       }
 
@@ -187,6 +187,8 @@ export default class CallApp {
    * plugins
    */
   use(plugin: Plugin, ...options: any[]): this {
+    if (!this.installedPlugins) this.installedPlugins = new Set()
+
     const { installedPlugins } = this
 
     if (installedPlugins.has(plugin)) {
