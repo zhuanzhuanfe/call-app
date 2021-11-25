@@ -137,8 +137,8 @@ export const launch = (instance: CallAppInstance) => {
       }
     } else if (isWechat || isBaidu || isWeibo || isQzone) {
       logInfo(
-        'isAndroid -- showMask， isBaidu || isWeibo || isQzone',
-        isBaidu || isWeibo || isQzone
+        'isAndroid -- showMask， isWechat || isBaidu || isWeibo || isQzone',
+        isWechat || isBaidu || isWeibo || isQzone
       )
       // 不支持 scheme, 显示遮罩 请在浏览器打开
       showMask()

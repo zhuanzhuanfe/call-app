@@ -38,6 +38,7 @@ export const invokeInWX = (
 ) => {
   return new Promise((resolve, reject) => {
     app.invoke(name, options, (data: any) => {
+      logInfo('invokeInWX', data)
       const { err_msg } = data
       const Regex = /(:ok)|(:yes)/g
       if (Regex.test(err_msg)) {
@@ -62,15 +63,18 @@ export const openAppInWX = (
   const parameter = schemeURL
   const extInfo = schemeURL
 
+  const handleByuLink = (cb: () => void, delay = 2000) => {
+    universalLink && evokeByLocation(universalLink)
+    setTimeout(() => {
+      cb()
+    }, delay)
+  }
   // 如果是58域名的话
   if (is58Host) {
-    const delay = 2000
-    evokeByLocation(universalLink)
-    setTimeout(() => {
+    handleByuLink(() => {
       callFailed()
-      evokeByLocation(downloadLink)
-    }, delay)
-
+      downloadLink && evokeByLocation(downloadLink)
+    })
     return
   }
 
@@ -80,9 +84,12 @@ export const openAppInWX = (
       callSuccess()
     })
     .catch((err) => {
-      logError('launchApplication', err)
-      callFailed()
-      evokeByLocation(downloadLink)
+      // sdk 失败则降级采用 uLink 尝试唤起
+      handleByuLink(() => {
+        logError('launchApplication', err)
+        callFailed()
+        downloadLink && evokeByLocation(downloadLink)
+      })
     })
 }
 
