@@ -66,3 +66,7 @@ log 统一捕获:
 #### 8. 唤起中间页兼容找靓机/采货侠
 
 <img width="500" src="./img/mid-page.png">
+
+#### 9. 支持短信短链接唤起
+
+<img width="500" src="./img/sms-evoke.png">
