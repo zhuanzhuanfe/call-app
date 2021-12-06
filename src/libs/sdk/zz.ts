@@ -1,4 +1,4 @@
-import { AppFlags, appSchemePrefix } from '../../core/targetApp'
+import { AppFlags } from '../../core/targetApp'
 import { CallAppInstance } from '../../index'
 import { dependencies, SDKNames, wxInfo } from '../config'
 // import { checkOpen } from '../evoke'
@@ -21,22 +21,14 @@ import { loadJSArr, logError, logInfo } from '../utils'
 // zz  zzSeller zzHunter 都走 zz-js-sdk + 统跳地址
 // 统跳地址平台： https://jump.zhuanspirit.com/#/zhuanzhuan?page=1&search=open
 
-// 目前业务只需调起转转 wx-mini
+// // 目前业务只需调起转转 wx-mini
 const miniprogramType = 0 // 默认小程序 0 正式版 / 1 开发版 / 2 体验版
 const zzWXMiniAppId = wxInfo.miniID //转转小程序 appid
-//
-const openZZJumpPath = `jump/core/openZhuanZhuan/jump`
-const openZZHunterJumpPath = `jump/core/openHunter/jump`
-const openZZSellerJumpPath = `jump/core/openZhuanZhuanSeller/jump`
-
 // 如果 targetAPP 是 wx小程序 并且 path 是页面地址，需要特殊处理(根据统跳协议地址自动拼接)
 export const genWXminiJumpPath = (path: string) =>
   `zhuanzhuan://jump/core/miniProgram/jump?miniprogramType=${
     miniprogramType || 0
   }&path=${encodeURIComponent(path)}&userName=${zzWXMiniAppId}`
-
-// 找靓机 目前不支持 统跳，特殊处理
-const openZZSeekerJumpPath = `jump/core/openZlj/jump`
 
 // 打开转转/采货侠/卖家版 / 找靓机
 const openAPP = (
@@ -58,61 +50,30 @@ const openAPP = (
     //delay = 2500,
   } = ctx.options
 
-  // hack 检测 open状态
-  // const handleCheck = () =>
-  //   checkOpen(
-  //     () => {
-  //       callFailed()
-  //       download.call(ctx)
-  //     },
-  //     callSuccess,
-  //     callError,
-  //     delay
-  //   )
-
-  // 不同的目标app 加载相应的统跳地址 path
-  let jumpPath = ''
-  let schemaPrefix = appSchemePrefix[AppFlags.ZZ]
-
-  switch (targetAppFlag) {
-    case AppFlags.ZZ:
-      jumpPath = openZZJumpPath
-      break
-    case AppFlags.ZZHunter:
-      jumpPath = openZZHunterJumpPath
-      break
-    case AppFlags.ZZSeller:
-      jumpPath = openZZSellerJumpPath
-      break
-    case AppFlags.WXMini:
-      jumpPath = ''
-      break
-    // 目标是找靓机特殊处理 schemaPrefix
-    case AppFlags.ZZSeeker:
-      jumpPath = openZZSeekerJumpPath
-      schemaPrefix = appSchemePrefix[AppFlags.ZZSeeker]
-      break
-    default:
-      logError(`targetAppFlag is not found when call openZZInnerApp function`)
-      break
-  }
-
-  // 如果运行app环境是 找靓机, 需要特殊处理 schemePrefix
-  if (curAppFlag & AppFlags.ZZSeeker) {
-    schemaPrefix = appSchemePrefix[AppFlags.ZZSeeker]
-  }
-
-  //
-  const url = encodeURIComponent(urlScheme)
-  const schema = `${schemaPrefix}//${jumpPath}`
-  let unifiedUrl = `${schema}?url=${url}`
-
-  // 目标是 微信小程序 直接调处理后的 urlScheme
-  if (targetAppFlag & AppFlags.WXMini) {
-    unifiedUrl = urlScheme
-  }
+  const unifiedUrl = urlScheme
 
   logInfo('unifiedUrl ==', unifiedUrl)
+
+  // 自己端内打开自己页面 走 enterUnifiedUrl
+  if (targetAppFlag & curAppFlag) {
+    app.enterUnifiedUrl(
+      {
+        unifiedUrl,
+        needClose: '1',
+      },
+      (res: any) => {
+        // 需要确认 native端回调函数 支持情况 (目前 js-sdk回调无效)
+        if (res && res.code == 0) {
+          callSuccess()
+        } else if (res && res.code != 0) {
+          callFailed()
+          download.call(ctx)
+        }
+      }
+    )
+    return
+  }
+
   logInfo('call APP ==', app.callApp)
   // 通过sdk唤起 , 失败成功 回调
   app
@@ -131,7 +92,6 @@ const openAPP = (
       callError()
       logError(_)
     })
-  //handleCheck()
 }
 
 // 加载sdk 资源

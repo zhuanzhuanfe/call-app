@@ -26,35 +26,29 @@ export const sdkLaunch = async (instance: CallAppInstance) => {
       logInfo('转转环境')
       // zz-js-sdk
       // 转转app环境内, 可以唤起 找靓机/采货侠/卖家版 / wx小程序
-      if (targetInfo.flag & AppFlags.WXMini) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.WXMini)
-      }
-      if (targetInfo.flag & AppFlags.ZZ) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
-      }
-      if (targetInfo.flag & AppFlags.ZZSeeker) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
-      }
-      if (targetInfo.flag & AppFlags.ZZSeller) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
+      if (targetInfo.flag) {
+        openZZInnerApp(instance, AppFlags.ZZ, targetInfo.flag)
       }
     } else if (isZZSeeker) {
       logInfo('找靓机环境')
-      // 找靓机app环境内, 可主动唤起 转转    ？? 采货侠/卖家版
+      // 找靓机app环境内, 可主动唤起 转转
       if (targetInfo.flag & AppFlags.ZZ) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
+        openZZInnerApp(instance, AppFlags.ZZSeeker, AppFlags.ZZ)
+      }
+      if (targetInfo.flag & AppFlags.ZZSeeker) {
+        openZZInnerApp(instance, AppFlags.ZZSeeker, AppFlags.ZZSeeker)
       }
     } else if (isZZHunter) {
       logInfo('采货侠环境')
       // 命中采货侠  可唤起 转转
       if (targetInfo.flag & AppFlags.ZZ) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
+        openZZInnerApp(instance, AppFlags.ZZHunter, AppFlags.ZZ)
       }
     } else if (isZZSeller) {
       logInfo('卖家版环境')
       // 命中卖家版 可唤起 转转
       if (targetInfo.flag & AppFlags.ZZ) {
-        openZZInnerApp(instance, AppFlags.ZZ, AppFlags.ZZHunter)
+        openZZInnerApp(instance, AppFlags.ZZSeller, AppFlags.ZZ)
       }
     } else {
       callError()
