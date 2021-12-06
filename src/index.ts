@@ -202,6 +202,8 @@ export default class CallApp {
   }
 }
 
+export * as utils from './libs/platform'
+
 export type Plugin = (app: CallAppInstance, ...options: any[]) => any
 export interface DownloadConfig {
   // 苹果市场
