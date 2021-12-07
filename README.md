@@ -1,6 +1,6 @@
 # 简介
 
-`@zz-common/call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
+`call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
 
 ## 快速上手
 
@@ -9,13 +9,13 @@
 通过 `npm` 安装
 
 ```bash
-npm i @zz-common/call-app -S
+npm i call-app -S
 ```
 
 ### Step2：引入
 
 ```js
-import CallApp from '@zz-common/call-app'
+import CallApp from 'call-app'
 ```
 
 如果是通过外链 js 引入，那么可以使用 `window.CallApp` 得到 `CallApp` 类
@@ -47,8 +47,17 @@ callApp.download()
 ```
 #### 参数配置项
 
-- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址. [统跳协议格式见下方相关资料]
-- **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持，默认`923`（选填）
+- **customConfig** `Object` 用户定义配置项, 高阶配置，用法可参考下面示例
+  - **schemeUrl** `String`  scheme uri 地址
+  - **downloadConfig** `Object`  下载配置，可选，不传则采用 landingPage
+    - **ios**  `String`  app-store 链接
+    - **android** `String`  apk下载链接
+    - **android_yyb** `String` 应用宝 下载链接
+  - **universalLink** `String` universal-link链接，可选，ios 会优先采用 universal-link
+  - **landingPage** `String` 唤起失败落地页，一般是下载中间页，优先级高于 `downloadConfig`
+
+- **path** `String` 调起 app 时，默认打开的页面，类型为 app 的统跳地址.
+- **channelId** `String` 渠道号，可选，当用户没有安装 app 时，默认下载的渠道号，安卓支持，iOS 不支持（选填）
 - **targetApp** `String` 调起的目标 app，优先级低于 path 的 prefix，其中：`zz`(代表转转app), `zlj`(代表找靓机app), `zzHunter`(代表采货侠app), `zzSeller`(代表转转卖家版、已废弃), `wxMini`(代表微信小程序,目前只支持转转wx小程序)，默认为`zz`  （选填）
 - **universal** `Boolean` 是否开启通用链接调起模式，默认为`true`
 - **download** `Boolean` 是否会自动跳转下载页面，默认为 `true`
@@ -66,14 +75,6 @@ callApp.download()
 
 - **onWechatReady** `Function` 微信端sdk初始化成功后的回调
 
-- **customConfig** `Object` 用户定义配置项, 高阶配置，用法可参考下面示例
-  - **schemeUrl** `String`  scheme uri 地址
-  - **downloadConfig** `Object`  下载配置，可选，不传则采用 landingPage
-    - **ios**  `String`  app-store 链接
-    - **android** `String`  apk下载链接
-    - **android_yyb** `String` 应用宝 下载链接
-  - **universalLink** `String` universal-link链接，可选，ios 会优先采用 universal-link
-  - **landingPage** `String` 唤起失败落地页，一般是下载中间页，优先级高于 `downloadConfig`
 
 #### api 方法
 
@@ -101,7 +102,7 @@ callApp.download(options)
 
 ```javascript
 // 引入 lego 埋点 (使用callApp基础库 务必引入埋点上报)
-import { lego } from '@zz-common/lego'
+import { lego } from 'lego'
 // 唤起 转转
 const callApp = new CallApp({
   path: 'zhuanzhuan://jump/shortVideo/videoHome/jump', // 带 prefix
@@ -335,20 +336,8 @@ callApp.use(function PluginA(app, optsA) {
 
 ---
 
-
-### 相关资料
-#### 协议格式
-
-统跳协议地址 [统跳平台](https://jump.zhuanspirit.com/#/zhuanzhuan)
-转转中唤起微信小程序 [统跳平台-唤起微信小程序](https://jump.zhuanspirit.com/#/app/zhuanzhuan?page=1&search=%E5%B0%8F%E7%A8%8B%E5%BA%8F)
-
----
-
 ### Bug or PR
 
-[提交 Issues](https://gitlab.zhuanspirit.com/zz-fe-common/call-app/issues)
-
-[提交 PR](https://gitlab.zhuanspirit.com/zz-fe-common/call-app/merge_requests)
 
 
 
