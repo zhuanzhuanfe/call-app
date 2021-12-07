@@ -26,18 +26,16 @@ import { logError, logInfo, showMask } from '../libs/utils'
  * @param {Object} instance
  */
 export const launch = (instance: CallAppInstance) => {
-  const { options, download, urlScheme: schemeURL, universalLink, intentLink } = instance
+  const { options, download, urlScheme: schemeURL, intentLink } = instance
   let {
-    universal = false,
     intent = false,
-    callFailed = () => {},
-    callSuccess = () => {},
-    callError = () => {},
+    callFailed = () => { },
+    callSuccess = () => { },
+    callError = () => { },
     delay = 2500,
   } = options
 
   // 唤端失败时落地处理
-  const supportUniversal = universal
   const supportIntent = intent
 
   // hack 检测唤起状态
@@ -54,71 +52,9 @@ export const launch = (instance: CallAppInstance) => {
 
   if (isIos) {
     logInfo('isIos', isIos)
-    // ios-version > v12.3.0
-    if (isThan12Ios) delay = options.delay = 3000
-
-    logInfo('isIos > 12.3.0', isThan12Ios)
-
-    if (isWechat && isLow7WX) {
-      // 显示遮罩 在浏览器打开
-      logInfo('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
-
-      showMask()
-
-      callFailed()
-    } else if (isLow9Ios) {
-      logInfo('isIos - version < 9', isIos, isLow9Ios, schemeURL)
-
-      handleCheck(delay)
-
-      schemeURL && evokeByIFrame(schemeURL)
-    } else if (!supportUniversal && isBaidu) {
-      logInfo('!supportUniversal && isBaidu', !supportUniversal && isBaidu)
-
-      handleCheck(delay)
-
-      showMask()
-    } else if (!supportUniversal && (isWeibo || isWechat)) {
-      logInfo(
-        '!supportUniversal && (isWeibo || isWechat)',
-        !supportUniversal && (isWeibo || isWechat)
-      )
-
-      showMask()
-
-      callFailed()
-    } else if (!supportUniversal || isQQ || isQQBrowser || isQzone) {
-      logInfo(
-        'isIos - !supportUniversal || isQQ || isQQBrowser || isQzone',
-        !supportUniversal || isQQ || isQQBrowser || isQzone,
-        schemeURL
-      )
-
-      handleCheck(delay)
-
-      schemeURL && evokeByTagA(schemeURL)
-    } else if (isQuark) {
-      logInfo('isQuark', isQuark, schemeURL)
-
-      handleCheck(delay)
-
-      schemeURL && evokeByLocation(schemeURL)
-    } else {
-      // universalLink 唤起, 不支持 失败回调处理。
-      // 没有app时, 页面重定向到中间页面，原页面生命周期结束 js 不再执行。
-      // 更新app 时候，universalLink 可能会失效, u-link 自身的坑。
-      logInfo('isIos - support universalLink', universalLink)
-
-      handleCheck(delay)
-
-      universalLink && evokeByLocation(universalLink)
-
-      // 有必要的话, 降级采用 schemeURL 处理
-      // 测试过程中发现： schemeURL 比 universalLink 稳定，但缺点是需要用户二次确认
-      // setTimeout(() => {
-      //   evokeByLocation(schemeURL)
-      //   handleFall
-      // });
+    const tempIosPlatRegList = getDefaultIosPlatRegList(instance)
+    for(let item of tempIosPlatRegList) {
+      if(item && item.platReg()) item.handler(instance)
     }
   } else if (isAndroid) {
     //
@@ -158,4 +94,118 @@ export const launch = (instance: CallAppInstance) => {
     callError()
     logError('your platform is not support, please contact developer')
   }
+}
+
+export let tempIosPlatRegList:any = null
+
+// 对外提供  获取方法
+export const getIosPlatRegList = (ctx: CallAppInstance) =>
+  tempIosPlatRegList || (tempIosPlatRegList = getDefaultIosPlatRegList(ctx))
+
+// 对外提供  扩展方法
+export const addIosPlatReg = (ctx: CallAppInstance, item: Record<string, any>) => {
+  if(item) {
+    const list = getDefaultIosPlatRegList(ctx)
+    list.splice(-1, 0, item as any)
+    tempIosPlatRegList = [...list]
+  }
+}
+//
+export const getDefaultIosPlatRegList = (ctx: CallAppInstance) => {
+  const { options, urlScheme: schemeURL, universalLink } = ctx
+  let {
+    universal = false,
+    callFailed = () => { },
+    callSuccess = () => { },
+    callError = () => { },
+    delay = 2500,
+  } = options
+
+  const handleCheck = (delay = 2500) => checkOpen(
+    () => {
+      callFailed()
+      ctx.download()
+    },
+    callSuccess,
+    callError,
+    delay,
+  )
+  return [
+    {
+      name: 'wxSub',
+      platReg: () => (isWechat && isLow7WX),
+      handler: (instance: CallAppInstance) => {
+        console.log(instance)
+
+        logInfo('isIos - isWeibo || isWechat < 7.0.5', isIos && isWechat && isLow7WX)
+        showMask()
+        callFailed()
+      }
+    },
+    {
+      name: 'low9',
+      platReg: () => isLow9Ios,
+      handler: () => {
+        handleCheck(3000)
+        schemeURL && evokeByIFrame(schemeURL)
+      }
+    },
+    {
+      name: 'bd',
+      platReg: () => !universal && isBaidu,
+      handler: () => {
+        handleCheck(3000)
+        showMask()
+      }
+    },
+    {
+      name: 'weibo',
+      platReg: () => !universal && (isWeibo || isWechat),
+      handler: () => {
+        showMask()
+        callFailed()
+      }
+    },
+    {
+      name: 'qq',
+      platReg: () => !universal || isQQ || isQQBrowser || isQzone,
+      handler: () => {
+        handleCheck(3000)
+        schemeURL && evokeByTagA(schemeURL)
+      }
+    },
+    {
+      name: 'quark',
+      platReg: () => isQuark,
+      handler: () => {
+        handleCheck(3000)
+        schemeURL && evokeByTagA(schemeURL)
+      }
+    },
+    {
+      name: 'ul',
+      platReg: () => isIos,
+      handler: () => {
+        handleCheck(delay)
+        universalLink && evokeByLocation(universalLink)
+      }
+    },
+  ]
+}
+
+export const getDefaultAndroidPlatRegList = (ctx: CallAppInstance) => {
+  return [
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+  ]
 }
