@@ -84,7 +84,7 @@ callApp.download()
 // 挂在CallApp实例上的方法
 // options 可选 配置同上
 const callApp = new CallApp()
-callApp.download(options)
+callApp.start(options)
 ```
 
 - **download** `Function`  下载功能
