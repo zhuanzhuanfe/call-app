@@ -37,9 +37,15 @@
   ],
   "author": "huangjiaxing <huangjiaxing@zhuanzhuan.com>",
   "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "zz-commander-tools/lib/config/commitizen.config"
+    }
+  },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commander-tools run commitlint"
     }
   },
   "lint-staged": {
@@ -53,7 +59,7 @@
     "@types/node": "^14.14.34",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
-    "zz-commander-tools": "^1.1.1",
+    "zz-commander-tools": "^1.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
