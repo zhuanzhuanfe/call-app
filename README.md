@@ -1,6 +1,6 @@
 # 简介
 
-`call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 目前兼容转转/找靓机/采货侠 app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
+`call-app` 是一个基于 `typescript` 开发的通用的唤起 app 的 sdk, 支持唤起多个app, 兼容主流浏览器、webview，并支持用户自定义唤起配置。
 
 ## 快速上手
 
@@ -336,9 +336,12 @@ callApp.use(function PluginA(app, optsA) {
 
 ---
 
+### 公开文章
+
+
 ### Bug or PR
-
-
+[唤起 App 在转转的实践](https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&mid=2247486327&idx=1&sn=a4ed8b1b012638a60bd4065a6e5ee309)
+[复杂场景下唤起App实践](https://mp.weixin.qq.com/s?__biz=MzU0OTExNzYwNg==&mid=2247492140&idx=1&sn=9857ecdf80285020dd90fd3d26fb717d)
 
 
 ### Feature
