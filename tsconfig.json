@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "build/",
+    "baseUrl": ".",
+    "module": "esnext",
+    "target": "es2016",
+    "lib": ["esnext", "dom"],
+    "sourceMap": false,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "removeComments": false,
+    "noUnusedLocals": true,
+    "allowJs": false,
+    "strict": true,
+    "declaration": true,
+    "declarationDir": "types/dist/",
+    "paths": {}
+  },
+  "include": ["src", "types/globals.d.ts"],
+  "exclude": ["node_modules"]
+}
+// https://www.tslang.cn/docs/handbook/compiler-options.html

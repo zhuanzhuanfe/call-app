@@ -1,32 +1,80 @@
 {
-  "name": "@zz-base/call-app",
-  "version": "2.1.0",
-  "description": "转转FE打包模版",
+  "name": "call-app",
+  "version": "1.0.0",
+  "description": "通用的唤起app的库",
   "scripts": {
-    "dist": "commander-tools run dist",
-    "compile": "commander-tools run compile",
+    "ts-check": "tsc --noEmit",
+    "declare-type": "tsc --emitDeclarationOnly",
+    "prettier": "prettier -c --write \"**/*\"",
+    "lint-staged:js": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
+    "lint-check": "npm run ts-check && npm run lint-staged:js",
+    "cz": "git cz -a",
+    "test": "jest --coverage",
+    "lint": "commander-tools run lint",
+    "fix": "commander-tools run lint --fix",
+    "staged": "commander-tools run lint --staged",
+    "staged-fix": "commander-tools run lint --staged --fix",
     "dev": "commander-tools run dev",
-    "build": "commander-tools run compile && commander-tools run dist && commander-tools run build-doc",
+    "compile": "commander-tools run compile",
+    "dist": "commander-tools run dist",
+    "analyz": "commander-tools run dist --analyz",
+    "build": "commander-tools run build & npm run declare-type",
     "pub": "commander-tools run pub",
     "pub-beta": "commander-tools run pub-beta",
     "unpub": "commander-tools run unpub",
     "doc": "commander-tools run doc",
-    "doc-upload": "commander-tools run doc-upload",
-    "build-doc": "commander-tools run build-doc"
+    "build-doc": "commander-tools run build-doc",
+    "doc-upload": "commander-tools run doc-upload"
   },
   "main": "lib/index.js",
   "module": "es/index.js",
+  "typings": "types/dist/index.d.ts",
   "keywords": [
     "vue",
     "react",
     "npm",
     "import"
   ],
-  "author": "luoxue <luoxue@zhuanzhuan.com>",
+  "author": "huangjiaxing <huangjiaxing@zhuanzhuan.com>",
   "license": "ISC",
+  "config": {
+    "commitizen": {
+      "path": "zz-commander-tools/lib/config/commitizen.config"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commander-tools run commitlint"
+    }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,tsx,ts,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-check"
+  },
   "devDependencies": {
-    "@zz-base/commander-tools": "^1.0.3"
+    "@types/node": "^14.14.34",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "zz-commander-tools": "^1.1.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-html": "^6.0.2",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-unicorn": "^20.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2",
+    "typescript": "^3.9.5"
   },
   "peerDependencies": {},
-  "dependencies": {}
+  "dependencies": {
+    "core-js": "^3.6.5"
+  }
 }

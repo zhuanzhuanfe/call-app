@@ -1,0 +1,7 @@
+demo/
+dist/
+es/
+lib/
+docs/
+types/
+*.js

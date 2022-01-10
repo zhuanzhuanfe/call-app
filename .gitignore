@@ -3,4 +3,11 @@ node_modules/
 **/.DS_Store
 npm-debug.log
 v2/
-package-lock.json
+dist/*
+es/*
+lib/*
+.idea/*
+docs/*
+build/*
+types/dist/
+.eslintcache
