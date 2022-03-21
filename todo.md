@@ -6,7 +6,7 @@
 - [x] 支持第三方自定义配置 【支付宝】
 - [x] 支持 js-sdk
 - [x] 中间页迁移，兼容找靓机
-- [x] 支持 app 调起 zz 小程序 （appid: gh_c2980df66965）
+- [x] 支持 app 调起 zz 小程序 （appid）
 - [x] 支持短信 短链接 唤起机制【IOS 可以尝试，安卓侧转转/找靓机都未支持 app-links】
 - [x] 下载还原活动页面, zzzlj.cn/zz/xxxx | zzzlj.cn/zlj/xxxx
 - [x] 补充埋点文档

@@ -1,5 +1,5 @@
 import { CallAppInstance } from '../../index'
-import { wxInfo, dependencies, appInfo } from '../config'
+import { wxInfo, dependencies, zAppInfo } from '../config'
 import { evokeByLocation } from '../evoke'
 import { isAndroid } from '../platform'
 import { loadJSArr, logError, logInfo } from '../utils'
@@ -109,7 +109,7 @@ export const openZZInWX = async (instance: CallAppInstance) => {
       let app = window.WeixinJSBridge
 
       if (isAndroid) {
-        const packageName = appInfo.ANDROID_PACKAGE_NAME
+        const packageName = zAppInfo.ANDROID_PACKAGE_NAME
         const packageUrl = urlScheme
         invokeInWX('getInstallState', { packageName, packageUrl }, app)
           .then(() => {
