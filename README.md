@@ -4,17 +4,15 @@
 
 ## 快速上手
 
-### Step1：安装
+### Step1：下载源码或者发布
 
-通过 `npm` 安装
-
-```bash
-npm i call-app -S
-```
+把源代码 clone 下来，或者下载 并且 build 之后发布到自己私有的 npm 仓库下
 
 ### Step2：引入
 
 ```js
+import CallApp from './call-app/src/index.ts'
+// 或者
 import CallApp from 'call-app'
 ```
 
